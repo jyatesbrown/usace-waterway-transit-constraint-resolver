@@ -320,7 +320,7 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
             locks.append(
                 Lock(
                     lock_id=f"{river}-{p0.get('LOCKCD')}",
-                    name=None,
+                    name=p0.get("PMSNAME") or p0.get("NAVSTR"),
                     river_code=river,
                     lock_code=str(p0.get("LOCKCD")),
                     river=p0.get("RIVER"),
@@ -370,7 +370,7 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
                 fresh, ages, fnote = _lpms_freshness(row.get("entryDatetime"), now)
                 if abs((at - now).total_seconds()) > 3600:
                     fnote += " Conditions are as retrieved, not as of atTime."
-                lk.name = row.get("lockName")
+                lk.name = row.get("lockName") or lk.name
                 lk.operating_conditions_status = "reported"
                 lk.operating_conditions = LockConditions(
                     hours_of_operation=row.get("hoursOfOperation"),

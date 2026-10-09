@@ -170,6 +170,8 @@ async def test_lpms_rate_limit_body_is_source_failure(usace):
     assert r.status == "partial"
     assert r.coverage.lpms.status == "unavailable"
     assert all(lk.operating_conditions is None for lk in r.locks)
+    assert r.locks
+    assert all(lk.name for lk in r.locks)  # official Locks-layer name when LPMS has no row
     assert r.billing.billable
 
 
