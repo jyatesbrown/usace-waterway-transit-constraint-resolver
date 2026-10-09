@@ -1,0 +1,14 @@
+{
+    "$schema": "https://apify.com/schemas/v1/output.ide.json",
+    "actorOutputSchemaVersion": 1,
+    "title": "USACE inland waterway route check",
+    "description": "Exactly one dataset item per run: official USACE NTNI notices whose published geometry intersects the route corridor, USACE locks on the route with LPMS-reported conditions, a route-ordered constraints array, notices without published geometry (unverifiedLocationNotices), and per-source coverage. Zero matches means no matching constraints were found in the official datasets successfully checked; it is not a passage, safety or clearance determination. Not navigational advice.",
+    "properties": {
+        "result": {
+            "type": "string",
+            "title": "Waterway route check record",
+            "description": "The single record: status, coverage (ntni, ntniGeometry, corpsLocks, lpms, completeForRequestedSources, sourceFailures, coverageNote), summary, constraints, locks, notices, unverifiedLocationNotices and billing.",
+            "template": "{{links.apiDefaultDatasetUrl}}/items"
+        }
+    }
+}

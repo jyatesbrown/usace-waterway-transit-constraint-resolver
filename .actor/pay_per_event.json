@@ -1,0 +1,7 @@
+{
+    "waterway-route-check": {
+        "eventTitle": "Waterway route check",
+        "eventDescription": "Charged once per run when the route is valid and route computation completed against the official USACE notice list and Locks layer, including complete zero-match results. Not charged for invalid input or when core sources are unavailable.",
+        "eventPriceUsd": 0.10
+    }
+}

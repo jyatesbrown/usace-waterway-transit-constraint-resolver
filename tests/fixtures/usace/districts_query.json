@@ -1,0 +1,1 @@
+{"objectIdFieldName":"OBJECTID","geometryType":"esriGeometryPolygon","spatialReference":{"wkid":4140,"latestWkid":4140},"fields":[{"name":"SYMBOL","type":"esriFieldTypeString","alias":"SYMBOL"}],"features":[{"attributes":{"SYMBOL":"LRH"}},{"attributes":{"SYMBOL":"LRP"}}]}

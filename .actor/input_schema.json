@@ -1,0 +1,29 @@
+{
+    "title": "USACE Inland Waterway Transit Constraint Resolver input",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "route": {
+            "title": "Route",
+            "type": "array",
+            "description": "Inland-waterway route you supply, as an ordered list of {\"lat\", \"lon\"} points (WGS84). The Actor does not plan routes; follow the channel closely enough for the corridor to cover it.",
+            "editor": "json",
+            "prefill": [{"lat": 40.4425, "lon": -80.0150}, {"lat": 40.5106, "lon": -80.0820}, {"lat": 40.6463, "lon": -80.4120}, {"lat": 40.5263, "lon": -80.6275}, {"lat": 40.1650, "lon": -80.6990}]
+        },
+        "corridorNm": {
+            "title": "Corridor half-width (nautical miles)",
+            "type": "number",
+            "description": "Distance either side of the route within which notices and locks are matched. Default 1.",
+            "minimum": 0.1,
+            "maximum": 10,
+            "default": 1
+        },
+        "atTime": {
+            "title": "At time (UTC)",
+            "type": "string",
+            "description": "ISO 8601 time with timezone used for notice temporal status, e.g. 2026-10-12T15:00:00Z. Defaults to now. Lock operating conditions always reflect retrieval time.",
+            "editor": "textfield"
+        }
+    },
+    "required": ["route"]
+}
