@@ -132,7 +132,7 @@
                 "type": "null"
               }
             ],
-            "description": "LPMS lockName where LPMS reports this lock.",
+            "description": "LPMS lockName where LPMS reports this lock, otherwise PMSNAME from the USACE Locks layer.",
             "title": "Name"
           },
           "riverCode": {
@@ -241,10 +241,12 @@
             "default": null
           },
           "operatingConditionsStatus": {
+            "description": "not_published_for_river: LPMS answered 'Data Unavailable' for this river, so no current lock operating conditions are published; this is not a source failure, but conditions are unknown.",
             "enum": [
               "reported",
               "not_reported_by_lpms",
-              "lpms_unavailable"
+              "lpms_unavailable",
+              "not_published_for_river"
             ],
             "title": "Operatingconditionsstatus",
             "type": "string"
@@ -810,7 +812,8 @@
               "success",
               "partial",
               "unavailable",
-              "not_queried"
+              "not_queried",
+              "not_published_for_river"
             ],
             "title": "Status",
             "type": "string"
@@ -1091,7 +1094,7 @@
     },
     "properties": {
       "schemaVersion": {
-        "default": "1.0",
+        "default": "1.1",
         "title": "Schemaversion",
         "type": "string"
       },

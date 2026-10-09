@@ -4,7 +4,7 @@ You supply an inland-waterway route. The Actor checks it against official U.S. A
 
 - **Navigation notices (NTNI)** whose published geometry intersects the route corridor, with official text verbatim, temporal status and route position.
 - **USACE locks** within the corridor, in route order, with the official river and lock codes, river mile and chambers.
-- **Lock operating conditions** reported by LPMS: vessels pending, vessels locking, the reported 4-hour average delay, lockages in the last 24 h, stall stoppages and gauges. Each comes with a freshness label.
+- **Lock operating conditions** reported by LPMS: vessels pending, vessels locking, the reported 4-hour average delay, lockages in the last 24 h, stall stoppages and gauges. Each comes with a freshness label. Where LPMS answers "Data Unavailable" for a river (e.g. Columbia, Snake), locks are listed with `operatingConditionsStatus: "not_published_for_river"`, LPMS coverage is `not_published_for_river` and the result is `partial`: lock conditions are unknown, not a source failure.
 - **`unverifiedLocationNotices`**: active notices from USACE districts within 25 nm of the corridor that publish no geometry. They are retained with their original river-mile wording and the parsed miles, but are **not** route matches.
 - **Coverage** for every source, so incomplete checks are explicit.
 

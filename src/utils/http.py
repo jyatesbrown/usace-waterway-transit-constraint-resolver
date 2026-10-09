@@ -27,8 +27,11 @@ def create_client() -> httpx.AsyncClient:
     )
 
 
-async def get_json(client: httpx.AsyncClient, url: str) -> Any:
-    """GET JSON with bounded retries on transient failures; raise `SourceError` otherwise."""
+async def get_json(client: httpx.AsyncClient, url: str, no_data_bodies: tuple[str, ...] = ()) -> Any:
+    """GET JSON with bounded retries on transient failures; raise `SourceError` otherwise.
+
+    Returns None when the body is exactly one of `no_data_bodies` (a source's plain-text "no data" reply).
+    """
     last: SourceError | None = None
     for attempt in range(1, MAX_ATTEMPTS + 1):
         try:
@@ -46,6 +49,8 @@ async def get_json(client: httpx.AsyncClient, url: str) -> Any:
             elif status >= 400:
                 raise SourceError(SourceState.UNAVAILABLE, f"{url}: HTTP {status}")
             else:
+                if no_data_bodies and response.text.strip() in no_data_bodies:
+                    return None
                 try:
                     return json.loads(response.content)
                 except (json.JSONDecodeError, UnicodeDecodeError) as exc:

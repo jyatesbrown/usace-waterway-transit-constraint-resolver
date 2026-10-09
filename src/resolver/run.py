@@ -360,6 +360,9 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
         )
         if lpms.error:
             failures.append(SourceFailure(source="lpms", state=str(lpms.error.state), detail=lpms.error.detail))
+        elif lpms.value is None:
+            for lk in locks:
+                lk.operating_conditions_status = "not_published_for_river"
         else:
             rows = {locks_src.lock_key(r.get("riverCode"), r.get("lockNo")): r for r in lpms.value}
             for lk in locks:
@@ -572,11 +575,26 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
 
     # ---- coverage and status -------------------------------------------------------------------
     geo_status = "unavailable" if not active.ok else "partial" if not_retrieved else "complete"
+    lpms_not_published = bool(locks) and lpms.ok and lpms.value is None
+    lock_rivers = sorted({lk.river_code for lk in locks})
     lpms_cov = SourceCoverage(
-        status="not_queried" if not locks or not lock_layer.ok else "success" if lpms.ok else "unavailable",
+        status="not_queried"
+        if not locks or not lock_layer.ok
+        else "not_published_for_river"
+        if lpms_not_published
+        else "success"
+        if lpms.ok
+        else "unavailable",
         checked_at=iso(lpms.fetched_at) if lpms.fetched_at else None,
         from_cache=lpms.from_cache,
-        detail=None if locks else "No USACE lock within the route corridor; LPMS not queried.",
+        detail=(
+            "No USACE lock within the route corridor; LPMS not queried."
+            if not locks
+            else f"LPMS answered 'Data Unavailable' for river code(s) {', '.join(lock_rivers)}: "
+            "it publishes no current lock operating conditions for these rivers, so they are unknown."
+            if lpms_not_published
+            else None
+        ),
     )
 
     def cov(f: Fetched) -> SourceCoverage:
@@ -593,7 +611,7 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
         and dist.ok
         and lock_layer.ok
         and geo_status == "complete"
-        and lpms_cov.status != "unavailable"
+        and lpms_cov.status not in ("unavailable", "not_published_for_river")
         and not (matched == 0 and unverified_list)
     )
     core_ok = active.ok and lock_layer.ok
@@ -728,6 +746,11 @@ def _coverage_note(
         parts.append(f"Source {f.source} was not checked ({f.state}).")
     if lpms.status == "unavailable":
         parts.append("LPMS lock operating conditions were not available.")
+    elif lpms.status == "not_published_for_river":
+        parts.append(
+            "LPMS publishes no current lock operating conditions for the rivers on this route, so lock "
+            "conditions are unknown and coverage is incomplete."
+        )
     if matched == 0:
         if status == "success":
             parts.append(ZERO_MATCH_TEXT)

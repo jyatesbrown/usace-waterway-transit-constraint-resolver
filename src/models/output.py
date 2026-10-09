@@ -5,9 +5,9 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
 
-SCHEMA_VERSION = "1.0"
+SCHEMA_VERSION = "1.1"
 ResultStatus = Literal["success", "partial", "invalid_input", "source_unavailable"]
-SourceStatus = Literal["success", "partial", "unavailable", "not_queried"]
+SourceStatus = Literal["success", "partial", "unavailable", "not_queried", "not_published_for_river"]
 DISCLAIMER = (
     "Official USACE information as retrieved; not navigational advice and not a passage, safety or "
     "clearance determination. Consult official current navigation information, the lockmaster and "
@@ -157,7 +157,9 @@ class LockConditions(Out):
 class Lock(Out):
     constraint_type: Literal["lock"] = "lock"
     lock_id: str = Field(description="RIVERCD-LOCKCD from the USACE Locks layer.")
-    name: str | None = Field(description="LPMS lockName where LPMS reports this lock.")
+    name: str | None = Field(
+        description="LPMS lockName where LPMS reports this lock, otherwise PMSNAME from the USACE Locks layer."
+    )
     river_code: str
     lock_code: str
     river: str | None
@@ -172,7 +174,14 @@ class Lock(Out):
     distance_from_route_nm: float
     related_notice_ids: list[int] = []
     operating_conditions: LockConditions | None = None
-    operating_conditions_status: Literal["reported", "not_reported_by_lpms", "lpms_unavailable"]
+    operating_conditions_status: Literal[
+        "reported", "not_reported_by_lpms", "lpms_unavailable", "not_published_for_river"
+    ] = Field(
+        description=(
+            "not_published_for_river: LPMS answered 'Data Unavailable' for this river, so no current lock "
+            "operating conditions are published; this is not a source failure, but conditions are unknown."
+        )
+    )
     source: Source
 
 

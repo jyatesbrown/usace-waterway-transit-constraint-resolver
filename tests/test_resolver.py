@@ -175,6 +175,21 @@ async def test_lpms_rate_limit_body_is_source_failure(usace):
     assert r.billing.billable
 
 
+async def test_lpms_data_unavailable_is_not_published_not_failure(usace):
+    usace.get(url__startswith=LPMS).mock(return_value=httpx.Response(200, text="Data Unavailable\n"))
+    r = await run()
+    assert r.status == "partial"
+    assert r.coverage.lpms.status == "not_published_for_river"
+    assert "Data Unavailable" in r.coverage.lpms.detail
+    assert not any(f.source == "lpms" for f in r.coverage.source_failures)
+    assert r.locks
+    assert all(lk.operating_conditions_status == "not_published_for_river" for lk in r.locks)
+    assert all(lk.operating_conditions is None for lk in r.locks)
+    assert all(lk.name for lk in r.locks)
+    assert "no current lock operating conditions" in r.coverage.coverage_note
+    assert r.billing.billable
+
+
 async def test_geometry_fetch_failure_makes_coverage_partial(usace):
     usace.get(f"{NTNI}/leaflet_json/notice/215139").mock(return_value=httpx.Response(500))
     r = await run()
