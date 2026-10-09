@@ -1,6 +1,6 @@
 {
  "version": "1.0",
- "note": "Fixed before any run (2026-10-09). The system prompt never names any Actor. Coordinates are WGS84 lat,lon. Routes were checked live beforehand: r15 and r16 return zero confirmed matches with nearby unverified notices (partial, not charged); r08, r09, r10 and r13 currently return partial because LPMS lock conditions are unavailable for those rivers.",
+ "note": "Fixed before any run (2026-10-09). The system prompt never names any Actor. Coordinates are WGS84 lat,lon. Every relevant route was run once against live sources on build 1.0.3 semantics before freezing: r15 and r16 return zero confirmed matches with nearby unverified notices (partial, not charged); r08, r09, r10 and r13 return partial with confirmed matches because LPMS publishes no lock data for those rivers (not_published_for_river, charged); r06, r18 and r20 include active_by_source notices; all others return success.",
  "relevant": [
   {
    "id": "r01",
