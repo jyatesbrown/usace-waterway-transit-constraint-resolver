@@ -165,3 +165,13 @@ async def test_no_forbidden_safety_claims(usace):
     r["constraints"] = [{k: v for k, v in c.items() if k != "title"} for c in r["constraints"]]
     text = json.dumps(r).lower()
     assert not [w for w in FORBIDDEN if w in text]
+
+
+async def test_detail_without_geojson_is_unverified_not_failure(usace):
+    usace.get(f"{NTNI}/leaflet_json/notice/215139").mock(
+        return_value=httpx.Response(200, json={"id": 215139, "title": "x", "begin_date": None, "geojson": None})
+    )
+    r = await run(at="2026-10-08T15:00:00Z")
+    assert 215139 not in r.coverage.ntni_geometry.geometry_not_retrieved
+    assert any(u.notice_id == 215139 for u in r.unverified_location_notices)
+    assert r.coverage.ntni_geometry.status == "complete"

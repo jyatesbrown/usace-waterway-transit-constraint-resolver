@@ -388,6 +388,8 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
                 not_retrieved.append(cn)
                 continue
             d = f.value
+            if d is not None and not d.get("geojson"):
+                d = None
             if d is None:
                 t = temporal_status(rec, at, text=text)
                 if t.status == "expired":
