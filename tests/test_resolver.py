@@ -7,6 +7,7 @@ import pytest
 from pydantic import ValidationError
 
 from src.models.input import ActorInput
+from src.models.output import OFFICIAL_TEXT_LIMIT, UNVERIFIED_LIST_LIMIT
 from src.resolver.run import ZERO_MATCH_TEXT, run_query
 from src.sources.cache import KeyValueCache
 from tests.conftest import DISTRICTS, LPMS, NTNI
@@ -85,7 +86,7 @@ async def test_text_only_notices_are_unverified_not_matched(usace):
     assert u.matched_by is None
     assert all(n.notice_id != u.notice_id for n in r.notices)
     g = r.coverage.ntni_geometry
-    assert g.no_geometry_published == len(r.unverified_location_notices) + g.no_geometry_outside_listing_districts
+    assert g.no_geometry_published == r.summary.unverified_notice_count + g.no_geometry_outside_listing_districts
     assert g.no_geometry_outside_listing_districts >= 1
 
 
@@ -262,3 +263,81 @@ def test_bbox_prefilter_is_conservative():
     assert _bbox_disjoint(far, window)
     assert not _bbox_disjoint(straddle, window)
     assert not _bbox_disjoint(None, window)
+
+
+def _heavy_notices(n=150, text_len=3000):
+    from tests.conftest import load
+
+    notices = load("notices.json")
+    base = next(r for r in notices if r["controlNumber"] == 1877)
+    lead = load("leaflet_list_215082.json")
+    lead["remarks"] = "Lock chamber closed for repairs. " * (text_len // 32)
+    clones = [
+        base | {"controlNumber": 300000 + i, "remarks": "Mile 40.5 dredging and buoy work. " * (text_len // 34)}
+        for i in range(n)
+    ]
+    return [*notices, lead, *clones]
+
+
+async def test_notice_heavy_route_record_stays_compact(usace):
+    usace.get(url__startswith=NTNI + "/json_data/notices/").mock(
+        return_value=httpx.Response(200, json=_heavy_notices())
+    )
+    usace.get(url__startswith=DISTRICTS).mock(
+        return_value=httpx.Response(200, json={"features": [{"attributes": {"SYMBOL": "MVS"}}]})
+    )
+    r = await run()
+    rec = r.to_record()
+    assert len(json.dumps(rec)) < 40_000
+    assert list(rec)[:5] == ["schemaVersion", "status", "summary", "billing", "coverage"]
+    s = rec["summary"]
+    listing = rec["unverifiedNoticeListing"]
+    assert s["unverifiedNoticeCount"] == listing["total"] >= 150
+    assert s["unverifiedNoticesListed"] == listing["listed"] == UNVERIFIED_LIST_LIMIT
+    assert len(rec["unverifiedLocationNotices"]) == UNVERIFIED_LIST_LIMIT
+    assert s["unverifiedListTruncated"] is listing["truncated"] is True
+    indexed = [i for ids in listing["noticeIdsByDistrict"].values() for i in ids]
+    assert sorted(indexed) == sorted(set(indexed))
+    assert len(indexed) == listing["total"]
+    assert all(300000 + i in indexed for i in range(150))
+    for u in rec["unverifiedLocationNotices"]:
+        assert "officialText" not in u
+        assert "source" not in u
+        assert u["spatiallyVerified"] is False
+        assert u["matchedBy"] is None
+        assert u["noticeUrl"].endswith(f"/leaflet_json/notice/{u['noticeId']}")
+    assert "identified in unverifiedNoticeListing" in rec["coverage"]["coverageNote"]
+    assert s["confirmedMatchCount"] == len(r.notices) + len(r.locks)
+    assert r.status == "success"
+    assert r.billing.billable
+
+
+async def test_full_record_keeps_every_notice_and_uncut_text(usace):
+    usace.get(url__startswith=NTNI + "/json_data/notices/").mock(
+        return_value=httpx.Response(200, json=_heavy_notices())
+    )
+    usace.get(url__startswith=DISTRICTS).mock(
+        return_value=httpx.Response(200, json={"features": [{"attributes": {"SYMBOL": "MVS"}}]})
+    )
+    r = await run()
+    rec = r.to_record()
+    full = r.to_full_record()
+    assert rec["fullRecordKey"] == "FULL_RESULT"
+    assert full["recordType"] == "full"
+    assert len(full["unverifiedLocationNotices"]) == rec["unverifiedNoticeListing"]["total"]
+    assert all(u["officialText"] for u in full["unverifiedLocationNotices"])
+    lead = next(n for n in rec["notices"] if n["noticeId"] == 215082)
+    assert lead["officialTextTruncated"] is True
+    assert len(lead["officialText"]) <= OFFICIAL_TEXT_LIMIT + 2 < lead["officialTextLength"]
+    full_lead = next(n for n in full["notices"] if n["noticeId"] == 215082)
+    assert len(full_lead["officialText"]) == lead["officialTextLength"]
+    assert {k: v for k, v in rec.items() if k not in ("notices", "unverifiedLocationNotices")} == {
+        k: v for k, v in full.items() if k not in ("notices", "unverifiedLocationNotices", "recordType")
+    }
+
+
+async def test_short_lists_are_not_marked_truncated(usace):
+    r = (await run()).to_record()
+    assert r["unverifiedNoticeListing"]["truncated"] is False
+    assert r["summary"]["unverifiedNoticesListed"] == r["summary"]["unverifiedNoticeCount"]
+    assert "all are listed in unverifiedLocationNotices" in r["coverage"]["coverageNote"]

@@ -2,11 +2,13 @@
 
 You supply an inland-waterway route. The Actor checks it against official U.S. Army Corps of Engineers (USACE) navigation information and returns one structured record. The record covers:
 
-- **Navigation notices (NTNI)** whose published geometry intersects the route corridor, with official text verbatim, temporal status and route position.
+- **Navigation notices (NTNI)** whose published geometry intersects the route corridor, with official text (verbatim, cut at about 1,000 characters when longer, with `officialTextTruncated` and `officialTextLength`), temporal status and route position.
 - **USACE locks** within the corridor, in route order, with the official river and lock codes, river mile and chambers.
 - **Lock operating conditions** reported by LPMS: vessels pending, vessels locking, the reported 4-hour average delay, lockages in the last 24 h, stall stoppages and gauges. Each comes with a freshness label. Where LPMS answers "Data Unavailable" for a river (e.g. Columbia, Snake), locks are listed with `operatingConditionsStatus: "not_published_for_river"`, LPMS coverage is `not_published_for_river` and the result is `partial`: lock conditions are unknown, not a source failure.
-- **`unverifiedLocationNotices`**: active notices from USACE districts within 25 nm of the corridor that publish no geometry. They are retained with their original river-mile wording and the parsed miles, but are **not** route matches.
+- **`unverifiedLocationNotices`**: active notices from USACE districts within 25 nm of the corridor that publish no geometry. They are retained with their original river-mile wording and the parsed miles, but are **not** route matches. Each entry is compact: ID, title, dates and temporal status, location text, district, waterway and its official NTNI record URL, without the notice text. At most 25 are itemised; `unverifiedNoticeListing` gives the total, whether the list is truncated, and every notice ID by district.
 - **Coverage** for every source, so incomplete checks are explicit.
+
+The record opens with `status`, `summary` (confirmed match count, unverified notice count, how many are listed), `billing` and `coverage` (with a deterministic coverage note), so the decision-critical facts come first. A normal record stays well under 60,000 characters even on notice-heavy routes. The uncut record, with every unverified notice and its full official text, is in the run's default key-value store under `FULL_RESULT` (`fullRecordKey`).
 
 ## What it does not do
 

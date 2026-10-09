@@ -2,10 +2,13 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, PrivateAttr
 from pydantic.alias_generators import to_camel
 
-SCHEMA_VERSION = "1.1"
+SCHEMA_VERSION = "1.2"
+FULL_RECORD_KEY = "FULL_RESULT"
+UNVERIFIED_LIST_LIMIT = 25
+OFFICIAL_TEXT_LIMIT = 1000
 ResultStatus = Literal["success", "partial", "invalid_input", "source_unavailable"]
 SourceStatus = Literal["success", "partial", "unavailable", "not_queried", "not_published_for_river"]
 DISCLAIMER = (
@@ -103,13 +106,20 @@ class Notice(Out):
     relationship_to_route: RouteRelationship
     waterway: str | None
     district: str | None
-    official_text: str | None
+    official_text: str | None = Field(
+        description=f"NTNI remarks, cut at about {OFFICIAL_TEXT_LIMIT} characters when longer; the full text is in "
+        f"the run's key-value store record {FULL_RECORD_KEY}."
+    )
+    official_text_truncated: bool = False
+    official_text_length: int | None = Field(default=None, description="Length of the full official text.")
     attachments: list[dict[str, Any]] = []
     related_lock_ids: list[str] = []
     source: Source
 
 
-class UnverifiedLocationNotice(Out):
+class UnverifiedNoticeBrief(Out):
+    """Agent-facing entry for an active notice with no published geometry; never a confirmed route match."""
+
     notice_id: int
     amendment_number: int | None = None
     title: str | None
@@ -127,7 +137,27 @@ class UnverifiedLocationNotice(Out):
     parsed_river_miles: list[dict[str, float]] = []
     waterway: str | None
     district: str | None
+    notice_url: str = Field(description="Official NTNI per-notice record for this notice.")
+
+
+class UnverifiedLocationNotice(UnverifiedNoticeBrief):
+    """Full entry, stored in the run's key-value store record FULL_RESULT."""
+
     official_text: str | None
+    source: Source
+
+
+class UnverifiedNoticeListing(Out):
+    total: int = Field(description="All nearby active notices with no published geometry.")
+    listed: int = Field(description="How many of them are itemised in unverifiedLocationNotices.")
+    truncated: bool
+    order: str
+    notice_ids_by_district: dict[str, list[int]] = Field(
+        description="Every one of the `total` notices, by USACE district; none are omitted here."
+    )
+    full_record_key: str = Field(
+        description="Key-value store record of this run holding every notice in full, with official text."
+    )
     source: Source
 
 
@@ -190,7 +220,10 @@ class Summary(Out):
     lock_count: int
     locks_with_reported_constraints: int
     locks_with_operating_conditions: int
-    unverified_location_notice_count: int
+    confirmed_match_count: int = Field(description="Geometry-confirmed notices plus locks in the corridor.")
+    unverified_notice_count: int
+    unverified_notices_listed: int
+    unverified_list_truncated: bool
     expired_notices_excluded: int
     notices_by_temporal_status: dict[str, int]
 
@@ -211,18 +244,35 @@ class Query(Out):
 class Result(Out):
     schema_version: str = SCHEMA_VERSION
     status: ResultStatus
+    summary: Summary | None = None
+    billing: Billing
+    coverage: Coverage | None = None
+    query: Query
     checked_at: str
     at_time: str
-    query: Query
-    coverage: Coverage | None = None
-    summary: Summary | None = None
     constraints: list[dict[str, Any]] = []
     locks: list[Lock] = []
     notices: list[Notice] = []
-    unverified_location_notices: list[UnverifiedLocationNotice] = []
+    unverified_location_notices: list[UnverifiedNoticeBrief] = []
+    unverified_notice_listing: UnverifiedNoticeListing | None = None
+    full_record_key: str | None = Field(
+        default=None,
+        description="Key-value store record of this run with the uncut notice texts and every unverified notice.",
+    )
     errors: list[str] = []
-    billing: Billing
     disclaimer: str = DISCLAIMER
+    _full_unverified: list[UnverifiedLocationNotice] = PrivateAttr(default_factory=list)
+    _full_texts: dict[int, str] = PrivateAttr(default_factory=dict)
 
     def to_record(self) -> dict[str, Any]:
         return self.model_dump(mode="json", by_alias=True)
+
+    def to_full_record(self) -> dict[str, Any]:
+        rec = self.to_record()
+        rec["recordType"] = "full"
+        rec["unverifiedLocationNotices"] = [u.model_dump(mode="json", by_alias=True) for u in self._full_unverified]
+        for n in rec["notices"]:
+            if n["noticeId"] in self._full_texts:
+                n["officialText"] = self._full_texts[n["noticeId"]]
+                n["officialTextTruncated"] = False
+        return rec
