@@ -1,6 +1,6 @@
 # Actor #4 launch-readiness report: USACE Inland Waterway Transit Constraint Resolver
 
-**Decision: PRIVATE PLATFORM TEST PASSED.** Deployed privately as https://console.apify.com/actors/yCe6FapeAhjNo6XiQ (build 1.0.2). Public publishing is not authorized.
+**Decision: PRIVATE PLATFORM TEST PASSED; PUBLISHED.** Build 1.0.2 passed the private platform test and was published on 2026-10-09 with owner authorization: https://apify.com/rhincodontypus/usace-waterway-transit-constraint-resolver (categories `TRAVEL`, `AUTOMATION`; settings and pricing unchanged after publishing). The agent benchmark is in `benchmarks/actor4/`.
 
 ## Source feasibility
 All sources are official USACE, need no key, and every one was reached in live runs:
