@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+storage/
+apify_storage/
+.env
+.env.*
+DESIGN_NOTES.md
+benchmarks/results/*
