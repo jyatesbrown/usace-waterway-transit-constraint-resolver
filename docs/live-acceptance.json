@@ -1,0 +1,766 @@
+{
+ "ohio_pittsburgh_to_willow_island/cold": {
+  "seconds": 10.86,
+  "status": "success",
+  "billable": true,
+  "summary": {
+   "noticeCount": 9,
+   "lockCount": 6,
+   "locksWithReportedConstraints": 5,
+   "locksWithOperatingConditions": 6,
+   "unverifiedLocationNoticeCount": 37,
+   "expiredNoticesExcluded": 0,
+   "noticesByTemporalStatus": {
+    "active_by_source": 2,
+    "active": 6,
+    "upcoming": 1
+   }
+  },
+  "ntniGeometry": {
+   "status": "complete",
+   "districtMarginNm": 26.0,
+   "districtsChecked": [
+    "LRH",
+    "LRP"
+   ],
+   "noticesInRouteDistricts": 57,
+   "geometryChecked": 20,
+   "noGeometryPublished": 37,
+   "geometryNotRetrieved": [],
+   "noticesOutsideRouteDistricts": 813
+  },
+  "lpms": "success",
+  "failures": [],
+  "constraints": [
+   {
+    "routePosition": 0.0464,
+    "routeDistanceNm": 5.21,
+    "type": "lock",
+    "lockId": "OH-01",
+    "facility": "EMSWORTH LOCK AND DAM",
+    "operatingConditionsStatus": "reported",
+    "vesselsPending": 1,
+    "reportedAverageDelayMinutes": 11.0,
+    "relatedNoticeIds": []
+   },
+   {
+    "routePosition": 0.099,
+    "routeDistanceNm": 11.12,
+    "type": "navigation_notice",
+    "noticeId": 209624,
+    "title": "Montgomery L/D, Ohio River, Mile 31.7, Closure of 360-ft x 56-ft Auxiliary Lock Chamber ",
+    "temporalStatus": "active_by_source",
+    "relatedLockIds": [
+     "OH-02",
+     "OH-03"
+    ]
+   },
+   {
+    "routePosition": 0.099,
+    "routeDistanceNm": 11.12,
+    "type": "navigation_notice",
+    "noticeId": 214391,
+    "title": "Montgomery Lock and Dam (L/D), Ohio River, Mile 31.7, Closure of 110-ft X 600-ft Primary Chamber",
+    "temporalStatus": "active_by_source",
+    "relatedLockIds": [
+     "OH-02",
+     "OH-03"
+    ]
+   },
+   {
+    "routePosition": 0.0996,
+    "routeDistanceNm": 11.19,
+    "type": "lock",
+    "lockId": "OH-02",
+    "facility": "DASHIELDS LOCK AND DAM",
+    "operatingConditionsStatus": "reported",
+    "vesselsPending": 0,
+    "reportedAverageDelayMinutes": 1.0,
+    "relatedNoticeIds": [
+     209624,
+     214391
+    ]
+   },
+   {
+    "routePosition": 0.1891,
+    "routeDistanceNm": 21.23,
+    "type": "lock",
+    "lockId": "OH-03",
+    "facility": "MONTGOMERY LOCK AND DAM",
+    "operatingConditionsStatus": "reported",
+    "vesselsPending": 0,
+    "reportedAverageDelayMinutes": 0.0,
+    "relatedNoticeIds": [
+     209624,
+     214391
+    ]
+   },
+   {
+    "routePosition": 0.3045,
+    "routeDistanceNm": 34.2,
+    "type": "navigation_notice",
+    "noticeId": 215139,
+    "title": "Pike Island Locks and Dam Ohio River, Mile 84.2, Intermittent Closures of the Auxiliary Chamber",
+    "temporalStatus": "active",
+    "relatedLockIds": [
+     "OH-04",
+     "OH-05",
+     "OH-71"
+    ]
+   },
+   {
+    "routePosition": 0.3068,
+    "routeDistanceNm": 34.45,
+    "type": "lock",
+    "lockId": "OH-04",
+    "facility": "NEW CUMBERLAND LOCK AND DAM",
+    "operatingConditionsStatus": "reported",
+    "vesselsPending": 1,
+    "reportedAverageDelayMinutes": 150.0,
+    "relatedNoticeIds": [
+     215139
+    ]
+   },
+   {
+    "routePosition": 0.5098,
+    "routeDistanceNm": 57.25,
+    "type": "navigation_notice",
+    "noticeId": 215082,
+    "title": "Hannibal Locks and Dam, Ohio River, Mile 126.4 Closure Primary Lock Chamber",
+    "temporalStatus": "upcoming",
+    "relatedLockIds": [
+     "OH-05",
+     "OH-71"
+    ]
+   },
+   {
+    "routePosition": 0.5106,
+    "routeDistanceNm": 57.35,
+    "type": "lock",
+    "lockId": "OH-05",
+    "facility": "PIKE ISLAND LOCK AND DAM",
+    "operatingConditionsStatus": "reported",
+    "vesselsPending": 0,
+    "reportedAverageDelayMinutes": 0.0,
+    "relatedNoticeIds": [
+     215139,
+     215082
+    ]
+   },
+   {
+    "routePosition": 0.7471,
+    "routeDistanceNm": 83.9,
+    "type": "navigation_notice",
+    "noticeId": 212819,
+    "title": "WINTER NAVIGATION ON THE OHIO RIVER AND TRIBUTARIES",
+    "temporalStatus": "active",
+    "relatedLockIds": [
+     "OH-71"
+    ]
+   },
+   {
+    "routePosition": 0.764,
+    "routeDistanceNm": 85.8,
+    "type": "navigation_notice",
+    "noticeId": 212823,
+    "title": "CREW CHANGE AND MAIL DELIVERY POLICIES FOR LRH DISTRICT \n\nAT NAVIGATION LOCKS FOR TOWBOAT PERSONNEL",
+    "temporalStatus": "active",
+    "relatedLockIds": [
+     "OH-71"
+    ]
+   },
+   {
+    "routePosition": 0.771,
+    "routeDistanceNm": 86.59,
+    "type": "navigation_notice",
+    "noticeId": 212824,
+    "title": "RESTRICTED AREAS AT NAVIGATION STRUCTURES\n\nIN THE HUNTINGTON DISTRICT",
+    "temporalStatus": "active",
+    "relatedLockIds": [
+     "OH-71"
+    ]
+   },
+   {
+    "routePosition": 0.7721,
+    "routeDistanceNm": 86.71,
+    "type": "navigation_notice",
+    "noticeId": 212821,
+    "title": "REVIEW OF REGULATIONS AND GENERAL SAFETY PRACTICES",
+    "temporalStatus": "active",
+    "relatedLockIds": [
+     "OH-71"
+    ]
+   },
+   {
+    "routePosition": 0.7751,
+    "routeDistanceNm": 87.04,
+    "type": "navigation_notice",
+    "noticeId": 212822,
+    "title": "NOTIFICATION OF SINKING OR SUNKEN VESSLES,\n\nVESSEL GROUNDINGS, AND BARGE BREAKAWAYS",
+    "temporalStatus": "active",
+    "relatedLockIds": [
+     "OH-71"
+    ]
+   },
+   {
+    "routePosition": 0.7775,
+    "routeDistanceNm": 87.32,
+    "type": "lock",
+    "lockId": "OH-71",
+    "facility": "HANNIBAL LOCKS AND DAM",
+    "operatingConditionsStatus": "reported",
+    "vesselsPending": 0,
+    "reportedAverageDelayMinutes": 0.0,
+    "relatedNoticeIds": [
+     215139,
+     212821,
+     212819,
+     212824,
+     212822,
+     212823,
+     215082
+    ]
+   }
+  ],
+  "coverageNote": "Notice geometry was checked for active notices from USACE districts LRH, LRP (districts within 25 nm of the corridor); 813 active notices from other districts were not spatially checked. 37 notices from those districts have no published geometry; they are listed in unverifiedLocationNotices and were not matched or excluded spatially."
+ },
+ "ohio_pittsburgh_to_willow_island/cached": {
+  "seconds": 3.05,
+  "status": "success",
+  "billable": true,
+  "summary": {
+   "noticeCount": 9,
+   "lockCount": 6,
+   "locksWithReportedConstraints": 5,
+   "locksWithOperatingConditions": 6,
+   "unverifiedLocationNoticeCount": 37,
+   "expiredNoticesExcluded": 0,
+   "noticesByTemporalStatus": {
+    "active_by_source": 2,
+    "active": 6,
+    "upcoming": 1
+   }
+  },
+  "ntniGeometry": {
+   "status": "complete",
+   "districtMarginNm": 26.0,
+   "districtsChecked": [
+    "LRH",
+    "LRP"
+   ],
+   "noticesInRouteDistricts": 57,
+   "geometryChecked": 20,
+   "noGeometryPublished": 37,
+   "geometryNotRetrieved": [],
+   "noticesOutsideRouteDistricts": 813
+  },
+  "lpms": "success",
+  "failures": [],
+  "constraints": [
+   {
+    "routePosition": 0.0464,
+    "routeDistanceNm": 5.21,
+    "type": "lock",
+    "lockId": "OH-01",
+    "facility": "EMSWORTH LOCK AND DAM",
+    "operatingConditionsStatus": "reported",
+    "vesselsPending": 1,
+    "reportedAverageDelayMinutes": 11.0,
+    "relatedNoticeIds": []
+   },
+   {
+    "routePosition": 0.099,
+    "routeDistanceNm": 11.12,
+    "type": "navigation_notice",
+    "noticeId": 209624,
+    "title": "Montgomery L/D, Ohio River, Mile 31.7, Closure of 360-ft x 56-ft Auxiliary Lock Chamber ",
+    "temporalStatus": "active_by_source",
+    "relatedLockIds": [
+     "OH-02",
+     "OH-03"
+    ]
+   },
+   {
+    "routePosition": 0.099,
+    "routeDistanceNm": 11.12,
+    "type": "navigation_notice",
+    "noticeId": 214391,
+    "title": "Montgomery Lock and Dam (L/D), Ohio River, Mile 31.7, Closure of 110-ft X 600-ft Primary Chamber",
+    "temporalStatus": "active_by_source",
+    "relatedLockIds": [
+     "OH-02",
+     "OH-03"
+    ]
+   },
+   {
+    "routePosition": 0.0996,
+    "routeDistanceNm": 11.19,
+    "type": "lock",
+    "lockId": "OH-02",
+    "facility": "DASHIELDS LOCK AND DAM",
+    "operatingConditionsStatus": "reported",
+    "vesselsPending": 0,
+    "reportedAverageDelayMinutes": 1.0,
+    "relatedNoticeIds": [
+     209624,
+     214391
+    ]
+   },
+   {
+    "routePosition": 0.1891,
+    "routeDistanceNm": 21.23,
+    "type": "lock",
+    "lockId": "OH-03",
+    "facility": "MONTGOMERY LOCK AND DAM",
+    "operatingConditionsStatus": "reported",
+    "vesselsPending": 0,
+    "reportedAverageDelayMinutes": 0.0,
+    "relatedNoticeIds": [
+     209624,
+     214391
+    ]
+   },
+   {
+    "routePosition": 0.3045,
+    "routeDistanceNm": 34.2,
+    "type": "navigation_notice",
+    "noticeId": 215139,
+    "title": "Pike Island Locks and Dam Ohio River, Mile 84.2, Intermittent Closures of the Auxiliary Chamber",
+    "temporalStatus": "active",
+    "relatedLockIds": [
+     "OH-04",
+     "OH-05",
+     "OH-71"
+    ]
+   },
+   {
+    "routePosition": 0.3068,
+    "routeDistanceNm": 34.45,
+    "type": "lock",
+    "lockId": "OH-04",
+    "facility": "NEW CUMBERLAND LOCK AND DAM",
+    "operatingConditionsStatus": "reported",
+    "vesselsPending": 1,
+    "reportedAverageDelayMinutes": 150.0,
+    "relatedNoticeIds": [
+     215139
+    ]
+   },
+   {
+    "routePosition": 0.5098,
+    "routeDistanceNm": 57.25,
+    "type": "navigation_notice",
+    "noticeId": 215082,
+    "title": "Hannibal Locks and Dam, Ohio River, Mile 126.4 Closure Primary Lock Chamber",
+    "temporalStatus": "upcoming",
+    "relatedLockIds": [
+     "OH-05",
+     "OH-71"
+    ]
+   },
+   {
+    "routePosition": 0.5106,
+    "routeDistanceNm": 57.35,
+    "type": "lock",
+    "lockId": "OH-05",
+    "facility": "PIKE ISLAND LOCK AND DAM",
+    "operatingConditionsStatus": "reported",
+    "vesselsPending": 0,
+    "reportedAverageDelayMinutes": 0.0,
+    "relatedNoticeIds": [
+     215139,
+     215082
+    ]
+   },
+   {
+    "routePosition": 0.7471,
+    "routeDistanceNm": 83.9,
+    "type": "navigation_notice",
+    "noticeId": 212819,
+    "title": "WINTER NAVIGATION ON THE OHIO RIVER AND TRIBUTARIES",
+    "temporalStatus": "active",
+    "relatedLockIds": [
+     "OH-71"
+    ]
+   },
+   {
+    "routePosition": 0.764,
+    "routeDistanceNm": 85.8,
+    "type": "navigation_notice",
+    "noticeId": 212823,
+    "title": "CREW CHANGE AND MAIL DELIVERY POLICIES FOR LRH DISTRICT \n\nAT NAVIGATION LOCKS FOR TOWBOAT PERSONNEL",
+    "temporalStatus": "active",
+    "relatedLockIds": [
+     "OH-71"
+    ]
+   },
+   {
+    "routePosition": 0.771,
+    "routeDistanceNm": 86.59,
+    "type": "navigation_notice",
+    "noticeId": 212824,
+    "title": "RESTRICTED AREAS AT NAVIGATION STRUCTURES\n\nIN THE HUNTINGTON DISTRICT",
+    "temporalStatus": "active",
+    "relatedLockIds": [
+     "OH-71"
+    ]
+   },
+   {
+    "routePosition": 0.7721,
+    "routeDistanceNm": 86.71,
+    "type": "navigation_notice",
+    "noticeId": 212821,
+    "title": "REVIEW OF REGULATIONS AND GENERAL SAFETY PRACTICES",
+    "temporalStatus": "active",
+    "relatedLockIds": [
+     "OH-71"
+    ]
+   },
+   {
+    "routePosition": 0.7751,
+    "routeDistanceNm": 87.04,
+    "type": "navigation_notice",
+    "noticeId": 212822,
+    "title": "NOTIFICATION OF SINKING OR SUNKEN VESSLES,\n\nVESSEL GROUNDINGS, AND BARGE BREAKAWAYS",
+    "temporalStatus": "active",
+    "relatedLockIds": [
+     "OH-71"
+    ]
+   },
+   {
+    "routePosition": 0.7775,
+    "routeDistanceNm": 87.32,
+    "type": "lock",
+    "lockId": "OH-71",
+    "facility": "HANNIBAL LOCKS AND DAM",
+    "operatingConditionsStatus": "reported",
+    "vesselsPending": 0,
+    "reportedAverageDelayMinutes": 0.0,
+    "relatedNoticeIds": [
+     215139,
+     212821,
+     212819,
+     212824,
+     212822,
+     212823,
+     215082
+    ]
+   }
+  ],
+  "coverageNote": "Notice geometry was checked for active notices from USACE districts LRH, LRP (districts within 25 nm of the corridor); 813 active notices from other districts were not spatially checked. 37 notices from those districts have no published geometry; they are listed in unverifiedLocationNotices and were not matched or excluded spatially."
+ },
+ "upper_mississippi_lock27_to_cape_girardeau/cold": {
+  "seconds": 8.42,
+  "status": "success",
+  "billable": true,
+  "summary": {
+   "noticeCount": 2,
+   "lockCount": 1,
+   "locksWithReportedConstraints": 1,
+   "locksWithOperatingConditions": 1,
+   "unverifiedLocationNoticeCount": 158,
+   "expiredNoticesExcluded": 0,
+   "noticesByTemporalStatus": {
+    "active_by_source": 2
+   }
+  },
+  "ntniGeometry": {
+   "status": "complete",
+   "districtMarginNm": 26.0,
+   "districtsChecked": [
+    "LRL",
+    "MVM",
+    "MVS",
+    "NWK"
+   ],
+   "noticesInRouteDistricts": 175,
+   "geometryChecked": 17,
+   "noGeometryPublished": 158,
+   "geometryNotRetrieved": [],
+   "noticesOutsideRouteDistricts": 695
+  },
+  "lpms": "success",
+  "failures": [],
+  "constraints": [
+   {
+    "routePosition": 0.0,
+    "routeDistanceNm": 0.0,
+    "type": "lock",
+    "lockId": "MI-27",
+    "facility": "CHAIN OF ROCKS LOCK AND DAM 27",
+    "operatingConditionsStatus": "reported",
+    "vesselsPending": 2,
+    "reportedAverageDelayMinutes": 35.0,
+    "relatedNoticeIds": [
+     215102,
+     215138
+    ]
+   },
+   {
+    "routePosition": 0.0,
+    "routeDistanceNm": 0.0,
+    "type": "navigation_notice",
+    "noticeId": 215102,
+    "title": "CHANNEL MAINTENANCE DREDGING\nUSACE Dredge Goetz\nIllinois Waterway River Mile 47.5, Upper Mississippi River Miles 194.1",
+    "temporalStatus": "active_by_source",
+    "relatedLockIds": [
+     "MI-27"
+    ]
+   },
+   {
+    "routePosition": 0.0,
+    "routeDistanceNm": 0.0,
+    "type": "navigation_notice",
+    "noticeId": 215138,
+    "title": "CHANNEL MAINTENANCE DREDGING & LOCK CLOSURE\nMelvin Price Locks and Dam - Auxiliary Lock\nUpper Mississippi River, River Mile 200.5",
+    "temporalStatus": "active_by_source",
+    "relatedLockIds": [
+     "MI-27"
+    ]
+   }
+  ],
+  "coverageNote": "Notice geometry was checked for active notices from USACE districts LRL, MVM, MVS, NWK (districts within 25 nm of the corridor); 695 active notices from other districts were not spatially checked. 158 notices from those districts have no published geometry; they are listed in unverifiedLocationNotices and were not matched or excluded spatially."
+ },
+ "upper_mississippi_lock27_to_cape_girardeau/cached": {
+  "seconds": 2.97,
+  "status": "success",
+  "billable": true,
+  "summary": {
+   "noticeCount": 2,
+   "lockCount": 1,
+   "locksWithReportedConstraints": 1,
+   "locksWithOperatingConditions": 1,
+   "unverifiedLocationNoticeCount": 158,
+   "expiredNoticesExcluded": 0,
+   "noticesByTemporalStatus": {
+    "active_by_source": 2
+   }
+  },
+  "ntniGeometry": {
+   "status": "complete",
+   "districtMarginNm": 26.0,
+   "districtsChecked": [
+    "LRL",
+    "MVM",
+    "MVS",
+    "NWK"
+   ],
+   "noticesInRouteDistricts": 175,
+   "geometryChecked": 17,
+   "noGeometryPublished": 158,
+   "geometryNotRetrieved": [],
+   "noticesOutsideRouteDistricts": 695
+  },
+  "lpms": "success",
+  "failures": [],
+  "constraints": [
+   {
+    "routePosition": 0.0,
+    "routeDistanceNm": 0.0,
+    "type": "lock",
+    "lockId": "MI-27",
+    "facility": "CHAIN OF ROCKS LOCK AND DAM 27",
+    "operatingConditionsStatus": "reported",
+    "vesselsPending": 2,
+    "reportedAverageDelayMinutes": 35.0,
+    "relatedNoticeIds": [
+     215102,
+     215138
+    ]
+   },
+   {
+    "routePosition": 0.0,
+    "routeDistanceNm": 0.0,
+    "type": "navigation_notice",
+    "noticeId": 215102,
+    "title": "CHANNEL MAINTENANCE DREDGING\nUSACE Dredge Goetz\nIllinois Waterway River Mile 47.5, Upper Mississippi River Miles 194.1",
+    "temporalStatus": "active_by_source",
+    "relatedLockIds": [
+     "MI-27"
+    ]
+   },
+   {
+    "routePosition": 0.0,
+    "routeDistanceNm": 0.0,
+    "type": "navigation_notice",
+    "noticeId": 215138,
+    "title": "CHANNEL MAINTENANCE DREDGING & LOCK CLOSURE\nMelvin Price Locks and Dam - Auxiliary Lock\nUpper Mississippi River, River Mile 200.5",
+    "temporalStatus": "active_by_source",
+    "relatedLockIds": [
+     "MI-27"
+    ]
+   }
+  ],
+  "coverageNote": "Notice geometry was checked for active notices from USACE districts LRL, MVM, MVS, NWK (districts within 25 nm of the corridor); 695 active notices from other districts were not spatially checked. 158 notices from those districts have no published geometry; they are listed in unverifiedLocationNotices and were not matched or excluded spatially."
+ },
+ "illinois_waterway_peoria_lasalle/cold": {
+  "seconds": 6.37,
+  "status": "success",
+  "billable": true,
+  "summary": {
+   "noticeCount": 2,
+   "lockCount": 0,
+   "locksWithReportedConstraints": 0,
+   "locksWithOperatingConditions": 0,
+   "unverifiedLocationNoticeCount": 130,
+   "expiredNoticesExcluded": 0,
+   "noticesByTemporalStatus": {
+    "active": 1,
+    "upcoming": 1
+   }
+  },
+  "ntniGeometry": {
+   "status": "complete",
+   "districtMarginNm": 26.0,
+   "districtsChecked": [
+    "LRC",
+    "MVR"
+   ],
+   "noticesInRouteDistricts": 153,
+   "geometryChecked": 23,
+   "noGeometryPublished": 130,
+   "geometryNotRetrieved": [],
+   "noticesOutsideRouteDistricts": 717
+  },
+  "lpms": "not_queried",
+  "failures": [],
+  "constraints": [
+   {
+    "routePosition": 0.0,
+    "routeDistanceNm": 0.0,
+    "type": "navigation_notice",
+    "noticeId": 212831,
+    "title": "COMPLETED\nILLINOIS WATERWAY\nMECHANICAL DREDGING (STRIKE REMOVAL)\nPeoria Pool, Starved Rock Lower RM 230.5-230.8",
+    "temporalStatus": "active",
+    "relatedLockIds": []
+   },
+   {
+    "routePosition": 0.0,
+    "routeDistanceNm": 0.0,
+    "type": "navigation_notice",
+    "noticeId": 215129,
+    "title": "***LOCK CLOSURE***\nPeoria Lock and Dam, RM 157.7",
+    "temporalStatus": "upcoming",
+    "relatedLockIds": []
+   }
+  ],
+  "coverageNote": "Notice geometry was checked for active notices from USACE districts LRC, MVR (districts within 25 nm of the corridor); 717 active notices from other districts were not spatially checked. 130 notices from those districts have no published geometry; they are listed in unverifiedLocationNotices and were not matched or excluded spatially."
+ },
+ "illinois_waterway_peoria_lasalle/cached": {
+  "seconds": 2.77,
+  "status": "success",
+  "billable": true,
+  "summary": {
+   "noticeCount": 2,
+   "lockCount": 0,
+   "locksWithReportedConstraints": 0,
+   "locksWithOperatingConditions": 0,
+   "unverifiedLocationNoticeCount": 130,
+   "expiredNoticesExcluded": 0,
+   "noticesByTemporalStatus": {
+    "active": 1,
+    "upcoming": 1
+   }
+  },
+  "ntniGeometry": {
+   "status": "complete",
+   "districtMarginNm": 26.0,
+   "districtsChecked": [
+    "LRC",
+    "MVR"
+   ],
+   "noticesInRouteDistricts": 153,
+   "geometryChecked": 23,
+   "noGeometryPublished": 130,
+   "geometryNotRetrieved": [],
+   "noticesOutsideRouteDistricts": 717
+  },
+  "lpms": "not_queried",
+  "failures": [],
+  "constraints": [
+   {
+    "routePosition": 0.0,
+    "routeDistanceNm": 0.0,
+    "type": "navigation_notice",
+    "noticeId": 212831,
+    "title": "COMPLETED\nILLINOIS WATERWAY\nMECHANICAL DREDGING (STRIKE REMOVAL)\nPeoria Pool, Starved Rock Lower RM 230.5-230.8",
+    "temporalStatus": "active",
+    "relatedLockIds": []
+   },
+   {
+    "routePosition": 0.0,
+    "routeDistanceNm": 0.0,
+    "type": "navigation_notice",
+    "noticeId": 215129,
+    "title": "***LOCK CLOSURE***\nPeoria Lock and Dam, RM 157.7",
+    "temporalStatus": "upcoming",
+    "relatedLockIds": []
+   }
+  ],
+  "coverageNote": "Notice geometry was checked for active notices from USACE districts LRC, MVR (districts within 25 nm of the corridor); 717 active notices from other districts were not spatially checked. 130 notices from those districts have no published geometry; they are listed in unverifiedLocationNotices and were not matched or excluded spatially."
+ },
+ "lake_superior_open_water/cold": {
+  "seconds": 3.99,
+  "status": "success",
+  "billable": true,
+  "summary": {
+   "noticeCount": 0,
+   "lockCount": 0,
+   "locksWithReportedConstraints": 0,
+   "locksWithOperatingConditions": 0,
+   "unverifiedLocationNoticeCount": 40,
+   "expiredNoticesExcluded": 0,
+   "noticesByTemporalStatus": {}
+  },
+  "ntniGeometry": {
+   "status": "complete",
+   "districtMarginNm": 26.0,
+   "districtsChecked": [
+    "LRE"
+   ],
+   "noticesInRouteDistricts": 52,
+   "geometryChecked": 12,
+   "noGeometryPublished": 40,
+   "geometryNotRetrieved": [],
+   "noticesOutsideRouteDistricts": 818
+  },
+  "lpms": "not_queried",
+  "failures": [],
+  "constraints": [],
+  "coverageNote": "Notice geometry was checked for active notices from USACE districts LRE (districts within 25 nm of the corridor); 818 active notices from other districts were not spatially checked. 40 notices from those districts have no published geometry; they are listed in unverifiedLocationNotices and were not matched or excluded spatially. No matching constraints were found in the official datasets successfully checked."
+ },
+ "lake_superior_open_water/cached": {
+  "seconds": 2.16,
+  "status": "success",
+  "billable": true,
+  "summary": {
+   "noticeCount": 0,
+   "lockCount": 0,
+   "locksWithReportedConstraints": 0,
+   "locksWithOperatingConditions": 0,
+   "unverifiedLocationNoticeCount": 40,
+   "expiredNoticesExcluded": 0,
+   "noticesByTemporalStatus": {}
+  },
+  "ntniGeometry": {
+   "status": "complete",
+   "districtMarginNm": 26.0,
+   "districtsChecked": [
+    "LRE"
+   ],
+   "noticesInRouteDistricts": 52,
+   "geometryChecked": 12,
+   "noGeometryPublished": 40,
+   "geometryNotRetrieved": [],
+   "noticesOutsideRouteDistricts": 818
+  },
+  "lpms": "not_queried",
+  "failures": [],
+  "constraints": [],
+  "coverageNote": "Notice geometry was checked for active notices from USACE districts LRE (districts within 25 nm of the corridor); 818 active notices from other districts were not spatially checked. 40 notices from those districts have no published geometry; they are listed in unverifiedLocationNotices and were not matched or excluded spatially. No matching constraints were found in the official datasets successfully checked."
+ },
+ "invalid_single_point": {
+  "status": "invalid_input",
+  "error": "Value error, route must have between 2 and 1000 points"
+ }
+}

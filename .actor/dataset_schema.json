@@ -1,0 +1,1229 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "$defs": {
+      "Billing": {
+        "properties": {
+          "billable": {
+            "title": "Billable",
+            "type": "boolean"
+          },
+          "eventName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Eventname"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "billable",
+          "reason"
+        ],
+        "title": "Billing",
+        "type": "object"
+      },
+      "Coverage": {
+        "properties": {
+          "ntni": {
+            "$ref": "#/$defs/SourceCoverage"
+          },
+          "ntniUpcoming": {
+            "$ref": "#/$defs/SourceCoverage"
+          },
+          "ntniGeometry": {
+            "$ref": "#/$defs/NoticeGeometryCoverage"
+          },
+          "corpsLocks": {
+            "$ref": "#/$defs/SourceCoverage"
+          },
+          "lpms": {
+            "$ref": "#/$defs/SourceCoverage"
+          },
+          "completeForRequestedSources": {
+            "title": "Completeforrequestedsources",
+            "type": "boolean"
+          },
+          "sourceFailures": {
+            "default": [],
+            "items": {
+              "$ref": "#/$defs/SourceFailure"
+            },
+            "title": "Sourcefailures",
+            "type": "array"
+          },
+          "coverageNote": {
+            "title": "Coveragenote",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ntni",
+          "ntniUpcoming",
+          "ntniGeometry",
+          "corpsLocks",
+          "lpms",
+          "completeForRequestedSources",
+          "coverageNote"
+        ],
+        "title": "Coverage",
+        "type": "object"
+      },
+      "EffectiveWindow": {
+        "properties": {
+          "start": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start"
+          },
+          "end": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End"
+          }
+        },
+        "required": [
+          "start",
+          "end"
+        ],
+        "title": "EffectiveWindow",
+        "type": "object"
+      },
+      "Lock": {
+        "properties": {
+          "constraintType": {
+            "const": "lock",
+            "default": "lock",
+            "title": "Constrainttype",
+            "type": "string"
+          },
+          "lockId": {
+            "description": "RIVERCD-LOCKCD from the USACE Locks layer.",
+            "title": "Lockid",
+            "type": "string"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "LPMS lockName where LPMS reports this lock.",
+            "title": "Name"
+          },
+          "riverCode": {
+            "title": "Rivercode",
+            "type": "string"
+          },
+          "lockCode": {
+            "title": "Lockcode",
+            "type": "string"
+          },
+          "river": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "River"
+          },
+          "riverMile": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rivermile"
+          },
+          "waterwayProject": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Waterwayproject"
+          },
+          "district": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "District"
+          },
+          "ndcCodes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Ndccodes",
+            "type": "array"
+          },
+          "chambers": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Chambers",
+            "type": "array"
+          },
+          "coordinates": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Coordinates",
+            "type": "object"
+          },
+          "routePosition": {
+            "title": "Routeposition",
+            "type": "number"
+          },
+          "routeDistanceNm": {
+            "title": "Routedistancenm",
+            "type": "number"
+          },
+          "distanceFromRouteNm": {
+            "title": "Distancefromroutenm",
+            "type": "number"
+          },
+          "relatedNoticeIds": {
+            "default": [],
+            "items": {
+              "type": "integer"
+            },
+            "title": "Relatednoticeids",
+            "type": "array"
+          },
+          "operatingConditions": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/LockConditions"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "operatingConditionsStatus": {
+            "enum": [
+              "reported",
+              "not_reported_by_lpms",
+              "lpms_unavailable"
+            ],
+            "title": "Operatingconditionsstatus",
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/$defs/Source"
+          }
+        },
+        "required": [
+          "lockId",
+          "name",
+          "riverCode",
+          "lockCode",
+          "river",
+          "riverMile",
+          "waterwayProject",
+          "district",
+          "ndcCodes",
+          "chambers",
+          "coordinates",
+          "routePosition",
+          "routeDistanceNm",
+          "distanceFromRouteNm",
+          "operatingConditionsStatus",
+          "source"
+        ],
+        "title": "Lock",
+        "type": "object"
+      },
+      "LockConditions": {
+        "properties": {
+          "hoursOfOperation": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hoursofoperation"
+          },
+          "queue": {
+            "$ref": "#/$defs/Queue"
+          },
+          "lockagesLast24H": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": "Lockageslast24H",
+            "type": "object"
+          },
+          "activeStallStoppages": {
+            "default": null,
+            "title": "Activestallstoppages"
+          },
+          "lpmsNtniLinks": {
+            "default": null,
+            "title": "Lpmsntnilinks"
+          },
+          "upperGaugeFt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Uppergaugeft"
+          },
+          "lowerGaugeFt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Lowergaugeft"
+          },
+          "freshness": {
+            "enum": [
+              "current",
+              "possibly_stale",
+              "stale"
+            ],
+            "title": "Freshness",
+            "type": "string"
+          },
+          "ageMinutesRange": {
+            "items": {
+              "type": "integer"
+            },
+            "title": "Ageminutesrange",
+            "type": "array"
+          },
+          "freshnessNote": {
+            "title": "Freshnessnote",
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/$defs/Source"
+          }
+        },
+        "required": [
+          "hoursOfOperation",
+          "queue",
+          "lockagesLast24H",
+          "freshness",
+          "ageMinutesRange",
+          "freshnessNote",
+          "source"
+        ],
+        "title": "LockConditions",
+        "type": "object"
+      },
+      "Notice": {
+        "properties": {
+          "constraintType": {
+            "const": "navigation_notice",
+            "default": "navigation_notice",
+            "title": "Constrainttype",
+            "type": "string"
+          },
+          "noticeId": {
+            "title": "Noticeid",
+            "type": "integer"
+          },
+          "amendmentNumber": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Amendmentnumber"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Category"
+          },
+          "temporalStatus": {
+            "title": "Temporalstatus",
+            "type": "string"
+          },
+          "statusBasis": {
+            "title": "Statusbasis",
+            "type": "string"
+          },
+          "effectiveWindow": {
+            "$ref": "#/$defs/EffectiveWindow"
+          },
+          "endDateStatus": {
+            "enum": [
+              "provided",
+              "not_provided"
+            ],
+            "title": "Enddatestatus",
+            "type": "string"
+          },
+          "issueDate": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issuedate"
+          },
+          "ageDays": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Agedays"
+          },
+          "officialTextSaysUntilFurtherNotice": {
+            "title": "Officialtextsaysuntilfurthernotice",
+            "type": "boolean"
+          },
+          "temporalNote": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Temporalnote"
+          },
+          "matchedBy": {
+            "const": "geometry",
+            "default": "geometry",
+            "title": "Matchedby",
+            "type": "string"
+          },
+          "spatiallyVerified": {
+            "const": true,
+            "default": true,
+            "title": "Spatiallyverified",
+            "type": "boolean"
+          },
+          "relationshipToRoute": {
+            "$ref": "#/$defs/RouteRelationship"
+          },
+          "waterway": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Waterway"
+          },
+          "district": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "District"
+          },
+          "officialText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Officialtext"
+          },
+          "attachments": {
+            "default": [],
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Attachments",
+            "type": "array"
+          },
+          "relatedLockIds": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Relatedlockids",
+            "type": "array"
+          },
+          "source": {
+            "$ref": "#/$defs/Source"
+          }
+        },
+        "required": [
+          "noticeId",
+          "title",
+          "temporalStatus",
+          "statusBasis",
+          "effectiveWindow",
+          "endDateStatus",
+          "issueDate",
+          "ageDays",
+          "officialTextSaysUntilFurtherNotice",
+          "relationshipToRoute",
+          "waterway",
+          "district",
+          "officialText",
+          "source"
+        ],
+        "title": "Notice",
+        "type": "object"
+      },
+      "NoticeGeometryCoverage": {
+        "properties": {
+          "status": {
+            "enum": [
+              "complete",
+              "partial",
+              "unavailable",
+              "not_queried"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "districtMarginNm": {
+            "title": "Districtmarginnm",
+            "type": "number"
+          },
+          "districtsChecked": {
+            "description": "USACE Civil Works districts near the route corridor.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Districtschecked",
+            "type": "array"
+          },
+          "noticesInRouteDistricts": {
+            "title": "Noticesinroutedistricts",
+            "type": "integer"
+          },
+          "geometryChecked": {
+            "description": "Notices whose published geometry was tested against the corridor.",
+            "title": "Geometrychecked",
+            "type": "integer"
+          },
+          "noGeometryPublished": {
+            "description": "Notices with no published geometry; see unverifiedLocationNotices.",
+            "title": "Nogeometrypublished",
+            "type": "integer"
+          },
+          "geometryNotRetrieved": {
+            "description": "Control numbers whose geometry could not be retrieved.",
+            "items": {
+              "type": "integer"
+            },
+            "title": "Geometrynotretrieved",
+            "type": "array"
+          },
+          "noticesOutsideRouteDistricts": {
+            "description": "Active notices from districts not near the route; not spatially checked.",
+            "title": "Noticesoutsideroutedistricts",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "status",
+          "districtMarginNm",
+          "districtsChecked",
+          "noticesInRouteDistricts",
+          "geometryChecked",
+          "noGeometryPublished",
+          "geometryNotRetrieved",
+          "noticesOutsideRouteDistricts"
+        ],
+        "title": "NoticeGeometryCoverage",
+        "type": "object"
+      },
+      "Query": {
+        "properties": {
+          "type": {
+            "const": "route",
+            "default": "route",
+            "title": "Type",
+            "type": "string"
+          },
+          "corridorNm": {
+            "title": "Corridornm",
+            "type": "number"
+          },
+          "routeLengthNm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Routelengthnm"
+          },
+          "pointCount": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Pointcount"
+          }
+        },
+        "required": [
+          "corridorNm"
+        ],
+        "title": "Query",
+        "type": "object"
+      },
+      "Queue": {
+        "properties": {
+          "vesselsPending": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "LPMS totalPendingArrivals as reported.",
+            "title": "Vesselspending"
+          },
+          "vesselsLocking": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Vesselslocking"
+          },
+          "reportedAverageDelayMinutes": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "LPMS average4HourDelay as reported (last 4 hours). Not a prediction.",
+            "title": "Reportedaveragedelayminutes"
+          },
+          "reportedAtLocal": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "LPMS entryDatetime; the source states no timezone.",
+            "title": "Reportedatlocal"
+          }
+        },
+        "required": [
+          "vesselsPending",
+          "reportedAverageDelayMinutes",
+          "reportedAtLocal"
+        ],
+        "title": "Queue",
+        "type": "object"
+      },
+      "RouteRelationship": {
+        "properties": {
+          "intersectsRoute": {
+            "title": "Intersectsroute",
+            "type": "boolean"
+          },
+          "intersectsCorridor": {
+            "title": "Intersectscorridor",
+            "type": "boolean"
+          },
+          "routePosition": {
+            "description": "0 = route start, 1 = route end; first contact with the corridor.",
+            "title": "Routeposition",
+            "type": "number"
+          },
+          "routeDistanceNm": {
+            "description": "Distance along the route to first contact.",
+            "title": "Routedistancenm",
+            "type": "number"
+          },
+          "minimumDistanceNm": {
+            "title": "Minimumdistancenm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "intersectsRoute",
+          "intersectsCorridor",
+          "routePosition",
+          "routeDistanceNm",
+          "minimumDistanceNm"
+        ],
+        "title": "RouteRelationship",
+        "type": "object"
+      },
+      "Source": {
+        "properties": {
+          "agency": {
+            "default": "U.S. Army Corps of Engineers",
+            "title": "Agency",
+            "type": "string"
+          },
+          "system": {
+            "title": "System",
+            "type": "string"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "system",
+          "url"
+        ],
+        "title": "Source",
+        "type": "object"
+      },
+      "SourceCoverage": {
+        "properties": {
+          "status": {
+            "enum": [
+              "success",
+              "partial",
+              "unavailable",
+              "not_queried"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "checkedAt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Checkedat"
+          },
+          "fromCache": {
+            "default": false,
+            "title": "Fromcache",
+            "type": "boolean"
+          },
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Detail"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "title": "SourceCoverage",
+        "type": "object"
+      },
+      "SourceFailure": {
+        "properties": {
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "state": {
+            "title": "State",
+            "type": "string"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source",
+          "state",
+          "detail"
+        ],
+        "title": "SourceFailure",
+        "type": "object"
+      },
+      "Summary": {
+        "properties": {
+          "noticeCount": {
+            "title": "Noticecount",
+            "type": "integer"
+          },
+          "lockCount": {
+            "title": "Lockcount",
+            "type": "integer"
+          },
+          "locksWithReportedConstraints": {
+            "title": "Lockswithreportedconstraints",
+            "type": "integer"
+          },
+          "locksWithOperatingConditions": {
+            "title": "Lockswithoperatingconditions",
+            "type": "integer"
+          },
+          "unverifiedLocationNoticeCount": {
+            "title": "Unverifiedlocationnoticecount",
+            "type": "integer"
+          },
+          "expiredNoticesExcluded": {
+            "title": "Expirednoticesexcluded",
+            "type": "integer"
+          },
+          "noticesByTemporalStatus": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Noticesbytemporalstatus",
+            "type": "object"
+          }
+        },
+        "required": [
+          "noticeCount",
+          "lockCount",
+          "locksWithReportedConstraints",
+          "locksWithOperatingConditions",
+          "unverifiedLocationNoticeCount",
+          "expiredNoticesExcluded",
+          "noticesByTemporalStatus"
+        ],
+        "title": "Summary",
+        "type": "object"
+      },
+      "UnverifiedLocationNotice": {
+        "properties": {
+          "noticeId": {
+            "title": "Noticeid",
+            "type": "integer"
+          },
+          "amendmentNumber": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Amendmentnumber"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "temporalStatus": {
+            "title": "Temporalstatus",
+            "type": "string"
+          },
+          "statusBasis": {
+            "title": "Statusbasis",
+            "type": "string"
+          },
+          "effectiveWindow": {
+            "$ref": "#/$defs/EffectiveWindow"
+          },
+          "endDateStatus": {
+            "enum": [
+              "provided",
+              "not_provided"
+            ],
+            "title": "Enddatestatus",
+            "type": "string"
+          },
+          "issueDate": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issuedate"
+          },
+          "ageDays": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Agedays"
+          },
+          "officialTextSaysUntilFurtherNotice": {
+            "title": "Officialtextsaysuntilfurthernotice",
+            "type": "boolean"
+          },
+          "locationStatus": {
+            "enum": [
+              "river_mile_text_only",
+              "unlocated"
+            ],
+            "title": "Locationstatus",
+            "type": "string"
+          },
+          "matchedBy": {
+            "default": null,
+            "title": "Matchedby",
+            "type": "null"
+          },
+          "spatiallyVerified": {
+            "const": false,
+            "default": false,
+            "title": "Spatiallyverified",
+            "type": "boolean"
+          },
+          "riverMileText": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Rivermiletext",
+            "type": "array"
+          },
+          "parsedRiverMiles": {
+            "default": [],
+            "items": {
+              "additionalProperties": {
+                "type": "number"
+              },
+              "type": "object"
+            },
+            "title": "Parsedrivermiles",
+            "type": "array"
+          },
+          "waterway": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Waterway"
+          },
+          "district": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "District"
+          },
+          "officialText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Officialtext"
+          },
+          "source": {
+            "$ref": "#/$defs/Source"
+          }
+        },
+        "required": [
+          "noticeId",
+          "title",
+          "temporalStatus",
+          "statusBasis",
+          "effectiveWindow",
+          "endDateStatus",
+          "issueDate",
+          "ageDays",
+          "officialTextSaysUntilFurtherNotice",
+          "locationStatus",
+          "waterway",
+          "district",
+          "officialText",
+          "source"
+        ],
+        "title": "UnverifiedLocationNotice",
+        "type": "object"
+      }
+    },
+    "properties": {
+      "schemaVersion": {
+        "default": "1.0",
+        "title": "Schemaversion",
+        "type": "string"
+      },
+      "status": {
+        "enum": [
+          "success",
+          "partial",
+          "invalid_input",
+          "source_unavailable"
+        ],
+        "title": "Status",
+        "type": "string"
+      },
+      "checkedAt": {
+        "title": "Checkedat",
+        "type": "string"
+      },
+      "atTime": {
+        "title": "Attime",
+        "type": "string"
+      },
+      "query": {
+        "$ref": "#/$defs/Query"
+      },
+      "coverage": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/Coverage"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "summary": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/Summary"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "constraints": {
+        "default": [],
+        "items": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "title": "Constraints",
+        "type": "array"
+      },
+      "locks": {
+        "default": [],
+        "items": {
+          "$ref": "#/$defs/Lock"
+        },
+        "title": "Locks",
+        "type": "array"
+      },
+      "notices": {
+        "default": [],
+        "items": {
+          "$ref": "#/$defs/Notice"
+        },
+        "title": "Notices",
+        "type": "array"
+      },
+      "unverifiedLocationNotices": {
+        "default": [],
+        "items": {
+          "$ref": "#/$defs/UnverifiedLocationNotice"
+        },
+        "title": "Unverifiedlocationnotices",
+        "type": "array"
+      },
+      "errors": {
+        "default": [],
+        "items": {
+          "type": "string"
+        },
+        "title": "Errors",
+        "type": "array"
+      },
+      "billing": {
+        "$ref": "#/$defs/Billing"
+      },
+      "disclaimer": {
+        "default": "Official USACE information as retrieved; not navigational advice and not a passage, safety or clearance determination. Consult official current navigation information, the lockmaster and applicable operating procedures.",
+        "title": "Disclaimer",
+        "type": "string"
+      }
+    },
+    "required": [
+      "status",
+      "checkedAt",
+      "atTime",
+      "query",
+      "billing"
+    ],
+    "title": "Result",
+    "type": "object"
+  },
+  "views": {
+    "overview": {
+      "title": "Overview",
+      "transformation": {
+        "fields": [
+          "status",
+          "checkedAt",
+          "atTime",
+          "summary",
+          "constraints",
+          "coverage",
+          "billing"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "status": {
+            "label": "status"
+          },
+          "checkedAt": {
+            "label": "checkedAt"
+          },
+          "atTime": {
+            "label": "atTime"
+          },
+          "summary": {
+            "label": "summary"
+          },
+          "constraints": {
+            "label": "constraints"
+          },
+          "coverage": {
+            "label": "coverage"
+          },
+          "billing": {
+            "label": "billing"
+          }
+        }
+      }
+    }
+  }
+}

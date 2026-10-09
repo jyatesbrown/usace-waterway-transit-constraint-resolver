@@ -1,0 +1,21 @@
+[project]
+name = "usace-waterway-transit-constraint-resolver"
+version = "1.0.0"
+description = "Apify Actor checking a supplied U.S. inland-waterway route against official USACE navigation notices and lock operating information."
+requires-python = ">=3.12"
+readme = "README.md"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = [".venv", "storage"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF", "ASYNC", "PT"]
+ignore = ["RUF001", "RUF002", "RUF003"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+markers = ["live: calls live USACE services (run explicitly with -m live)"]
+addopts = "-m 'not live'"

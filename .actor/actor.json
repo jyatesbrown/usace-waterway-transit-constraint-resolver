@@ -1,0 +1,24 @@
+{
+    "$schema": "https://apify.com/schemas/v1/actor.ide.json",
+    "actorSpecification": 1,
+    "name": "usace-waterway-transit-constraint-resolver",
+    "title": "USACE Inland Waterway Transit Constraint Resolver",
+    "description": "Check a supplied U.S. inland-waterway route against current USACE navigation notices and lock operating information. Returns route-intersecting restrictions, affected locks, reported delays/queues where available, temporal status, route ordering, and official provenance as structured data for AI agents and automation.",
+    "version": "1.0",
+    "buildTag": "latest",
+    "meta": {
+        "templateId": "python-start",
+        "generatedBy": "Devin (Cognition AI)"
+    },
+    "input": "./input_schema.json",
+    "output": "./output_schema.json",
+    "storages": {
+        "dataset": "./dataset_schema.json"
+    },
+    "readme": "../README.md",
+    "dockerfile": "../Dockerfile",
+    "minMemoryMbytes": 128,
+    "maxMemoryMbytes": 1024,
+    "defaultMemoryMbytes": 256,
+    "usesStandbyMode": false
+}
