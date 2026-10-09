@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import json
+import math
 import time
 from collections import Counter
 from collections.abc import Awaitable, Callable
@@ -13,6 +14,7 @@ from datetime import UTC, date, datetime, timedelta
 from typing import Any
 
 import httpx
+import numpy as np
 import shapely
 from shapely.geometry import Point, shape
 from shapely.geometry.base import BaseGeometry
@@ -51,9 +53,12 @@ LOCKS_TTL = 24 * 3600
 LPMS_TTL = 5 * 60
 DETAIL_TTL = 24 * 3600
 NO_GEOMETRY_TTL = 6 * 3600
-DISTRICT_MARGIN_NM = 25.0
+UNVERIFIED_LISTING_MARGIN_NM = 25.0
 LOCK_NOTICE_RADIUS_NM = 0.25
 DETAIL_CONCURRENCY = 8
+CACHE_READ_CONCURRENCY = 32
+NO_GEOMETRY_INDEX_KEY = "ntni-no-geometry-index"
+DETAIL_FIELDS = ("id", "title", "begin_date", "end_date", "nn_category", "geojson")
 LPMS_CURRENT_MINUTES = 6 * 60
 LPMS_OFFSETS_HOURS = (4, 8)
 ZERO_MATCH_TEXT = "No matching constraints were found in the official datasets successfully checked."
@@ -121,6 +126,57 @@ def _geometry(features: list[dict[str, Any]]) -> BaseGeometry | None:
         if not g.is_empty:
             geoms.append(shapely.make_valid(g))
     return shapely.union_all(geoms) if geoms else None
+
+
+def _coords_bbox(features: list[dict[str, Any]]) -> list[float] | None:
+    """Lon/lat bounds of raw GeoJSON coordinates, or None when they cannot be read."""
+    xs: list[float] = []
+    ys: list[float] = []
+
+    def walk(c: Any) -> None:
+        if isinstance(c, (list, tuple)) and len(c) >= 2 and all(isinstance(v, (int, float)) for v in c[:2]):
+            xs.append(float(c[0]))
+            ys.append(float(c[1]))
+        elif isinstance(c, (list, tuple)):
+            for x in c:
+                walk(x)
+
+    def geom(g: Any) -> None:
+        if not isinstance(g, dict):
+            return
+        if g.get("type") == "GeometryCollection":
+            for sub in g.get("geometries") or []:
+                geom(sub)
+        else:
+            walk(g.get("coordinates"))
+
+    for f in features:
+        geom(f.get("geometry"))
+    return [min(xs), min(ys), max(xs), max(ys)] if xs else None
+
+
+def _route_bbox(area: QueryArea, corridor_nm: float) -> tuple[float, float, float, float] | None:
+    """Conservative lon/lat window around the corridor: twice the corridor plus 1 nm, in degrees."""
+    line = area.route_line
+    if line is None:
+        return None
+    xy = shapely.get_coordinates(line)
+    lons, lats = area.to_wgs84.transform(xy[:, 0], xy[:, 1])
+    pad_lat = 2 * (corridor_nm + 1.0) / 60.0
+    max_abs_lat = min(float(np.max(np.abs(lats))) + pad_lat, 80.0)
+    pad_lon = pad_lat / math.cos(math.radians(max_abs_lat))
+    return (
+        float(np.min(lons)) - pad_lon,
+        float(np.min(lats)) - pad_lat,
+        float(np.max(lons)) + pad_lon,
+        float(np.max(lats)) + pad_lat,
+    )
+
+
+def _bbox_disjoint(a: Any, b: tuple[float, float, float, float] | None) -> bool:
+    if b is None or not isinstance(a, list) or len(a) != 4 or a[2] - a[0] > 180:
+        return False
+    return a[2] < b[0] or a[0] > b[2] or a[3] < b[1] or a[1] > b[3]
 
 
 def _relationship(area: QueryArea, geom_wgs: BaseGeometry) -> RouteRelationship | None:
@@ -222,7 +278,7 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
     at = inp.at_time or now
     day: date = now.date()
     area = route_area(inp.lonlat, inp.corridor_nm)
-    margin = inp.corridor_nm + DISTRICT_MARGIN_NM
+    margin = inp.corridor_nm + UNVERIFIED_LISTING_MARGIN_NM
 
     async def districts() -> list[str]:
         return await ntni.fetch_route_districts(client, inp.lonlat, margin)
@@ -346,7 +402,7 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
     expired = 0
     not_retrieved: list[int] = []
     candidates: list[dict[str, Any]] = []
-    outside = 0
+    no_geometry_outside = 0
     list_url = ntni.LIST_URL.format(day=ntni.ddmmyyyy(day))
     if active.ok:
         latest: dict[int, dict[str, Any]] = {}
@@ -358,42 +414,71 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
                 _int(latest[cn].get("amendmentNumber")) or 0
             ):
                 latest[cn] = rec
-        if dist.ok:
-            route_districts = set(dist.value)
-            for rec in latest.values():
-                if rec.get("districtCode") and rec["districtCode"] not in route_districts:
-                    outside += 1
-                else:
-                    candidates.append(rec)
-        sem = asyncio.Semaphore(DETAIL_CONCURRENCY)
+        candidates = list(latest.values())
+        route_districts = set(dist.value) if dist.ok else None
+        index_hit = await cache.get(NO_GEOMETRY_INDEX_KEY, NO_GEOMETRY_TTL)
+        no_geo_index: dict[str, float] = dict(index_hit[0]) if index_hit and isinstance(index_hit[0], dict) else {}
+        fresh_after = time.time() - NO_GEOMETRY_TTL
+        new_no_geo: dict[str, float] = {}
+        window = _route_bbox(area, inp.corridor_nm)
+        net = asyncio.Semaphore(DETAIL_CONCURRENCY)
+        reads = asyncio.Semaphore(CACHE_READ_CONCURRENCY)
 
-        async def detail(rec: dict[str, Any]) -> tuple[dict[str, Any], Fetched]:
+        async def detail(rec: dict[str, Any]) -> tuple[dict[str, Any], str, Any]:
+            """Classify one notice as `none` (no geometry), `error`, `nomatch` or `match`."""
             cn = int(rec["controlNumber"])
-            key = f"ntni-notice-{cn}-{rec.get('amendmentNumber') or 0}"
-            async with sem:
+            idx = f"{cn}-{rec.get('amendmentNumber') or 0}"
+            if no_geo_index.get(idx, 0) >= fresh_after:
+                return rec, "none", None
+            key = f"ntni-notice-{idx}"
+            async with reads:
                 hit = await cache.get(key, DETAIL_TTL)
-                if hit is not None and (hit[0] is not None or time.time() - hit[1] <= NO_GEOMETRY_TTL):
-                    return rec, Fetched(hit[0], datetime.fromtimestamp(hit[1], UTC), True)
-                try:
-                    value = await ntni.fetch_notice_detail(client, cn)
-                except SourceError as exc:
-                    return rec, Fetched(error=exc)
-                await cache.put(key, value)
-                return rec, Fetched(value, now, False)
+            if hit is not None and hit[0] is not None:
+                d = hit[0]
+            else:
+                # Fetch, trim and cache inside the semaphore so at most DETAIL_CONCURRENCY payloads are in memory.
+                async with net:
+                    try:
+                        raw = await ntni.fetch_notice_detail(client, cn)
+                    except SourceError:
+                        return rec, "error", None
+                    if raw is None or not raw.get("geojson"):
+                        new_no_geo[idx] = time.time()
+                        return rec, "none", None
+                    d = {k: raw.get(k) for k in DETAIL_FIELDS}
+                    del raw
+                    try:
+                        d["bbox"] = _coords_bbox(ntni.detail_features(d))
+                    except SourceError:
+                        return rec, "error", None
+                    await cache.put(key, d)
+            if _bbox_disjoint(d.get("bbox"), window):
+                return rec, "nomatch", None
+            try:
+                geom = _geometry(ntni.detail_features(d))
+            except SourceError:
+                return rec, "error", None
+            if geom is None:
+                return rec, "error", None
+            rel = _relationship(area, geom)
+            return (rec, "match", (d, geom, rel)) if rel is not None else (rec, "nomatch", None)
 
-        for rec, f in await asyncio.gather(*(detail(r) for r in candidates)):
+        for rec, kind, payload in await asyncio.gather(*(detail(r) for r in candidates)):
             cn = int(rec["controlNumber"])
             text = _text(rec)
-            if f.error:
+            if kind == "error":
                 not_retrieved.append(cn)
                 continue
-            d = f.value
-            if d is not None and not d.get("geojson"):
-                d = None
-            if d is None:
+            if kind == "nomatch":
+                geometry_checked += 1
+                continue
+            if kind == "none":
                 t = temporal_status(rec, at, text=text)
                 if t.status == "expired":
                     expired += 1
+                    continue
+                if route_districts is not None and rec.get("districtCode") not in route_districts:
+                    no_geometry_outside += 1
                     continue
                 refs = river_mile_references(text)
                 unverified[cn] = UnverifiedLocationNotice(
@@ -410,18 +495,8 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
                     source=Source(system="Notices to Navigation Interests", url=list_url),
                 )
                 continue
-            try:
-                geom = _geometry(ntni.detail_features(d))
-            except SourceError:
-                not_retrieved.append(cn)
-                continue
-            if geom is None:
-                not_retrieved.append(cn)
-                continue
             geometry_checked += 1
-            rel = _relationship(area, geom)
-            if rel is None:
-                continue
+            d, geom, rel = payload
             t = temporal_status(
                 rec,
                 at,
@@ -447,6 +522,9 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
                 source=Source(system="Notices to Navigation Interests", url=ntni.NOTICE_URL.format(id=cn)),
             )
             geoms[cn] = geom
+        if new_no_geo:
+            kept = {k: v for k, v in no_geo_index.items() if v >= fresh_after}
+            await cache.put(NO_GEOMETRY_INDEX_KEY, kept | new_no_geo)
     candidate_ids = {_int(r.get("controlNumber")) for r in candidates}
     if upcoming.ok:
         for rec in upcoming.value:
@@ -493,7 +571,7 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
     unverified_list = sorted(unverified.values(), key=lambda n: (n.district or "", n.notice_id))
 
     # ---- coverage and status -------------------------------------------------------------------
-    geo_status = "unavailable" if not (active.ok and dist.ok) else "partial" if not_retrieved else "complete"
+    geo_status = "unavailable" if not active.ok else "partial" if not_retrieved else "complete"
     lpms_cov = SourceCoverage(
         status="not_queried" if not locks or not lock_layer.ok else "success" if lpms.ok else "unavailable",
         checked_at=iso(lpms.fetched_at) if lpms.fetched_at else None,
@@ -508,8 +586,15 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
             from_cache=f.from_cache,
         )
 
+    matched = len(notice_list) + len(locks)
     complete = (
-        active.ok and upcoming.ok and lock_layer.ok and geo_status == "complete" and lpms_cov.status != "unavailable"
+        active.ok
+        and upcoming.ok
+        and dist.ok
+        and lock_layer.ok
+        and geo_status == "complete"
+        and lpms_cov.status != "unavailable"
+        and not (matched == 0 and unverified_list)
     )
     core_ok = active.ok and lock_layer.ok
     if complete:
@@ -518,12 +603,12 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
         status = "source_unavailable"
     else:
         status = "partial"
-    matched = len(notice_list) + len(locks)
     note = _coverage_note(
         status,
         matched,
-        sorted(dist.value) if dist.ok else [],
-        outside,
+        len(candidates) if active.ok else None,
+        sorted(dist.value) if dist.ok else None,
+        no_geometry_outside,
         len(unverified_list),
         not_retrieved,
         failures,
@@ -534,13 +619,13 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
         ntni_upcoming=cov(upcoming),
         ntni_geometry=NoticeGeometryCoverage(
             status=geo_status,  # type: ignore[arg-type]
-            district_margin_nm=margin,
-            districts_checked=sorted(dist.value) if dist.ok else [],
-            notices_in_route_districts=len(candidates),
+            active_notices_considered=len(candidates),
             geometry_checked=geometry_checked,
-            no_geometry_published=len(unverified),
+            no_geometry_published=len(unverified_list) + no_geometry_outside,
             geometry_not_retrieved=sorted(not_retrieved),
-            notices_outside_route_districts=outside,
+            unverified_listing_margin_nm=margin,
+            unverified_listing_districts=sorted(dist.value) if dist.ok else None,
+            no_geometry_outside_listing_districts=no_geometry_outside,
         ),
         corps_locks=cov(lock_layer),
         lpms=lpms_cov,
@@ -610,7 +695,8 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
 def _coverage_note(
     status: str,
     matched: int,
-    districts: list[str],
+    considered: int | None,
+    districts: list[str] | None,
     outside: int,
     unverified: int,
     not_retrieved: list[int],
@@ -618,17 +704,22 @@ def _coverage_note(
     lpms: SourceCoverage,
 ) -> str:
     parts: list[str] = []
-    if districts:
+    if considered is not None:
         parts.append(
-            f"Notice geometry was checked for active notices from USACE districts {', '.join(districts)} "
-            f"(districts within {DISTRICT_MARGIN_NM:g} nm of the corridor); {outside} active notices from other "
-            "districts were not spatially checked."
+            f"Published geometry was checked for all {considered} active NTNI notices, from every USACE district."
         )
     if unverified:
-        parts.append(
-            f"{unverified} notices from those districts have no published geometry; they are listed in "
-            "unverifiedLocationNotices and were not matched or excluded spatially."
+        where = (
+            f"from USACE districts {', '.join(districts)} (within {UNVERIFIED_LISTING_MARGIN_NM:g} nm of the corridor)"
+            if districts is not None
+            else "(district boundaries could not be checked, so all are listed)"
         )
+        parts.append(
+            f"{unverified} active notices {where} have no published geometry; they are listed in "
+            "unverifiedLocationNotices and could not be matched or excluded spatially."
+        )
+    if outside:
+        parts.append(f"{outside} active notices from other districts have no published geometry and are not listed.")
     if not_retrieved:
         parts.append(
             f"Geometry could not be retrieved for {len(not_retrieved)} notices, so notice coverage is incomplete."
@@ -642,7 +733,7 @@ def _coverage_note(
             parts.append(ZERO_MATCH_TEXT)
         else:
             parts.append(
-                "No matching constraints were found in the datasets successfully checked, but coverage is incomplete: "
-                "this does not mean no constraints exist in the sources that were not checked."
+                "No geometry-confirmed constraints were found in the datasets successfully checked, but coverage is "
+                "incomplete: this does not mean no constraints exist along the route."
             )
     return " ".join(parts)

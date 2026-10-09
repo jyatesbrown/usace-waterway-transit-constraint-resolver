@@ -3,7 +3,7 @@
     "actorSpecification": 1,
     "name": "usace-waterway-transit-constraint-resolver",
     "title": "USACE Inland Waterway Transit Constraint Resolver",
-    "description": "Check a supplied U.S. inland-waterway route against current USACE navigation notices and lock operating information. Returns route-intersecting restrictions, affected locks, reported delays/queues where available, temporal status, route ordering, and official provenance as structured data for AI agents and automation.",
+    "description": "Check a U.S. inland-waterway route against current USACE navigation notices and lock operating data. Returns geometry-confirmed restrictions, affected locks, reported delays, temporal status, route order and official provenance as structured data for AI agents.",
     "version": "1.0",
     "buildTag": "latest",
     "meta": {
@@ -19,6 +19,6 @@
     "dockerfile": "../Dockerfile",
     "minMemoryMbytes": 128,
     "maxMemoryMbytes": 1024,
-    "defaultMemoryMbytes": 256,
+    "defaultMemoryMbytes": 512,
     "usesStandbyMode": false
 }

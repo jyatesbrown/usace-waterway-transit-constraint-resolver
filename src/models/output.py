@@ -40,14 +40,23 @@ class SourceCoverage(Out):
 
 class NoticeGeometryCoverage(Out):
     status: Literal["complete", "partial", "unavailable", "not_queried"]
-    district_margin_nm: float
-    districts_checked: list[str] = Field(description="USACE Civil Works districts near the route corridor.")
-    notices_in_route_districts: int
+    scope: Literal["all_usace_districts"] = Field(
+        default="all_usace_districts",
+        description="Published geometry is checked for every active NTNI notice, from every USACE district.",
+    )
+    active_notices_considered: int
     geometry_checked: int = Field(description="Notices whose published geometry was tested against the corridor.")
-    no_geometry_published: int = Field(description="Notices with no published geometry; see unverifiedLocationNotices.")
+    no_geometry_published: int = Field(
+        description="Active notices with no published geometry (listed and not listed); never counted as non-matches."
+    )
     geometry_not_retrieved: list[int] = Field(description="Control numbers whose geometry could not be retrieved.")
-    notices_outside_route_districts: int = Field(
-        description="Active notices from districts not near the route; not spatially checked."
+    unverified_listing_margin_nm: float
+    unverified_listing_districts: list[str] | None = Field(
+        description="USACE districts within the margin of the corridor whose geometry-less notices are listed in "
+        "unverifiedLocationNotices; null when district boundaries could not be checked (all are listed)."
+    )
+    no_geometry_outside_listing_districts: int = Field(
+        description="Geometry-less active notices from districts away from the route; not listed."
     )
 
 

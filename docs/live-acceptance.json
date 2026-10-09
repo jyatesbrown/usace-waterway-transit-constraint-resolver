@@ -1,6 +1,6 @@
 {
  "ohio_pittsburgh_to_willow_island/cold": {
-  "seconds": 10.86,
+  "seconds": 25.55,
   "status": "success",
   "billable": true,
   "summary": {
@@ -8,7 +8,7 @@
    "lockCount": 6,
    "locksWithReportedConstraints": 5,
    "locksWithOperatingConditions": 6,
-   "unverifiedLocationNoticeCount": 37,
+   "unverifiedLocationNoticeCount": 36,
    "expiredNoticesExcluded": 0,
    "noticesByTemporalStatus": {
     "active_by_source": 2,
@@ -18,16 +18,17 @@
   },
   "ntniGeometry": {
    "status": "complete",
-   "districtMarginNm": 26.0,
-   "districtsChecked": [
+   "scope": "all_usace_districts",
+   "activeNoticesConsidered": 870,
+   "geometryChecked": 161,
+   "noGeometryPublished": 709,
+   "geometryNotRetrieved": [],
+   "unverifiedListingMarginNm": 26.0,
+   "unverifiedListingDistricts": [
     "LRH",
     "LRP"
    ],
-   "noticesInRouteDistricts": 57,
-   "geometryChecked": 20,
-   "noGeometryPublished": 37,
-   "geometryNotRetrieved": [],
-   "noticesOutsideRouteDistricts": 813
+   "noGeometryOutsideListingDistricts": 673
   },
   "lpms": "success",
   "failures": [],
@@ -39,8 +40,8 @@
     "lockId": "OH-01",
     "facility": "EMSWORTH LOCK AND DAM",
     "operatingConditionsStatus": "reported",
-    "vesselsPending": 1,
-    "reportedAverageDelayMinutes": 11.0,
+    "vesselsPending": 2,
+    "reportedAverageDelayMinutes": 43.0,
     "relatedNoticeIds": []
    },
    {
@@ -89,7 +90,7 @@
     "facility": "MONTGOMERY LOCK AND DAM",
     "operatingConditionsStatus": "reported",
     "vesselsPending": 0,
-    "reportedAverageDelayMinutes": 0.0,
+    "reportedAverageDelayMinutes": 10.0,
     "relatedNoticeIds": [
      209624,
      214391
@@ -115,8 +116,8 @@
     "lockId": "OH-04",
     "facility": "NEW CUMBERLAND LOCK AND DAM",
     "operatingConditionsStatus": "reported",
-    "vesselsPending": 1,
-    "reportedAverageDelayMinutes": 150.0,
+    "vesselsPending": 0,
+    "reportedAverageDelayMinutes": 0.0,
     "relatedNoticeIds": [
      215139
     ]
@@ -140,8 +141,8 @@
     "lockId": "OH-05",
     "facility": "PIKE ISLAND LOCK AND DAM",
     "operatingConditionsStatus": "reported",
-    "vesselsPending": 0,
-    "reportedAverageDelayMinutes": 0.0,
+    "vesselsPending": 1,
+    "reportedAverageDelayMinutes": 32.0,
     "relatedNoticeIds": [
      215139,
      215082
@@ -222,10 +223,10 @@
     ]
    }
   ],
-  "coverageNote": "Notice geometry was checked for active notices from USACE districts LRH, LRP (districts within 25 nm of the corridor); 813 active notices from other districts were not spatially checked. 37 notices from those districts have no published geometry; they are listed in unverifiedLocationNotices and were not matched or excluded spatially."
+  "coverageNote": "Published geometry was checked for all 870 active NTNI notices, from every USACE district. 36 active notices from USACE districts LRH, LRP (within 25 nm of the corridor) have no published geometry; they are listed in unverifiedLocationNotices and could not be matched or excluded spatially. 673 active notices from other districts have no published geometry and are not listed."
  },
  "ohio_pittsburgh_to_willow_island/cached": {
-  "seconds": 3.05,
+  "seconds": 2.47,
   "status": "success",
   "billable": true,
   "summary": {
@@ -233,7 +234,7 @@
    "lockCount": 6,
    "locksWithReportedConstraints": 5,
    "locksWithOperatingConditions": 6,
-   "unverifiedLocationNoticeCount": 37,
+   "unverifiedLocationNoticeCount": 36,
    "expiredNoticesExcluded": 0,
    "noticesByTemporalStatus": {
     "active_by_source": 2,
@@ -243,16 +244,17 @@
   },
   "ntniGeometry": {
    "status": "complete",
-   "districtMarginNm": 26.0,
-   "districtsChecked": [
+   "scope": "all_usace_districts",
+   "activeNoticesConsidered": 870,
+   "geometryChecked": 161,
+   "noGeometryPublished": 709,
+   "geometryNotRetrieved": [],
+   "unverifiedListingMarginNm": 26.0,
+   "unverifiedListingDistricts": [
     "LRH",
     "LRP"
    ],
-   "noticesInRouteDistricts": 57,
-   "geometryChecked": 20,
-   "noGeometryPublished": 37,
-   "geometryNotRetrieved": [],
-   "noticesOutsideRouteDistricts": 813
+   "noGeometryOutsideListingDistricts": 673
   },
   "lpms": "success",
   "failures": [],
@@ -264,8 +266,8 @@
     "lockId": "OH-01",
     "facility": "EMSWORTH LOCK AND DAM",
     "operatingConditionsStatus": "reported",
-    "vesselsPending": 1,
-    "reportedAverageDelayMinutes": 11.0,
+    "vesselsPending": 2,
+    "reportedAverageDelayMinutes": 43.0,
     "relatedNoticeIds": []
    },
    {
@@ -314,7 +316,7 @@
     "facility": "MONTGOMERY LOCK AND DAM",
     "operatingConditionsStatus": "reported",
     "vesselsPending": 0,
-    "reportedAverageDelayMinutes": 0.0,
+    "reportedAverageDelayMinutes": 10.0,
     "relatedNoticeIds": [
      209624,
      214391
@@ -340,8 +342,8 @@
     "lockId": "OH-04",
     "facility": "NEW CUMBERLAND LOCK AND DAM",
     "operatingConditionsStatus": "reported",
-    "vesselsPending": 1,
-    "reportedAverageDelayMinutes": 150.0,
+    "vesselsPending": 0,
+    "reportedAverageDelayMinutes": 0.0,
     "relatedNoticeIds": [
      215139
     ]
@@ -365,8 +367,8 @@
     "lockId": "OH-05",
     "facility": "PIKE ISLAND LOCK AND DAM",
     "operatingConditionsStatus": "reported",
-    "vesselsPending": 0,
-    "reportedAverageDelayMinutes": 0.0,
+    "vesselsPending": 1,
+    "reportedAverageDelayMinutes": 32.0,
     "relatedNoticeIds": [
      215139,
      215082
@@ -447,10 +449,10 @@
     ]
    }
   ],
-  "coverageNote": "Notice geometry was checked for active notices from USACE districts LRH, LRP (districts within 25 nm of the corridor); 813 active notices from other districts were not spatially checked. 37 notices from those districts have no published geometry; they are listed in unverifiedLocationNotices and were not matched or excluded spatially."
+  "coverageNote": "Published geometry was checked for all 870 active NTNI notices, from every USACE district. 36 active notices from USACE districts LRH, LRP (within 25 nm of the corridor) have no published geometry; they are listed in unverifiedLocationNotices and could not be matched or excluded spatially. 673 active notices from other districts have no published geometry and are not listed."
  },
  "upper_mississippi_lock27_to_cape_girardeau/cold": {
-  "seconds": 8.42,
+  "seconds": 3.11,
   "status": "success",
   "billable": true,
   "summary": {
@@ -458,7 +460,7 @@
    "lockCount": 1,
    "locksWithReportedConstraints": 1,
    "locksWithOperatingConditions": 1,
-   "unverifiedLocationNoticeCount": 158,
+   "unverifiedLocationNoticeCount": 157,
    "expiredNoticesExcluded": 0,
    "noticesByTemporalStatus": {
     "active_by_source": 2
@@ -466,18 +468,19 @@
   },
   "ntniGeometry": {
    "status": "complete",
-   "districtMarginNm": 26.0,
-   "districtsChecked": [
+   "scope": "all_usace_districts",
+   "activeNoticesConsidered": 870,
+   "geometryChecked": 161,
+   "noGeometryPublished": 709,
+   "geometryNotRetrieved": [],
+   "unverifiedListingMarginNm": 26.0,
+   "unverifiedListingDistricts": [
     "LRL",
     "MVM",
     "MVS",
     "NWK"
    ],
-   "noticesInRouteDistricts": 175,
-   "geometryChecked": 17,
-   "noGeometryPublished": 158,
-   "geometryNotRetrieved": [],
-   "noticesOutsideRouteDistricts": 695
+   "noGeometryOutsideListingDistricts": 552
   },
   "lpms": "success",
   "failures": [],
@@ -489,8 +492,8 @@
     "lockId": "MI-27",
     "facility": "CHAIN OF ROCKS LOCK AND DAM 27",
     "operatingConditionsStatus": "reported",
-    "vesselsPending": 2,
-    "reportedAverageDelayMinutes": 35.0,
+    "vesselsPending": 1,
+    "reportedAverageDelayMinutes": 46.0,
     "relatedNoticeIds": [
      215102,
      215138
@@ -519,10 +522,10 @@
     ]
    }
   ],
-  "coverageNote": "Notice geometry was checked for active notices from USACE districts LRL, MVM, MVS, NWK (districts within 25 nm of the corridor); 695 active notices from other districts were not spatially checked. 158 notices from those districts have no published geometry; they are listed in unverifiedLocationNotices and were not matched or excluded spatially."
+  "coverageNote": "Published geometry was checked for all 870 active NTNI notices, from every USACE district. 157 active notices from USACE districts LRL, MVM, MVS, NWK (within 25 nm of the corridor) have no published geometry; they are listed in unverifiedLocationNotices and could not be matched or excluded spatially. 552 active notices from other districts have no published geometry and are not listed."
  },
  "upper_mississippi_lock27_to_cape_girardeau/cached": {
-  "seconds": 2.97,
+  "seconds": 2.47,
   "status": "success",
   "billable": true,
   "summary": {
@@ -530,7 +533,7 @@
    "lockCount": 1,
    "locksWithReportedConstraints": 1,
    "locksWithOperatingConditions": 1,
-   "unverifiedLocationNoticeCount": 158,
+   "unverifiedLocationNoticeCount": 157,
    "expiredNoticesExcluded": 0,
    "noticesByTemporalStatus": {
     "active_by_source": 2
@@ -538,18 +541,19 @@
   },
   "ntniGeometry": {
    "status": "complete",
-   "districtMarginNm": 26.0,
-   "districtsChecked": [
+   "scope": "all_usace_districts",
+   "activeNoticesConsidered": 870,
+   "geometryChecked": 161,
+   "noGeometryPublished": 709,
+   "geometryNotRetrieved": [],
+   "unverifiedListingMarginNm": 26.0,
+   "unverifiedListingDistricts": [
     "LRL",
     "MVM",
     "MVS",
     "NWK"
    ],
-   "noticesInRouteDistricts": 175,
-   "geometryChecked": 17,
-   "noGeometryPublished": 158,
-   "geometryNotRetrieved": [],
-   "noticesOutsideRouteDistricts": 695
+   "noGeometryOutsideListingDistricts": 552
   },
   "lpms": "success",
   "failures": [],
@@ -561,8 +565,8 @@
     "lockId": "MI-27",
     "facility": "CHAIN OF ROCKS LOCK AND DAM 27",
     "operatingConditionsStatus": "reported",
-    "vesselsPending": 2,
-    "reportedAverageDelayMinutes": 35.0,
+    "vesselsPending": 1,
+    "reportedAverageDelayMinutes": 46.0,
     "relatedNoticeIds": [
      215102,
      215138
@@ -591,10 +595,10 @@
     ]
    }
   ],
-  "coverageNote": "Notice geometry was checked for active notices from USACE districts LRL, MVM, MVS, NWK (districts within 25 nm of the corridor); 695 active notices from other districts were not spatially checked. 158 notices from those districts have no published geometry; they are listed in unverifiedLocationNotices and were not matched or excluded spatially."
+  "coverageNote": "Published geometry was checked for all 870 active NTNI notices, from every USACE district. 157 active notices from USACE districts LRL, MVM, MVS, NWK (within 25 nm of the corridor) have no published geometry; they are listed in unverifiedLocationNotices and could not be matched or excluded spatially. 552 active notices from other districts have no published geometry and are not listed."
  },
  "illinois_waterway_peoria_lasalle/cold": {
-  "seconds": 6.37,
+  "seconds": 2.89,
   "status": "success",
   "billable": true,
   "summary": {
@@ -602,7 +606,7 @@
    "lockCount": 0,
    "locksWithReportedConstraints": 0,
    "locksWithOperatingConditions": 0,
-   "unverifiedLocationNoticeCount": 130,
+   "unverifiedLocationNoticeCount": 129,
    "expiredNoticesExcluded": 0,
    "noticesByTemporalStatus": {
     "active": 1,
@@ -611,16 +615,17 @@
   },
   "ntniGeometry": {
    "status": "complete",
-   "districtMarginNm": 26.0,
-   "districtsChecked": [
+   "scope": "all_usace_districts",
+   "activeNoticesConsidered": 870,
+   "geometryChecked": 161,
+   "noGeometryPublished": 709,
+   "geometryNotRetrieved": [],
+   "unverifiedListingMarginNm": 26.0,
+   "unverifiedListingDistricts": [
     "LRC",
     "MVR"
    ],
-   "noticesInRouteDistricts": 153,
-   "geometryChecked": 23,
-   "noGeometryPublished": 130,
-   "geometryNotRetrieved": [],
-   "noticesOutsideRouteDistricts": 717
+   "noGeometryOutsideListingDistricts": 580
   },
   "lpms": "not_queried",
   "failures": [],
@@ -644,10 +649,10 @@
     "relatedLockIds": []
    }
   ],
-  "coverageNote": "Notice geometry was checked for active notices from USACE districts LRC, MVR (districts within 25 nm of the corridor); 717 active notices from other districts were not spatially checked. 130 notices from those districts have no published geometry; they are listed in unverifiedLocationNotices and were not matched or excluded spatially."
+  "coverageNote": "Published geometry was checked for all 870 active NTNI notices, from every USACE district. 129 active notices from USACE districts LRC, MVR (within 25 nm of the corridor) have no published geometry; they are listed in unverifiedLocationNotices and could not be matched or excluded spatially. 580 active notices from other districts have no published geometry and are not listed."
  },
  "illinois_waterway_peoria_lasalle/cached": {
-  "seconds": 2.77,
+  "seconds": 2.14,
   "status": "success",
   "billable": true,
   "summary": {
@@ -655,7 +660,7 @@
    "lockCount": 0,
    "locksWithReportedConstraints": 0,
    "locksWithOperatingConditions": 0,
-   "unverifiedLocationNoticeCount": 130,
+   "unverifiedLocationNoticeCount": 129,
    "expiredNoticesExcluded": 0,
    "noticesByTemporalStatus": {
     "active": 1,
@@ -664,16 +669,17 @@
   },
   "ntniGeometry": {
    "status": "complete",
-   "districtMarginNm": 26.0,
-   "districtsChecked": [
+   "scope": "all_usace_districts",
+   "activeNoticesConsidered": 870,
+   "geometryChecked": 161,
+   "noGeometryPublished": 709,
+   "geometryNotRetrieved": [],
+   "unverifiedListingMarginNm": 26.0,
+   "unverifiedListingDistricts": [
     "LRC",
     "MVR"
    ],
-   "noticesInRouteDistricts": 153,
-   "geometryChecked": 23,
-   "noGeometryPublished": 130,
-   "geometryNotRetrieved": [],
-   "noticesOutsideRouteDistricts": 717
+   "noGeometryOutsideListingDistricts": 580
   },
   "lpms": "not_queried",
   "failures": [],
@@ -697,67 +703,69 @@
     "relatedLockIds": []
    }
   ],
-  "coverageNote": "Notice geometry was checked for active notices from USACE districts LRC, MVR (districts within 25 nm of the corridor); 717 active notices from other districts were not spatially checked. 130 notices from those districts have no published geometry; they are listed in unverifiedLocationNotices and were not matched or excluded spatially."
+  "coverageNote": "Published geometry was checked for all 870 active NTNI notices, from every USACE district. 129 active notices from USACE districts LRC, MVR (within 25 nm of the corridor) have no published geometry; they are listed in unverifiedLocationNotices and could not be matched or excluded spatially. 580 active notices from other districts have no published geometry and are not listed."
  },
  "lake_superior_open_water/cold": {
-  "seconds": 3.99,
-  "status": "success",
-  "billable": true,
+  "seconds": 2.55,
+  "status": "partial",
+  "billable": false,
   "summary": {
    "noticeCount": 0,
    "lockCount": 0,
    "locksWithReportedConstraints": 0,
    "locksWithOperatingConditions": 0,
-   "unverifiedLocationNoticeCount": 40,
+   "unverifiedLocationNoticeCount": 39,
    "expiredNoticesExcluded": 0,
    "noticesByTemporalStatus": {}
   },
   "ntniGeometry": {
    "status": "complete",
-   "districtMarginNm": 26.0,
-   "districtsChecked": [
+   "scope": "all_usace_districts",
+   "activeNoticesConsidered": 870,
+   "geometryChecked": 161,
+   "noGeometryPublished": 709,
+   "geometryNotRetrieved": [],
+   "unverifiedListingMarginNm": 26.0,
+   "unverifiedListingDistricts": [
     "LRE"
    ],
-   "noticesInRouteDistricts": 52,
-   "geometryChecked": 12,
-   "noGeometryPublished": 40,
-   "geometryNotRetrieved": [],
-   "noticesOutsideRouteDistricts": 818
+   "noGeometryOutsideListingDistricts": 670
   },
   "lpms": "not_queried",
   "failures": [],
   "constraints": [],
-  "coverageNote": "Notice geometry was checked for active notices from USACE districts LRE (districts within 25 nm of the corridor); 818 active notices from other districts were not spatially checked. 40 notices from those districts have no published geometry; they are listed in unverifiedLocationNotices and were not matched or excluded spatially. No matching constraints were found in the official datasets successfully checked."
+  "coverageNote": "Published geometry was checked for all 870 active NTNI notices, from every USACE district. 39 active notices from USACE districts LRE (within 25 nm of the corridor) have no published geometry; they are listed in unverifiedLocationNotices and could not be matched or excluded spatially. 670 active notices from other districts have no published geometry and are not listed. No geometry-confirmed constraints were found in the datasets successfully checked, but coverage is incomplete: this does not mean no constraints exist along the route."
  },
  "lake_superior_open_water/cached": {
-  "seconds": 2.16,
-  "status": "success",
-  "billable": true,
+  "seconds": 1.97,
+  "status": "partial",
+  "billable": false,
   "summary": {
    "noticeCount": 0,
    "lockCount": 0,
    "locksWithReportedConstraints": 0,
    "locksWithOperatingConditions": 0,
-   "unverifiedLocationNoticeCount": 40,
+   "unverifiedLocationNoticeCount": 39,
    "expiredNoticesExcluded": 0,
    "noticesByTemporalStatus": {}
   },
   "ntniGeometry": {
    "status": "complete",
-   "districtMarginNm": 26.0,
-   "districtsChecked": [
+   "scope": "all_usace_districts",
+   "activeNoticesConsidered": 870,
+   "geometryChecked": 161,
+   "noGeometryPublished": 709,
+   "geometryNotRetrieved": [],
+   "unverifiedListingMarginNm": 26.0,
+   "unverifiedListingDistricts": [
     "LRE"
    ],
-   "noticesInRouteDistricts": 52,
-   "geometryChecked": 12,
-   "noGeometryPublished": 40,
-   "geometryNotRetrieved": [],
-   "noticesOutsideRouteDistricts": 818
+   "noGeometryOutsideListingDistricts": 670
   },
   "lpms": "not_queried",
   "failures": [],
   "constraints": [],
-  "coverageNote": "Notice geometry was checked for active notices from USACE districts LRE (districts within 25 nm of the corridor); 818 active notices from other districts were not spatially checked. 40 notices from those districts have no published geometry; they are listed in unverifiedLocationNotices and were not matched or excluded spatially. No matching constraints were found in the official datasets successfully checked."
+  "coverageNote": "Published geometry was checked for all 870 active NTNI notices, from every USACE district. 39 active notices from USACE districts LRE (within 25 nm of the corridor) have no published geometry; they are listed in unverifiedLocationNotices and could not be matched or excluded spatially. 670 active notices from other districts have no published geometry and are not listed. No geometry-confirmed constraints were found in the datasets successfully checked, but coverage is incomplete: this does not mean no constraints exist along the route."
  },
  "invalid_single_point": {
   "status": "invalid_input",

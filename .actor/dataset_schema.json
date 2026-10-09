@@ -576,20 +576,15 @@
             "title": "Status",
             "type": "string"
           },
-          "districtMarginNm": {
-            "title": "Districtmarginnm",
-            "type": "number"
+          "scope": {
+            "const": "all_usace_districts",
+            "default": "all_usace_districts",
+            "description": "Published geometry is checked for every active NTNI notice, from every USACE district.",
+            "title": "Scope",
+            "type": "string"
           },
-          "districtsChecked": {
-            "description": "USACE Civil Works districts near the route corridor.",
-            "items": {
-              "type": "string"
-            },
-            "title": "Districtschecked",
-            "type": "array"
-          },
-          "noticesInRouteDistricts": {
-            "title": "Noticesinroutedistricts",
+          "activeNoticesConsidered": {
+            "title": "Activenoticesconsidered",
             "type": "integer"
           },
           "geometryChecked": {
@@ -598,7 +593,7 @@
             "type": "integer"
           },
           "noGeometryPublished": {
-            "description": "Notices with no published geometry; see unverifiedLocationNotices.",
+            "description": "Active notices with no published geometry (listed and not listed); never counted as non-matches.",
             "title": "Nogeometrypublished",
             "type": "integer"
           },
@@ -610,21 +605,40 @@
             "title": "Geometrynotretrieved",
             "type": "array"
           },
-          "noticesOutsideRouteDistricts": {
-            "description": "Active notices from districts not near the route; not spatially checked.",
-            "title": "Noticesoutsideroutedistricts",
+          "unverifiedListingMarginNm": {
+            "title": "Unverifiedlistingmarginnm",
+            "type": "number"
+          },
+          "unverifiedListingDistricts": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "USACE districts within the margin of the corridor whose geometry-less notices are listed in unverifiedLocationNotices; null when district boundaries could not be checked (all are listed).",
+            "title": "Unverifiedlistingdistricts"
+          },
+          "noGeometryOutsideListingDistricts": {
+            "description": "Geometry-less active notices from districts away from the route; not listed.",
+            "title": "Nogeometryoutsidelistingdistricts",
             "type": "integer"
           }
         },
         "required": [
           "status",
-          "districtMarginNm",
-          "districtsChecked",
-          "noticesInRouteDistricts",
+          "activeNoticesConsidered",
           "geometryChecked",
           "noGeometryPublished",
           "geometryNotRetrieved",
-          "noticesOutsideRouteDistricts"
+          "unverifiedListingMarginNm",
+          "unverifiedListingDistricts",
+          "noGeometryOutsideListingDistricts"
         ],
         "title": "NoticeGeometryCoverage",
         "type": "object"
