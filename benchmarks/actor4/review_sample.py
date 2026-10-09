@@ -6,10 +6,11 @@ python benchmarks/actor4/review_sample.py [--judge-model claude-sonnet-5-5]
 import argparse
 import json
 import math
+import os
 import random
 from pathlib import Path
 
-RES = Path(__file__).resolve().parent.parent / "results" / "actor4"
+RES = Path(os.environ.get("ACTOR4_RESULTS") or Path(__file__).resolve().parent.parent / "results" / "actor4")
 SEED = 20261008
 
 

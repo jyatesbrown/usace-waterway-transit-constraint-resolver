@@ -16,7 +16,7 @@ from pathlib import Path
 import httpx
 
 HERE = Path(__file__).parent
-RES = HERE.parent / "results" / "actor4"
+RES = Path(os.environ.get("ACTOR4_RESULTS") or HERE.parent / "results" / "actor4")
 API = "https://api.apify.com/v2"
 NAMES = {"actor4": "rhincodontypus/usace-waterway-transit-constraint-resolver"}
 IDS = {"yCe6FapeAhjNo6XiQ": "actor4"}

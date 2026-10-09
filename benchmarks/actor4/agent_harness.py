@@ -296,6 +296,8 @@ def run_episode(mcp: MCP, llm, prompt: dict) -> dict:
             out = result_text(res)
             entry["isError"] = bool(res.get("isError"))
             entry["resultText"] = out[:20000]
+            entry["resultChars"] = len(out)
+            entry["clippedForAgent"] = len(out) > 60000
             if c["name"] == "search-actors":
                 ranking = search_ranking(res)
                 ep["searches"].append(
