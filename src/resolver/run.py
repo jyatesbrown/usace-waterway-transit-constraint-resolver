@@ -23,6 +23,9 @@ from ..billing import billing_decision
 from ..geo.geometry import METRES_PER_NM, QueryArea, route_area
 from ..models.input import ActorInput
 from ..models.output import (
+    FULL_RECORD_KEY,
+    OFFICIAL_TEXT_LIMIT,
+    UNVERIFIED_LIST_LIMIT,
     Billing,
     Coverage,
     EffectiveWindow,
@@ -39,6 +42,8 @@ from ..models.output import (
     SourceFailure,
     Summary,
     UnverifiedLocationNotice,
+    UnverifiedNoticeBrief,
+    UnverifiedNoticeListing,
 )
 from ..normalization.dates import Temporal, parse_timestamp, temporal_status
 from ..normalization.rivermile import river_mile_references
@@ -234,6 +239,16 @@ def _temporal_fields(t: Temporal) -> dict[str, Any]:
     }
 
 
+def _clipped_text(text: str | None, full_texts: dict[int, str], cn: int) -> dict[str, Any]:
+    """Cut long official text at a word boundary for the agent-facing record; keep the full text aside."""
+    if not text or len(text) <= OFFICIAL_TEXT_LIMIT:
+        return {"official_text": text, "official_text_length": len(text) if text else None}
+    full_texts[cn] = text
+    cut = text[:OFFICIAL_TEXT_LIMIT]
+    cut = cut[: cut.rfind(" ")] if " " in cut[OFFICIAL_TEXT_LIMIT // 2 :] else cut
+    return {"official_text": cut.rstrip() + " …", "official_text_truncated": True, "official_text_length": len(text)}
+
+
 def _attachments(rec: dict[str, Any]) -> list[dict[str, Any]]:
     return [{"name": f.get("name"), "url": f.get("url")} for f in rec.get("fileNames") or [] if isinstance(f, dict)]
 
@@ -320,7 +335,7 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
             locks.append(
                 Lock(
                     lock_id=f"{river}-{p0.get('LOCKCD')}",
-                    name=None,
+                    name=p0.get("PMSNAME") or p0.get("NAVSTR"),
                     river_code=river,
                     lock_code=str(p0.get("LOCKCD")),
                     river=p0.get("RIVER"),
@@ -360,6 +375,9 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
         )
         if lpms.error:
             failures.append(SourceFailure(source="lpms", state=str(lpms.error.state), detail=lpms.error.detail))
+        elif lpms.value is None:
+            for lk in locks:
+                lk.operating_conditions_status = "not_published_for_river"
         else:
             rows = {locks_src.lock_key(r.get("riverCode"), r.get("lockNo")): r for r in lpms.value}
             for lk in locks:
@@ -370,7 +388,7 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
                 fresh, ages, fnote = _lpms_freshness(row.get("entryDatetime"), now)
                 if abs((at - now).total_seconds()) > 3600:
                     fnote += " Conditions are as retrieved, not as of atTime."
-                lk.name = row.get("lockName")
+                lk.name = row.get("lockName") or lk.name
                 lk.operating_conditions_status = "reported"
                 lk.operating_conditions = LockConditions(
                     hours_of_operation=row.get("hoursOfOperation"),
@@ -399,6 +417,7 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
     geoms: dict[int, BaseGeometry] = {}
     geometry_checked = 0
     unverified: dict[int, UnverifiedLocationNotice] = {}
+    full_texts: dict[int, str] = {}
     expired = 0
     not_retrieved: list[int] = []
     candidates: list[dict[str, Any]] = []
@@ -491,6 +510,7 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
                     parsed_river_miles=[{"from": r.mile_from, "to": r.mile_to} for r in refs],
                     waterway=_waterway(rec),
                     district=rec.get("districtCode"),
+                    notice_url=ntni.NOTICE_URL.format(id=cn),
                     official_text=rec.get("remarks"),
                     source=Source(system="Notices to Navigation Interests", url=list_url),
                 )
@@ -517,7 +537,7 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
                 relationship_to_route=rel,
                 waterway=_waterway(rec),
                 district=rec.get("districtCode"),
-                official_text=rec.get("remarks"),
+                **_clipped_text(rec.get("remarks"), full_texts, cn),
                 attachments=_attachments(rec),
                 source=Source(system="Notices to Navigation Interests", url=ntni.NOTICE_URL.format(id=cn)),
             )
@@ -550,7 +570,7 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
                 relationship_to_route=rel,
                 waterway=_waterway(rec),
                 district=rec.get("districtCode"),
-                official_text=rec.get("remarks"),
+                **_clipped_text(rec.get("remarks"), full_texts, cn),
                 attachments=_attachments(rec),
                 source=Source(
                     system="Notices to Navigation Interests", url=ntni.UPCOMING_GEO_URL.format(day=ntni.ddmmyyyy(day))
@@ -569,14 +589,48 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
 
     notice_list = sorted(notices.values(), key=lambda n: (n.relationship_to_route.route_position, n.notice_id))
     unverified_list = sorted(unverified.values(), key=lambda n: (n.district or "", n.notice_id))
+    briefs = [
+        UnverifiedNoticeBrief(
+            **u.model_dump(exclude={"official_text", "source", "title"}),
+            title=" ".join(u.title.split()) if u.title else u.title,
+        )
+        for u in unverified_list[:UNVERIFIED_LIST_LIMIT]
+    ]
+    by_district: dict[str, list[int]] = {}
+    for u in unverified_list:
+        by_district.setdefault(u.district or "unknown", []).append(u.notice_id)
+    listing = UnverifiedNoticeListing(
+        total=len(unverified_list),
+        listed=len(briefs),
+        truncated=len(briefs) < len(unverified_list),
+        order="By USACE district code, then notice ID.",
+        notice_ids_by_district=by_district,
+        full_record_key=FULL_RECORD_KEY,
+        source=Source(system="Notices to Navigation Interests", url=list_url),
+    )
 
     # ---- coverage and status -------------------------------------------------------------------
     geo_status = "unavailable" if not active.ok else "partial" if not_retrieved else "complete"
+    lpms_not_published = bool(locks) and lpms.ok and lpms.value is None
+    lock_rivers = sorted({lk.river_code for lk in locks})
     lpms_cov = SourceCoverage(
-        status="not_queried" if not locks or not lock_layer.ok else "success" if lpms.ok else "unavailable",
+        status="not_queried"
+        if not locks or not lock_layer.ok
+        else "not_published_for_river"
+        if lpms_not_published
+        else "success"
+        if lpms.ok
+        else "unavailable",
         checked_at=iso(lpms.fetched_at) if lpms.fetched_at else None,
         from_cache=lpms.from_cache,
-        detail=None if locks else "No USACE lock within the route corridor; LPMS not queried.",
+        detail=(
+            "No USACE lock within the route corridor; LPMS not queried."
+            if not locks
+            else f"LPMS answered 'Data Unavailable' for river code(s) {', '.join(lock_rivers)}: "
+            "it publishes no current lock operating conditions for these rivers, so they are unknown."
+            if lpms_not_published
+            else None
+        ),
     )
 
     def cov(f: Fetched) -> SourceCoverage:
@@ -593,7 +647,7 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
         and dist.ok
         and lock_layer.ok
         and geo_status == "complete"
-        and lpms_cov.status != "unavailable"
+        and lpms_cov.status not in ("unavailable", "not_published_for_river")
         and not (matched == 0 and unverified_list)
     )
     core_ok = active.ok and lock_layer.ok
@@ -610,6 +664,7 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
         sorted(dist.value) if dist.ok else None,
         no_geometry_outside,
         len(unverified_list),
+        len(briefs),
         not_retrieved,
         failures,
         lpms_cov,
@@ -671,11 +726,14 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
         lock_count=len(locks),
         locks_with_reported_constraints=with_constraints,
         locks_with_operating_conditions=sum(1 for lk in locks if lk.operating_conditions),
-        unverified_location_notice_count=len(unverified_list),
+        confirmed_match_count=matched,
+        unverified_notice_count=len(unverified_list),
+        unverified_notices_listed=len(briefs),
+        unverified_list_truncated=listing.truncated,
         expired_notices_excluded=expired,
         notices_by_temporal_status=dict(Counter(n.temporal_status for n in notice_list)),
     )
-    return Result(
+    result = Result(
         status=status,  # type: ignore[arg-type]
         checked_at=iso(now),
         at_time=iso(at),
@@ -687,9 +745,14 @@ async def _run(inp: ActorInput, client: httpx.AsyncClient, cache: KeyValueCache,
         constraints=constraints,
         locks=locks,
         notices=notice_list,
-        unverified_location_notices=unverified_list,
+        unverified_location_notices=briefs,
+        unverified_notice_listing=listing,
+        full_record_key=FULL_RECORD_KEY,
         billing=billing_decision(status, core_ok, matched),  # type: ignore[arg-type]
     )
+    result._full_unverified = unverified_list
+    result._full_texts = full_texts
+    return result
 
 
 def _coverage_note(
@@ -699,6 +762,7 @@ def _coverage_note(
     districts: list[str] | None,
     outside: int,
     unverified: int,
+    listed: int,
     not_retrieved: list[int],
     failures: list[SourceFailure],
     lpms: SourceCoverage,
@@ -714,9 +778,15 @@ def _coverage_note(
             if districts is not None
             else "(district boundaries could not be checked, so all are listed)"
         )
+        shown = (
+            "all are listed in unverifiedLocationNotices"
+            if listed == unverified
+            else f"{listed} are itemised in unverifiedLocationNotices and all {unverified} are identified in "
+            f"unverifiedNoticeListing.noticeIdsByDistrict (full records in key-value store record {FULL_RECORD_KEY})"
+        )
         parts.append(
-            f"{unverified} active notices {where} have no published geometry; they are listed in "
-            "unverifiedLocationNotices and could not be matched or excluded spatially."
+            f"{unverified} active notices {where} have no published geometry; {shown}. None could be matched or "
+            "excluded spatially."
         )
     if outside:
         parts.append(f"{outside} active notices from other districts have no published geometry and are not listed.")
@@ -728,6 +798,11 @@ def _coverage_note(
         parts.append(f"Source {f.source} was not checked ({f.state}).")
     if lpms.status == "unavailable":
         parts.append("LPMS lock operating conditions were not available.")
+    elif lpms.status == "not_published_for_river":
+        parts.append(
+            "LPMS publishes no current lock operating conditions for the rivers on this route, so lock "
+            "conditions are unknown and coverage is incomplete."
+        )
     if matched == 0:
         if status == "success":
             parts.append(ZERO_MATCH_TEXT)

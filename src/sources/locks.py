@@ -17,6 +17,7 @@ from ..utils.http import get_json
 LOCKS_LAYER_URL = "https://services7.arcgis.com/n1YM8pTrFmm7L4hs/arcgis/rest/services/Locks/FeatureServer/0"
 LOCKS_QUERY_URL = LOCKS_LAYER_URL + "/query?where=1%3D1&outFields=*&outSR=4326&f=geojson"
 LPMS_STATUS_URL = "https://ndc.ops.usace.army.mil/ords/lpms/json/lock_status_report"
+LPMS_NO_DATA_BODY = "Data Unavailable"
 
 
 def lock_key(river_code: object, lock_no: object) -> tuple[str, str] | None:
@@ -33,10 +34,15 @@ async def fetch_locks(client: httpx.AsyncClient) -> list[dict[str, Any]]:
     return features
 
 
-async def fetch_lock_status(client: httpx.AsyncClient, river_codes: list[str]) -> list[dict[str, Any]]:
-    """One request for all rivers on the route. LPMS reports its rate limit as HTTP 200 + error body."""
+async def fetch_lock_status(client: httpx.AsyncClient, river_codes: list[str]) -> list[dict[str, Any]] | None:
+    """One request for all rivers on the route. LPMS reports its rate limit as HTTP 200 + error body.
+
+    Returns None when LPMS answers HTTP 200 "Data Unavailable": it publishes no status for these rivers.
+    """
     url = f"{LPMS_STATUS_URL}?in_river_codes={','.join(sorted(set(river_codes)))}"
-    data = await get_json(client, url)
+    data = await get_json(client, url, no_data_bodies=(LPMS_NO_DATA_BODY,))
+    if data is None:
+        return None
     if isinstance(data, dict) and "error" in data:
         state = SourceState.RATE_LIMITED if "rate limit" in str(data["error"]).lower() else SourceState.UNAVAILABLE
         raise SourceError(state, f"LPMS: {data['error']}")

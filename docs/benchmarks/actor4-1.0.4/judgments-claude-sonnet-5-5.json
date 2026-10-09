@@ -1,0 +1,226 @@
+{
+ "bypass|default|r05": {
+  "behavior": "generic_web_browsing",
+  "substitute": "materially_inferior",
+  "factualErrors": false,
+  "safetyLanguage": false,
+  "notes": "The agent's fetch of the official LRN page failed on a TLS error. It then relied on generic web searches that returned only past Cheatham closures, nothing for Old Hickory, and an off-route Barkley notice. It had no geometry check, no LPMS lock status, and no route-order lock list. It was honest that it could not confirm current notices and did not call the route clear, but it gave no usable answer on current status.",
+  "judgeModel": "claude-sonnet-5-5"
+ },
+ "interp|default|r07": {
+  "correct": true,
+  "failureClass": null,
+  "errors": [],
+  "safetyLanguage": false,
+  "unverifiedAsConfirmed": false,
+  "describedRunIds": [
+   "My1ipbeNRsdSLeMfO"
+  ],
+  "partialHandling": null,
+  "notes": "The queue figures match the LPMS data: Winfield 0/0/0 min, Marmet 1 pending and 6 min delay, London 0/0/0 min. The 14:00 local timestamp and the roughly 2.5-hour age are also correct, and no safety language is used. Weak points: the answer repeats the LPMS '24/7' hours although confirmed notice 212613 says London runs 20 hours a day. It also calls the active_by_source notice 214329 simply 'active' and says it 'could affect' delays, when it says the main chamber is closed until further notice. These are minor and do not affect the queue answer.",
+  "judgeModel": "claude-sonnet-5-5"
+ },
+ "bypass|default|r09": {
+  "behavior": "generic_web_browsing",
+  "substitute": "materially_inferior",
+  "factualErrors": false,
+  "safetyLanguage": false,
+  "notes": "The agent ran one generic web search, retrieved a single Walla Walla notice (212009, Feb–Mar 2026), and found nothing for October 2026. It did not check the NTNI database for geometry, other districts, lock status in LPMS, or notices without geometry, so its 'none found' answer is incomplete and unverified. It did hedge appropriately and did not call the route clear.",
+  "judgeModel": "claude-sonnet-5-5"
+ },
+ "bypass|default|r12": {
+  "behavior": "direct_official_source_lookup",
+  "substitute": "materially_inferior",
+  "factualErrors": false,
+  "safetyLanguage": false,
+  "notes": "The agent fetched the official NTNI page, but the JavaScript-rendered notice table came back empty, and the Mobile District lock-closures URL returned a 404. It could only offer unverified search-snippet leads (Selden, Holt) and no geometry check, no lock status, and no temporal status. It was honest about these limits and did not claim the route was safe.",
+  "judgeModel": "claude-sonnet-5-5"
+ },
+ "interp|default|r16": {
+  "correct": false,
+  "failureClass": "agent_reasoning_error",
+  "errors": [
+   "treats unverified-location notices as effectively ruled out using outside geographic knowledge (Soo Locks 'unlikely to apply', shoaling notices 'not on this route', Keweenaw 'probably outside the corridor')",
+   "suggests active_by_source notices 'may be stale' based on age, inferring expiry the source does not support"
+  ],
+  "safetyLanguage": false,
+  "unverifiedAsConfirmed": false,
+  "describedRunIds": [
+   "GEbzfVBauleLUAUnk"
+  ],
+  "partialHandling": {
+   "usesMatches": null,
+   "statesMissingCoverage": true,
+   "rejectsWhole": false,
+   "assumesComplete": false
+  },
+  "notes": "The answer correctly reports 0 confirmed matches, partial status, 39 unverified LRE notices, and that it cannot clear the route. However, it dismisses several unverified notices as not on the route and calls active_by_source notices possibly stale. Neither follows from the record, which says none of the 39 could be matched or excluded spatially.",
+  "judgeModel": "claude-sonnet-5-5"
+ },
+ "interp|directed|r01": {
+  "correct": false,
+  "failureClass": "agent_reasoning_error",
+  "errors": [
+   "active_by_source notices 209624 and 214391 labeled plain 'active' with no note that this is source-asserted",
+   "Montgomery auxiliary closure stated as fact ('Closed since 3 March 2025') without the source-asserted caveat",
+   "unverified-notice count (36 total, 25 listed, truncated) not stated; only a hand-picked subset is named"
+  ],
+  "safetyLanguage": false,
+  "unverifiedAsConfirmed": false,
+  "describedRunIds": [
+   "yaGBQ89XpeW4S56OT"
+  ],
+  "partialHandling": null,
+  "notes": "Lock conditions, the four confirmed notices, dates and the Hannibal 0.9 nm offset all match the record, and the unverified notices are correctly kept separate. However, the two Montgomery notices are active_by_source, and the answer presents them as plainly active and currently in effect without saying they are source-asserted with no end date. It also omits the full unverified count and the truncation.",
+  "judgeModel": "claude-sonnet-5-5"
+ },
+ "interp|directed|r02": {
+  "correct": true,
+  "failureClass": null,
+  "errors": [],
+  "safetyLanguage": false,
+  "unverifiedAsConfirmed": false,
+  "describedRunIds": [
+   "MIsLkW5fzcXUWIBSz"
+  ],
+  "partialHandling": null,
+  "notes": "The answer matches the record: lock MI-27 with a 42-minute delay, 5 vessels pending, 2 locking and 12/10 lockages, plus both geometry-verified dredging notices. It correctly says notice 215138 does not intersect the route (0.437 nm, inside the corridor). It frames the 157 unverified notices as unconfirmed rather than ruled out. Minor weaknesses: it says 'in effect until further notice' without labelling the notices source-asserted, and 'most are Ohio River items or general schedules' generalizes from the 25 listed notices to all 157.",
+  "judgeModel": "claude-sonnet-5-5"
+ },
+ "interp|directed|r04": {
+  "correct": false,
+  "failureClass": "agent_reasoning_error",
+  "errors": [
+   "labels active_by_source and unverified notices as 'may be stale' / 'confirm superseded', inferring expiry",
+   "second-guesses the geometry-confirmed Cumberland dredging notice 215061 as having a 'wrong' location",
+   "does not flag that 215026, 206327 and 205968 are active_by_source (source-asserted only)"
+  ],
+  "safetyLanguage": false,
+  "unverifiedAsConfirmed": false,
+  "describedRunIds": [
+   "bskSbY91WEs9o1K59"
+  ],
+  "partialHandling": null,
+  "notes": "Confirmed notices, lock conditions, the Kentucky closure, LPMS staleness and the 154-notice coverage gap are all reported correctly, and unverified notices are not presented as confirmed. However, the answer groups active_by_source and no-geometry notices under 'Older notices that may be stale' and suggests they are superseded, which infers expiry that the source does not support. It also doubts a notice the record confirms by geometry.",
+  "judgeModel": "claude-sonnet-5-5"
+ },
+ "interp|directed|r06": {
+  "correct": true,
+  "failureClass": null,
+  "errors": [],
+  "safetyLanguage": false,
+  "unverifiedAsConfirmed": false,
+  "describedRunIds": [
+   "Kf0N8g2fAGnUNPsIu"
+  ],
+  "partialHandling": null,
+  "notes": "The answer lists the five geometry-verified notices (207386, 207442, 207476, 208090, 209084) with issue dates and ages that match the record, and notes that none has a published end date. It keeps the 22 unverified notices separate, says they could not be checked against the route, and correctly excludes 214850 because it has an end date. The ages quoted for the unverified Monongahela-related notices also match the record. The wording about 'until further notice' and 'river-mile text only' is slightly loose but not wrong.",
+  "judgeModel": "claude-sonnet-5-5"
+ },
+ "interp|directed|r08": {
+  "correct": true,
+  "failureClass": null,
+  "errors": [],
+  "safetyLanguage": false,
+  "unverifiedAsConfirmed": false,
+  "describedRunIds": [
+   "3aZkrQagudrr9Nqpa"
+  ],
+  "partialHandling": {
+   "usesMatches": true,
+   "statesMissingCoverage": true,
+   "rejectsWhole": false,
+   "assumesComplete": false
+  },
+  "notes": "The answer correctly reports the two geometry-confirmed notices (214749 upcoming, 215019 active), their dates, and that lock conditions are unavailable. It keeps the unverified NWP notices separate, neither confirmed nor ruled out, and makes no safety claim. Minor sloppiness: it calls all 19 unverified notices 'Bonneville-area' and says 'two' conflict, then 'three'. It also does not list every unverified notice or label them active_by_source, but none of this misrepresents the record.",
+  "judgeModel": "claude-sonnet-5-5"
+ },
+ "interp|directed|r10": {
+  "correct": true,
+  "failureClass": null,
+  "errors": [],
+  "safetyLanguage": false,
+  "unverifiedAsConfirmed": false,
+  "describedRunIds": [
+   "6Gc2WxIFXPt5bx7eH"
+  ],
+  "partialHandling": {
+   "usesMatches": true,
+   "statesMissingCoverage": true,
+   "rejectsWhole": false,
+   "assumesComplete": false
+  },
+  "notes": "The answer reports the five geometry-verified notices and both locks accurately, and it says no end date applies to the active_by_source notices. It says lock conditions are unknown because LPMS publishes none. It names four of the 70 unverified notices as unlocated, active by source and not ruled out. It does not claim the route is clear. The remark that the revetment notice is unlikely to affect this stretch is a mild inference, not a safety claim.",
+  "judgeModel": "claude-sonnet-5-5"
+ },
+ "interp|directed|r13": {
+  "correct": true,
+  "failureClass": null,
+  "errors": [],
+  "safetyLanguage": false,
+  "unverifiedAsConfirmed": false,
+  "describedRunIds": [
+   "uJ1B6ZTsUDJ65Kewi"
+  ],
+  "partialHandling": {
+   "usesMatches": true,
+   "statesMissingCoverage": true,
+   "rejectsWhole": false,
+   "assumesComplete": false
+  },
+  "notes": "The counts (7 notices, 3 locks, 70 unverified), lock distances, route positions and unknown lock conditions all match the record. The 70 no-geometry notices are kept separate and not ruled out, and the answer says coverage is incomplete. The status labels are slightly loose: several active_by_source notices (214940, 210809, 214511, 215029) are shown as plain 'Active', though two others are correctly marked 'per source'. This is minor and does not amount to presenting them as verified-current.",
+  "judgeModel": "claude-sonnet-5-5"
+ },
+ "interp|directed|r14": {
+  "correct": false,
+  "failureClass": "agent_reasoning_error",
+  "errors": [
+   "district codes misexpanded: LRN is Nashville and SAM is Mobile, not Louisville and Savannah",
+   "internally inconsistent district naming: refers to the Nashville District later in the same answer"
+  ],
+  "safetyLanguage": false,
+  "unverifiedAsConfirmed": false,
+  "describedRunIds": [
+   "ByHX0NBlOvdLhTisD"
+  ],
+  "partialHandling": null,
+  "notes": "The answer correctly reports one lock, zero confirmed notices, LPMS conditions not reported, and 118 unverified notices of which 25 are listed, and it never calls the route safe or clear. It names the districts wrongly (Louisville and Savannah instead of Nashville and Mobile), which the record does not support.",
+  "judgeModel": "claude-sonnet-5-5"
+ },
+ "interp|directed|r15": {
+  "correct": true,
+  "failureClass": null,
+  "errors": [],
+  "safetyLanguage": false,
+  "unverifiedAsConfirmed": false,
+  "describedRunIds": [
+   "EEKZZhaAT50e2g7Yr"
+  ],
+  "partialHandling": {
+   "usesMatches": null,
+   "statesMissingCoverage": true,
+   "rejectsWhole": false,
+   "assumesComplete": false
+  },
+  "notes": "The answer correctly reports 0 confirmed notices and 0 locks, and 48 unverified notices of which 25 are itemized. It says coverage is incomplete and does not treat zero matches as clear. Its remark that the listed notices are far away and 'probably don't affect' the route is an inference beyond the record, but it is hedged with 'I can't confirm that', so it does not rule them out. It also does not mention the active Indiana Harbor dredging notice, which is a minor omission.",
+  "judgeModel": "claude-sonnet-5-5"
+ },
+ "interp|directed|r16": {
+  "correct": true,
+  "failureClass": null,
+  "errors": [],
+  "safetyLanguage": false,
+  "unverifiedAsConfirmed": false,
+  "describedRunIds": [
+   "dDiBUPAwXuCjtoyH8"
+  ],
+  "partialHandling": {
+   "usesMatches": null,
+   "statesMissingCoverage": true,
+   "rejectsWhole": false,
+   "assumesComplete": false
+  },
+  "notes": "The answer matches the record on status partial, 0 confirmed notices and locks, no lock in the corridor so LPMS was not queried, 39 unverified LRE notices with 25 listed, 670 other-district notices unlisted, and no billing. It does not treat the unverified notices as confirmed or as ruled out, and it explicitly says the result does not mean the route is clear. Minor looseness: it calls the Keweenaw item a shoaling report (the record shows a sunken-vessels hazard), and the lock coordinates come from outside the record.",
+  "judgeModel": "claude-sonnet-5-5"
+ }
+}

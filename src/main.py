@@ -8,6 +8,7 @@ from apify import Actor, Event
 from pydantic import ValidationError
 
 from .models.input import ActorInput
+from .models.output import FULL_RECORD_KEY
 from .resolver.run import invalid_input, iso, run_query
 from .sources.cache import STORE_NAME, KeyValueCache
 
@@ -44,6 +45,8 @@ async def main() -> None:
             cache = None
         outcome = await run_query(actor_input, cache=cache)
         result = outcome.result
+        if result.full_record_key:
+            await store.set_value(FULL_RECORD_KEY, result.to_full_record())
         await Actor.push_data(result.to_record())
         await store.set_value(STATE_KEY, {"completed": True, "charged": False})
         Actor.log.info("Route check %s in %.0f ms", result.status, outcome.elapsed_ms)

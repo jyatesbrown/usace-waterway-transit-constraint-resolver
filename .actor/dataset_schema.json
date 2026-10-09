@@ -132,7 +132,7 @@
                 "type": "null"
               }
             ],
-            "description": "LPMS lockName where LPMS reports this lock.",
+            "description": "LPMS lockName where LPMS reports this lock, otherwise PMSNAME from the USACE Locks layer.",
             "title": "Name"
           },
           "riverCode": {
@@ -241,10 +241,12 @@
             "default": null
           },
           "operatingConditionsStatus": {
+            "description": "not_published_for_river: LPMS answered 'Data Unavailable' for this river, so no current lock operating conditions are published; this is not a source failure, but conditions are unknown.",
             "enum": [
               "reported",
               "not_reported_by_lpms",
-              "lpms_unavailable"
+              "lpms_unavailable",
+              "not_published_for_river"
             ],
             "title": "Operatingconditionsstatus",
             "type": "string"
@@ -522,7 +524,26 @@
                 "type": "null"
               }
             ],
+            "description": "NTNI remarks, cut at about 1000 characters when longer; the full text is in the run's key-value store record FULL_RESULT.",
             "title": "Officialtext"
+          },
+          "officialTextTruncated": {
+            "default": false,
+            "title": "Officialtexttruncated",
+            "type": "boolean"
+          },
+          "officialTextLength": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Length of the full official text.",
+            "title": "Officialtextlength"
           },
           "attachments": {
             "default": [],
@@ -810,7 +831,8 @@
               "success",
               "partial",
               "unavailable",
-              "not_queried"
+              "not_queried",
+              "not_published_for_river"
             ],
             "title": "Status",
             "type": "string"
@@ -892,9 +914,22 @@
             "title": "Lockswithoperatingconditions",
             "type": "integer"
           },
-          "unverifiedLocationNoticeCount": {
-            "title": "Unverifiedlocationnoticecount",
+          "confirmedMatchCount": {
+            "description": "Geometry-confirmed notices plus locks in the corridor.",
+            "title": "Confirmedmatchcount",
             "type": "integer"
+          },
+          "unverifiedNoticeCount": {
+            "title": "Unverifiednoticecount",
+            "type": "integer"
+          },
+          "unverifiedNoticesListed": {
+            "title": "Unverifiednoticeslisted",
+            "type": "integer"
+          },
+          "unverifiedListTruncated": {
+            "title": "Unverifiedlisttruncated",
+            "type": "boolean"
           },
           "expiredNoticesExcluded": {
             "title": "Expirednoticesexcluded",
@@ -913,14 +948,18 @@
           "lockCount",
           "locksWithReportedConstraints",
           "locksWithOperatingConditions",
-          "unverifiedLocationNoticeCount",
+          "confirmedMatchCount",
+          "unverifiedNoticeCount",
+          "unverifiedNoticesListed",
+          "unverifiedListTruncated",
           "expiredNoticesExcluded",
           "noticesByTemporalStatus"
         ],
         "title": "Summary",
         "type": "object"
       },
-      "UnverifiedLocationNotice": {
+      "UnverifiedNoticeBrief": {
+        "description": "Agent-facing entry for an active notice with no published geometry; never a confirmed route match.",
         "properties": {
           "noticeId": {
             "title": "Noticeid",
@@ -1054,19 +1093,10 @@
             ],
             "title": "District"
           },
-          "officialText": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Officialtext"
-          },
-          "source": {
-            "$ref": "#/$defs/Source"
+          "noticeUrl": {
+            "description": "Official NTNI per-notice record for this notice.",
+            "title": "Noticeurl",
+            "type": "string"
           }
         },
         "required": [
@@ -1082,16 +1112,67 @@
           "locationStatus",
           "waterway",
           "district",
-          "officialText",
+          "noticeUrl"
+        ],
+        "title": "UnverifiedNoticeBrief",
+        "type": "object"
+      },
+      "UnverifiedNoticeListing": {
+        "properties": {
+          "total": {
+            "description": "All nearby active notices with no published geometry.",
+            "title": "Total",
+            "type": "integer"
+          },
+          "listed": {
+            "description": "How many of them are itemised in unverifiedLocationNotices.",
+            "title": "Listed",
+            "type": "integer"
+          },
+          "truncated": {
+            "title": "Truncated",
+            "type": "boolean"
+          },
+          "order": {
+            "title": "Order",
+            "type": "string"
+          },
+          "noticeIdsByDistrict": {
+            "additionalProperties": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "description": "Every one of the `total` notices, by USACE district; none are omitted here.",
+            "title": "Noticeidsbydistrict",
+            "type": "object"
+          },
+          "fullRecordKey": {
+            "description": "Key-value store record of this run holding every notice in full, with official text.",
+            "title": "Fullrecordkey",
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/$defs/Source"
+          }
+        },
+        "required": [
+          "total",
+          "listed",
+          "truncated",
+          "order",
+          "noticeIdsByDistrict",
+          "fullRecordKey",
           "source"
         ],
-        "title": "UnverifiedLocationNotice",
+        "title": "UnverifiedNoticeListing",
         "type": "object"
       }
     },
     "properties": {
       "schemaVersion": {
-        "default": "1.0",
+        "default": "1.2",
         "title": "Schemaversion",
         "type": "string"
       },
@@ -1105,16 +1186,19 @@
         "title": "Status",
         "type": "string"
       },
-      "checkedAt": {
-        "title": "Checkedat",
-        "type": "string"
+      "summary": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/Summary"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
       },
-      "atTime": {
-        "title": "Attime",
-        "type": "string"
-      },
-      "query": {
-        "$ref": "#/$defs/Query"
+      "billing": {
+        "$ref": "#/$defs/Billing"
       },
       "coverage": {
         "anyOf": [
@@ -1127,16 +1211,16 @@
         ],
         "default": null
       },
-      "summary": {
-        "anyOf": [
-          {
-            "$ref": "#/$defs/Summary"
-          },
-          {
-            "type": "null"
-          }
-        ],
-        "default": null
+      "query": {
+        "$ref": "#/$defs/Query"
+      },
+      "checkedAt": {
+        "title": "Checkedat",
+        "type": "string"
+      },
+      "atTime": {
+        "title": "Attime",
+        "type": "string"
       },
       "constraints": {
         "default": [],
@@ -1166,10 +1250,34 @@
       "unverifiedLocationNotices": {
         "default": [],
         "items": {
-          "$ref": "#/$defs/UnverifiedLocationNotice"
+          "$ref": "#/$defs/UnverifiedNoticeBrief"
         },
         "title": "Unverifiedlocationnotices",
         "type": "array"
+      },
+      "unverifiedNoticeListing": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/UnverifiedNoticeListing"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "fullRecordKey": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Key-value store record of this run with the uncut notice texts and every unverified notice.",
+        "title": "Fullrecordkey"
       },
       "errors": {
         "default": [],
@@ -1179,9 +1287,6 @@
         "title": "Errors",
         "type": "array"
       },
-      "billing": {
-        "$ref": "#/$defs/Billing"
-      },
       "disclaimer": {
         "default": "Official USACE information as retrieved; not navigational advice and not a passage, safety or clearance determination. Consult official current navigation information, the lockmaster and applicable operating procedures.",
         "title": "Disclaimer",
@@ -1190,10 +1295,10 @@
     },
     "required": [
       "status",
-      "checkedAt",
-      "atTime",
+      "billing",
       "query",
-      "billing"
+      "checkedAt",
+      "atTime"
     ],
     "title": "Result",
     "type": "object"

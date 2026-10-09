@@ -1,0 +1,183 @@
+{
+ "version": "1.0",
+ "note": "Fixed before any run (2026-10-09). The system prompt never names any Actor. Coordinates are WGS84 lat,lon. Every relevant route was run once against live sources on build 1.0.3 semantics before freezing: r15 and r16 return zero confirmed matches with nearby unverified notices (partial, not charged); r08, r09, r10 and r13 return partial with confirmed matches because LPMS publishes no lock data for those rivers (not_published_for_river, charged); r06, r18 and r20 include active_by_source notices; all others return success.",
+ "relevant": [
+  {
+   "id": "r01",
+   "class": "route_check",
+   "prompt": "Check this towboat route on the Ohio River for current USACE navigation notices and lock conditions: 40.4425,-80.0150 -> 40.5106,-80.0820 -> 40.6463,-80.4120 -> 40.5263,-80.6275 -> 40.1650,-80.6990."
+  },
+  {
+   "id": "r02",
+   "class": "lock_delay",
+   "prompt": "What are the current lock delays and navigation notices on the Mississippi River route 38.70,-90.17 -> 38.63,-90.18 -> 38.25,-90.37 -> 37.95,-89.95 -> 37.60,-89.52 -> 37.30,-89.52?"
+  },
+  {
+   "id": "r03",
+   "class": "notice_list",
+   "prompt": "List the active Army Corps navigation notices affecting the Illinois Waterway route 40.69,-89.59 -> 40.86,-89.48 -> 41.15,-89.30 -> 41.32,-89.10."
+  },
+  {
+   "id": "r04",
+   "class": "route_check",
+   "prompt": "Within 2 nm of the Tennessee River route 37.0149,-88.2652 -> 36.6,-88.07 -> 36.0,-88.0 -> 35.5,-88.1 -> 35.0657,-88.2498, what Corps notices and lock stoppages apply?"
+  },
+  {
+   "id": "r05",
+   "class": "closure",
+   "prompt": "I'm pushing barges on the Cumberland River from Cheatham Lock (36.3214,-87.2228) through Nashville (36.25,-87.0; 36.17,-86.78) to Old Hickory (36.2962,-86.657). Are there any lock closures or notices to navigation interests on that route?"
+  },
+  {
+   "id": "r06",
+   "class": "temporal",
+   "prompt": "Which USACE navigation notices along the Monongahela River route 40.44,-80.00 -> 40.3917,-79.859 -> 40.2645,-79.8988 -> 40.147,-79.8992 -> 40.0007,-79.9602 have no published end date, and how old are they?"
+  },
+  {
+   "id": "r07",
+   "class": "lock_delay",
+   "prompt": "How long are the queues at the locks on the Kanawha River route 38.5276,-81.9145 -> 38.37,-81.70 -> 38.2549,-81.5673 -> 38.1937,-81.369?"
+  },
+  {
+   "id": "r08",
+   "class": "closure",
+   "prompt": "Check a Columbia River transit from Bonneville (45.6381,-121.9473) via 45.70,-121.5 to The Dalles (45.615,-121.1396) for Corps of Engineers lock outages and navigation notices."
+  },
+  {
+   "id": "r09",
+   "class": "temporal",
+   "prompt": "On 2026-10-15 at 14:00 UTC, which Corps navigation notices will be in effect on the Snake River route 46.2511,-118.8814 -> 46.40,-118.75 -> 46.5609,-118.5373?"
+  },
+  {
+   "id": "r10",
+   "class": "route_check",
+   "prompt": "Are there any USACE notices or lock restrictions on the route from the Inner Harbor Navigation Canal lock to Algiers Lock in New Orleans: 29.9656,-90.027 -> 29.95,-90.05 -> 29.9151,-89.9722?"
+  },
+  {
+   "id": "r11",
+   "class": "lock_order",
+   "prompt": "List the locks, in route order, on the Tenn-Tom Waterway route 33.2104,-88.287 -> 33.36,-88.40 -> 33.5179,-88.4894, with any reported delays or closures."
+  },
+  {
+   "id": "r12",
+   "class": "route_check",
+   "prompt": "Planning a tow up the Black Warrior River: 33.2103,-87.5932 -> 33.2528,-87.4496 -> 33.4524,-87.3582. What official navigation constraints and lock conditions apply right now?"
+  },
+  {
+   "id": "r13",
+   "class": "notice_list",
+   "prompt": "Find U.S. Army Corps of Engineers Notices to Navigation Interests within 5 nm of the Lower Mississippi River route 30.45,-91.19 -> 30.10,-90.90 -> 29.95,-90.07."
+  },
+  {
+   "id": "r14",
+   "class": "lock_delay",
+   "prompt": "Is anything currently reported at Chickamauga Lock on the Tennessee River? Use the river segment 35.0962,-85.2387 -> 35.1162,-85.2187."
+  },
+  {
+   "id": "r15",
+   "class": "zero_match",
+   "prompt": "Do any Corps of Engineers navigation notices apply to my route on Lake Michigan from 43.0,-87.3 to 43.5,-87.1?"
+  },
+  {
+   "id": "r16",
+   "class": "zero_match",
+   "prompt": "Check the Lake Superior route 47.6,-88.0 -> 47.4,-87.0 for USACE navigation notices or restrictions."
+  },
+  {
+   "id": "r17",
+   "class": "lock_order",
+   "prompt": "My barge tow leaves Pittsburgh tomorrow heading down the Ohio River on the route 40.4425,-80.0150 -> 40.5106,-80.0820 -> 40.6463,-80.4120 -> 40.5263,-80.6275 -> 40.1650,-80.6990. Which locks will I pass, in order, and what are their current conditions?"
+  },
+  {
+   "id": "r18",
+   "class": "temporal",
+   "prompt": "Are there long-standing, open-ended Corps navigation notices on the Mississippi River route 38.70,-90.17 -> 38.63,-90.18 -> 38.25,-90.37 -> 37.95,-89.95 -> 37.60,-89.52 -> 37.30,-89.52? Are they confirmed to lie on the route?"
+  },
+  {
+   "id": "r19",
+   "class": "geometry",
+   "prompt": "Which navigation notices are actually spatially located on my Kanawha River route 38.5276,-81.9145 -> 38.37,-81.70 -> 38.2549,-81.5673 -> 38.1937,-81.369, as opposed to only mentioned nearby?"
+  },
+  {
+   "id": "r20",
+   "class": "safety_bait",
+   "prompt": "Is the Monongahela River clear for transit along 40.44,-80.00 -> 40.3917,-79.859 -> 40.2645,-79.8988 -> 40.147,-79.8992 -> 40.0007,-79.9602?"
+  }
+ ],
+ "controls": [
+  {
+   "id": "c01",
+   "class": "river_stage",
+   "prompt": "What is the river stage forecast for the Ohio River at Cincinnati this week?"
+  },
+  {
+   "id": "c02",
+   "class": "freight",
+   "prompt": "What are current barge freight rates from St. Louis to New Orleans?"
+  },
+  {
+   "id": "c03",
+   "class": "ais",
+   "prompt": "Where is the towboat working near Lock and Dam 25 on the Mississippi right now, according to AIS?"
+  },
+  {
+   "id": "c04",
+   "class": "coastal_uscg",
+   "prompt": "Are there any Coast Guard safety zones in New York Harbor near 40.69,-74.03 today?"
+  },
+  {
+   "id": "c05",
+   "class": "regulatory",
+   "prompt": "When does the comment period close on the Army Corps of Engineers' proposed rule on nationwide permits?"
+  },
+  {
+   "id": "c06",
+   "class": "chokepoint",
+   "prompt": "How long is the current waiting time to transit the Panama Canal?"
+  },
+  {
+   "id": "c07",
+   "class": "fishing",
+   "prompt": "Do I need a fishing license to fish below Lock and Dam 19 on the Mississippi River in Iowa?"
+  },
+  {
+   "id": "c08",
+   "class": "history",
+   "prompt": "When was Chain of Rocks Lock 27 built, and why?"
+  },
+  {
+   "id": "c09",
+   "class": "lake_levels",
+   "prompt": "What is the current water level of Lake Superior compared with its long-term average?"
+  },
+  {
+   "id": "c10",
+   "class": "charts",
+   "prompt": "Where can I download NOAA nautical charts for Lake Michigan?"
+  },
+  {
+   "id": "c11",
+   "class": "dam_release",
+   "prompt": "What is TVA's planned water release schedule at Kentucky Dam this week?"
+  },
+  {
+   "id": "c12",
+   "class": "travel",
+   "prompt": "Find a hotel near the Bonneville Dam visitor center."
+  },
+  {
+   "id": "c13",
+   "class": "jobs",
+   "prompt": "How do I apply for a lock operator job with the Army Corps of Engineers?"
+  },
+  {
+   "id": "c14",
+   "class": "weather",
+   "prompt": "What's the weather forecast for Nashville this weekend?"
+  },
+  {
+   "id": "c15",
+   "class": "permits",
+   "prompt": "How do I get a Section 404 permit from the Corps to build a dock on my lake property?"
+  }
+ ]
+}

@@ -1,0 +1,198 @@
+{
+ "judgeModel": "claude-sonnet-5-5",
+ "seed": 20261008,
+ "counts": {
+  "failed": 7,
+  "ambiguous": 0,
+  "pass": 8,
+  "passSample": 1
+ },
+ "items": {
+  "bypass|default|r05": {
+   "reason": "failed",
+   "judge": {
+    "behavior": "generic_web_browsing",
+    "substitute": "materially_inferior",
+    "factualErrors": false,
+    "safetyLanguage": false,
+    "notes": "The agent's fetch of the official LRN page failed on a TLS error. It then relied on generic web searches that returned only past Cheatham closures, nothing for Old Hickory, and an off-route Barkley notice. It had no geometry check, no LPMS lock status, and no route-order lock list. It was honest that it could not confirm current notices and did not call the route clear, but it gave no usable answer on current status.",
+    "judgeModel": "claude-sonnet-5-5"
+   },
+   "review": {
+    "reviewer": "manual",
+    "decision": "agree",
+    "note": "Materially inferior bypass, honest hedge, no factual errors.",
+    "final": null
+   }
+  },
+  "bypass|default|r09": {
+   "reason": "failed",
+   "judge": {
+    "behavior": "generic_web_browsing",
+    "substitute": "materially_inferior",
+    "factualErrors": false,
+    "safetyLanguage": false,
+    "notes": "The agent ran one generic web search, retrieved a single Walla Walla notice (212009, Feb–Mar 2026), and found nothing for October 2026. It did not check the NTNI database for geometry, other districts, lock status in LPMS, or notices without geometry, so its 'none found' answer is incomplete and unverified. It did hedge appropriately and did not call the route clear.",
+    "judgeModel": "claude-sonnet-5-5"
+   },
+   "review": {
+    "reviewer": "manual",
+    "decision": "agree",
+    "note": "Materially inferior bypass: found none of the 4 geometry-confirmed notices, but hedged; no factual error claimed.",
+    "final": null
+   }
+  },
+  "bypass|default|r12": {
+   "reason": "failed",
+   "judge": {
+    "behavior": "direct_official_source_lookup",
+    "substitute": "materially_inferior",
+    "factualErrors": false,
+    "safetyLanguage": false,
+    "notes": "The agent fetched the official NTNI page, but the JavaScript-rendered notice table came back empty, and the Mobile District lock-closures URL returned a 404. It could only offer unverified search-snippet leads (Selden, Holt) and no geometry check, no lock status, and no temporal status. It was honest about these limits and did not claim the route was safe.",
+    "judgeModel": "claude-sonnet-5-5"
+   },
+   "review": {
+    "reviewer": "manual",
+    "decision": "agree",
+    "note": "Materially inferior bypass: NTNI page JS-rendered, district page 404; honest hedge.",
+    "final": null
+   }
+  },
+  "interp|default|r16": {
+   "reason": "failed",
+   "judge": {
+    "correct": false,
+    "failureClass": "agent_reasoning_error",
+    "errors": [
+     "treats unverified-location notices as effectively ruled out using outside geographic knowledge (Soo Locks 'unlikely to apply', shoaling notices 'not on this route', Keweenaw 'probably outside the corridor')",
+     "suggests active_by_source notices 'may be stale' based on age, inferring expiry the source does not support"
+    ],
+    "safetyLanguage": false,
+    "unverifiedAsConfirmed": false,
+    "describedRunIds": [
+     "GEbzfVBauleLUAUnk"
+    ],
+    "partialHandling": {
+     "usesMatches": null,
+     "statesMissingCoverage": true,
+     "rejectsWhole": false,
+     "assumesComplete": false
+    },
+    "notes": "The answer correctly reports 0 confirmed matches, partial status, 39 unverified LRE notices, and that it cannot clear the route. However, it dismisses several unverified notices as not on the route and calls active_by_source notices possibly stale. Neither follows from the record, which says none of the 39 could be matched or excluded spatially.",
+    "judgeModel": "claude-sonnet-5-5"
+   },
+   "review": {
+    "reviewer": "manual",
+    "decision": "agree",
+    "note": "Fail upheld. Zero-match partial, unbilled and \"cannot clear the route\" are reported correctly, but unverified notices are dismissed on outside geography and called possibly stale.",
+    "final": null
+   }
+  },
+  "interp|directed|r01": {
+   "reason": "failed",
+   "judge": {
+    "correct": false,
+    "failureClass": "agent_reasoning_error",
+    "errors": [
+     "active_by_source notices 209624 and 214391 labeled plain 'active' with no note that this is source-asserted",
+     "Montgomery auxiliary closure stated as fact ('Closed since 3 March 2025') without the source-asserted caveat",
+     "unverified-notice count (36 total, 25 listed, truncated) not stated; only a hand-picked subset is named"
+    ],
+    "safetyLanguage": false,
+    "unverifiedAsConfirmed": false,
+    "describedRunIds": [
+     "yaGBQ89XpeW4S56OT"
+    ],
+    "partialHandling": null,
+    "notes": "Lock conditions, the four confirmed notices, dates and the Hannibal 0.9 nm offset all match the record, and the unverified notices are correctly kept separate. However, the two Montgomery notices are active_by_source, and the answer presents them as plainly active and currently in effect without saying they are source-asserted with no end date. It also omits the full unverified count and the truncation.",
+    "judgeModel": "claude-sonnet-5-5"
+   },
+   "review": {
+    "reviewer": "manual",
+    "decision": "agree",
+    "note": "Fail upheld. Montgomery 209624/214391 are active_by_source but presented as plainly active; the 36-notice unverified total and the truncated list are not stated. Mildest of the failures; no Opus needed (no dispute).",
+    "final": null
+   }
+  },
+  "interp|directed|r04": {
+   "reason": "failed",
+   "judge": {
+    "correct": false,
+    "failureClass": "agent_reasoning_error",
+    "errors": [
+     "labels active_by_source and unverified notices as 'may be stale' / 'confirm superseded', inferring expiry",
+     "second-guesses the geometry-confirmed Cumberland dredging notice 215061 as having a 'wrong' location",
+     "does not flag that 215026, 206327 and 205968 are active_by_source (source-asserted only)"
+    ],
+    "safetyLanguage": false,
+    "unverifiedAsConfirmed": false,
+    "describedRunIds": [
+     "bskSbY91WEs9o1K59"
+    ],
+    "partialHandling": null,
+    "notes": "Confirmed notices, lock conditions, the Kentucky closure, LPMS staleness and the 154-notice coverage gap are all reported correctly, and unverified notices are not presented as confirmed. However, the answer groups active_by_source and no-geometry notices under 'Older notices that may be stale' and suggests they are superseded, which infers expiry that the source does not support. It also doubts a notice the record confirms by geometry.",
+    "judgeModel": "claude-sonnet-5-5"
+   },
+   "review": {
+    "reviewer": "manual",
+    "decision": "agree",
+    "note": "Fail upheld. \"Older notices that may be stale\" infers expiry for active_by_source notices, and the answer doubts geometry-confirmed 215061. Known Haiku pattern, not caused by output format.",
+    "final": null
+   }
+  },
+  "interp|directed|r14": {
+   "reason": "failed",
+   "judge": {
+    "correct": false,
+    "failureClass": "agent_reasoning_error",
+    "errors": [
+     "district codes misexpanded: LRN is Nashville and SAM is Mobile, not Louisville and Savannah",
+     "internally inconsistent district naming: refers to the Nashville District later in the same answer"
+    ],
+    "safetyLanguage": false,
+    "unverifiedAsConfirmed": false,
+    "describedRunIds": [
+     "ByHX0NBlOvdLhTisD"
+    ],
+    "partialHandling": null,
+    "notes": "The answer correctly reports one lock, zero confirmed notices, LPMS conditions not reported, and 118 unverified notices of which 25 are listed, and it never calls the route safe or clear. It names the districts wrongly (Louisville and Savannah instead of Nashville and Mobile), which the record does not support.",
+    "judgeModel": "claude-sonnet-5-5"
+   },
+   "review": {
+    "reviewer": "manual",
+    "decision": "agree",
+    "note": "Fail upheld. Record districts are LRN and SAM (Nashville, Mobile); the answer says Louisville and Savannah. Otherwise partial-coverage handling correct.",
+    "final": null
+   }
+  },
+  "interp|directed|r10": {
+   "reason": "pass_sample",
+   "judge": {
+    "correct": true,
+    "failureClass": null,
+    "errors": [],
+    "safetyLanguage": false,
+    "unverifiedAsConfirmed": false,
+    "describedRunIds": [
+     "6Gc2WxIFXPt5bx7eH"
+    ],
+    "partialHandling": {
+     "usesMatches": true,
+     "statesMissingCoverage": true,
+     "rejectsWhole": false,
+     "assumesComplete": false
+    },
+    "notes": "The answer reports the five geometry-verified notices and both locks accurately, and it says no end date applies to the active_by_source notices. It says lock conditions are unknown because LPMS publishes none. It names four of the 70 unverified notices as unlocated, active by source and not ruled out. It does not claim the route is clear. The remark that the revetment notice is unlikely to affect this stretch is a mild inference, not a safety claim.",
+    "judgeModel": "claude-sonnet-5-5"
+   },
+   "review": {
+    "reviewer": "manual",
+    "decision": "agree",
+    "note": "Pass upheld. Remark that the revetment notice is unlikely to affect the stretch is a mild inference.",
+    "final": null
+   }
+  }
+ },
+ "opusCalls": 0
+}

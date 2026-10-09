@@ -1,6 +1,6 @@
 # Actor #4 launch-readiness report: USACE Inland Waterway Transit Constraint Resolver
 
-**Decision: PRIVATE PLATFORM TEST PASSED.** Deployed privately as https://console.apify.com/actors/yCe6FapeAhjNo6XiQ (build 1.0.2). Public publishing is not authorized.
+**Decision: PRIVATE PLATFORM TEST PASSED; PUBLISHED.** Build 1.0.2 passed the private platform test and was published on 2026-10-09 with owner authorization: https://apify.com/rhincodontypus/usace-waterway-transit-constraint-resolver (categories `TRAVEL`, `AUTOMATION`; settings and pricing unchanged after publishing). The agent benchmark is in `benchmarks/actor4/`.
 
 ## Source feasibility
 All sources are official USACE, need no key, and every one was reached in live runs:
@@ -94,3 +94,11 @@ Likely adequate. A generic agent would need to:
 - join LPMS.
 
 **Exception:** "delays at locks on the Ohio" can be answered with a single LPMS call.
+
+## Build 1.0.4: compact record (schema 1.2), public `latest`
+
+- The 1.0.3 record (81k–419k chars) was too large for agents: the benchmark's 60k tool-result cut fell inside `unverifiedLocationNotices` in 20 of 22 runs (`docs/benchmarks/actor4-1.0.3-truncation-evidence.json`). That run was not graded for interpretation.
+- 1.0.4 opens with `status`, `summary`, `billing`, `coverage`. It lists at most 25 compact unverified notices, without text or provenance, and gives every unverified notice ID in `unverifiedNoticeListing.noticeIdsByDistrict`. Confirmed-notice text is cut at about 1,000 characters (`officialTextTruncated`). The full record is in key-value store record `FULL_RESULT`. Matching, coverage, status and billing are unchanged.
+- Platform acceptance on 1.0.4 covered Columbia, Snake, Ohio, Cumberland, zero-match (r15), two heavy routes (r04, r02) and invalid input. Records were 0.8k–38.8k chars. The charge matched `billing.billable` in every run.
+- `latest` → 1.0.4; 1.0.3 kept as rollback under tag `rollback-v103`.
+- Reduced benchmark: PASS. See `docs/benchmarks/ACTOR4_1.0.4_REDUCED_BENCHMARK.md`. Actor #4 is in maintenance / observation mode.

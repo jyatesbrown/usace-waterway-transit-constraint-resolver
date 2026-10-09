@@ -1,0 +1,234 @@
+{
+ "agentModel": "claude-haiku-5-5",
+ "judgeModel": "claude-sonnet-5-5",
+ "actorBuild": "1.0.4 (latest)",
+ "reviewSeed": 20261008,
+ "episodes": [
+  {
+   "arm": "directed",
+   "id": "r01",
+   "model": "claude-haiku-5-5",
+   "selected": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+   "portfolioCalls": [
+    "actor4"
+   ],
+   "maxToolResultChars": 33969,
+   "anyClippedForAgent": false,
+   "elapsedS": 35.99
+  },
+  {
+   "arm": "directed",
+   "id": "r02",
+   "model": "claude-haiku-5-5",
+   "selected": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+   "portfolioCalls": [
+    "actor4"
+   ],
+   "maxToolResultChars": 24743,
+   "anyClippedForAgent": false,
+   "elapsedS": 31.56
+  },
+  {
+   "arm": "directed",
+   "id": "r04",
+   "model": "claude-haiku-5-5",
+   "selected": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+   "portfolioCalls": [
+    "actor4"
+   ],
+   "maxToolResultChars": 36837,
+   "anyClippedForAgent": false,
+   "elapsedS": 52.25
+  },
+  {
+   "arm": "directed",
+   "id": "r06",
+   "model": "claude-haiku-5-5",
+   "selected": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+   "portfolioCalls": [
+    "actor4"
+   ],
+   "maxToolResultChars": 33214,
+   "anyClippedForAgent": false,
+   "elapsedS": 27.23
+  },
+  {
+   "arm": "directed",
+   "id": "r08",
+   "model": "claude-haiku-5-5",
+   "selected": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+   "portfolioCalls": [
+    "actor4"
+   ],
+   "maxToolResultChars": 20672,
+   "anyClippedForAgent": false,
+   "elapsedS": 22.79
+  },
+  {
+   "arm": "directed",
+   "id": "r10",
+   "model": "claude-haiku-5-5",
+   "selected": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+   "portfolioCalls": [
+    "actor4"
+   ],
+   "maxToolResultChars": 31375,
+   "anyClippedForAgent": false,
+   "elapsedS": 24.34
+  },
+  {
+   "arm": "directed",
+   "id": "r13",
+   "model": "claude-haiku-5-5",
+   "selected": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+   "portfolioCalls": [
+    "actor4"
+   ],
+   "maxToolResultChars": 36818,
+   "anyClippedForAgent": false,
+   "elapsedS": 23.05
+  },
+  {
+   "arm": "directed",
+   "id": "r14",
+   "model": "claude-haiku-5-5",
+   "selected": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+   "portfolioCalls": [
+    "actor4"
+   ],
+   "maxToolResultChars": 21215,
+   "anyClippedForAgent": false,
+   "elapsedS": 19.49
+  },
+  {
+   "arm": "directed",
+   "id": "r15",
+   "model": "claude-haiku-5-5",
+   "selected": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+   "portfolioCalls": [
+    "actor4"
+   ],
+   "maxToolResultChars": 18333,
+   "anyClippedForAgent": false,
+   "elapsedS": 25.69
+  },
+  {
+   "arm": "directed",
+   "id": "r16",
+   "model": "claude-haiku-5-5",
+   "selected": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+   "portfolioCalls": [
+    "actor4"
+   ],
+   "maxToolResultChars": 18339,
+   "anyClippedForAgent": false,
+   "elapsedS": 24.12
+  },
+  {
+   "arm": "directed",
+   "id": "c01",
+   "model": "claude-haiku-5-5",
+   "selected": null,
+   "portfolioCalls": [],
+   "maxToolResultChars": 6914,
+   "anyClippedForAgent": false,
+   "elapsedS": 6.89
+  },
+  {
+   "arm": "directed",
+   "id": "c03",
+   "model": "claude-haiku-5-5",
+   "selected": "xtracto/marinetraffic-ship-tracker",
+   "portfolioCalls": [],
+   "maxToolResultChars": 10010,
+   "anyClippedForAgent": false,
+   "elapsedS": 7.61
+  },
+  {
+   "arm": "directed",
+   "id": "c04",
+   "model": "claude-haiku-5-5",
+   "selected": "rhincodontypus/uscg-navigation-restriction-resolver",
+   "portfolioCalls": [
+    "actor3"
+   ],
+   "maxToolResultChars": 7203,
+   "anyClippedForAgent": false,
+   "elapsedS": 21.02
+  },
+  {
+   "arm": "directed",
+   "id": "c09",
+   "model": "claude-haiku-5-5",
+   "selected": "benthepythondev/noaa-tides-water-level-scraper",
+   "portfolioCalls": [],
+   "maxToolResultChars": 5461,
+   "anyClippedForAgent": false,
+   "elapsedS": 8.05
+  },
+  {
+   "arm": "directed",
+   "id": "c10",
+   "model": "claude-haiku-5-5",
+   "selected": null,
+   "portfolioCalls": [],
+   "maxToolResultChars": 0,
+   "anyClippedForAgent": false,
+   "elapsedS": 6.09
+  },
+  {
+   "arm": "default",
+   "id": "r05",
+   "model": "claude-haiku-5-5",
+   "selected": "apify/web-fetch",
+   "portfolioCalls": [],
+   "maxToolResultChars": 28764,
+   "anyClippedForAgent": false,
+   "elapsedS": 55.22
+  },
+  {
+   "arm": "default",
+   "id": "r07",
+   "model": "claude-haiku-5-5",
+   "selected": "apify/rag-web-browser",
+   "portfolioCalls": [
+    "actor4"
+   ],
+   "maxToolResultChars": 16474,
+   "anyClippedForAgent": false,
+   "elapsedS": 61.21
+  },
+  {
+   "arm": "default",
+   "id": "r09",
+   "model": "claude-haiku-5-5",
+   "selected": "apify/rag-web-browser",
+   "portfolioCalls": [],
+   "maxToolResultChars": 12470,
+   "anyClippedForAgent": false,
+   "elapsedS": 32.86
+  },
+  {
+   "arm": "default",
+   "id": "r12",
+   "model": "claude-haiku-5-5",
+   "selected": "apify/rag-web-browser",
+   "portfolioCalls": [],
+   "maxToolResultChars": 23532,
+   "anyClippedForAgent": false,
+   "elapsedS": 73.81
+  },
+  {
+   "arm": "default",
+   "id": "r16",
+   "model": "claude-haiku-5-5",
+   "selected": "apify/rag-web-browser",
+   "portfolioCalls": [
+    "actor4"
+   ],
+   "maxToolResultChars": 40215,
+   "anyClippedForAgent": false,
+   "elapsedS": 43.28
+  }
+ ]
+}

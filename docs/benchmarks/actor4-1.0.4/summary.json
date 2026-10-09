@@ -1,0 +1,1289 @@
+{
+ "arms": {
+  "default": {
+   "actor4": {
+    "metrics": {
+     "relevant": 5,
+     "discovery": {
+      "surfaced": 2,
+      "rate": 40.0,
+      "top1": 40.0,
+      "top3": 40.0,
+      "top5": 40.0,
+      "meanRank": 1,
+      "medianRank": 1.0,
+      "searchedAtAll": 2
+     },
+     "selection": {
+      "selected": 2,
+      "givenDiscovery": 100.0,
+      "endToEnd": 40.0
+     },
+     "invocation": {
+      "calls": 2,
+      "firstAttemptValid": 100.0,
+      "eventualValid": 100.0,
+      "perCallValid": 100.0,
+      "executionSuccess": 100.0
+     },
+     "interpretation": {
+      "graded": 2,
+      "correct": 1,
+      "accuracy": 50.0,
+      "failureClasses": {
+       "agent_reasoning_error": 1
+      },
+      "unverifiedAsConfirmed": 0,
+      "safetyLanguage": 0
+     },
+     "abstention": {
+      "nonRelevantPrompts": 0,
+      "falseDiscovery": 0,
+      "falseSelection": 0,
+      "falseInvocation": 0,
+      "falseSelectionRate": null
+     },
+     "latency": {
+      "actorRunTimeSecs": {
+       "n": 2,
+       "mean": 20.13,
+       "median": 20.13,
+       "min": 6.05,
+       "max": 34.21
+      },
+      "toolRoundTripS": {
+       "n": 2,
+       "mean": 22.87,
+       "median": 22.87,
+       "min": 9.81,
+       "max": 35.93
+      },
+      "episodeS": {
+       "n": 5,
+       "mean": 53.28,
+       "median": 55.22,
+       "min": 32.86,
+       "max": 73.81
+      }
+     },
+     "firstSelections": {
+      "apify/web-fetch": 1,
+      "apify/rag-web-browser": 4
+     },
+     "bypass": {
+      "bypassed": 3,
+      "bypassRate": 60.0,
+      "behavior": {
+       "generic_web_browsing": 2,
+       "direct_official_source_lookup": 1
+      },
+      "substitute": {
+       "materially_inferior": 3
+      },
+      "equivalentBypass": 0,
+      "equivalentBypassRate": 0.0,
+      "factualErrors": 0,
+      "safetyLanguage": 0
+     },
+     "partialAnalysis": {
+      "byClass": {
+       "complete_positive": {
+        "graded": 1,
+        "correct": 1,
+        "accuracy": 100.0
+       },
+       "zero_match_partial": {
+        "graded": 1,
+        "correct": 0,
+        "accuracy": 0.0
+       }
+      },
+      "partialHandling": {
+       "usesMatches": 0,
+       "statesMissingCoverage": 1,
+       "rejectsWhole": 0,
+       "assumesComplete": 0
+      },
+      "partialGraded": 1
+     },
+     "competitors": {
+      "appearances": {
+       "hipersoft/flood-scraper": 1,
+       "nexgensignal/england-flood-station-records": 1,
+       "chrisp1211/flood-forecast-scraper-max": 1,
+       "getdataforme/egrusa-category-scraper": 1
+      },
+      "bestRank": {
+       "hipersoft/flood-scraper": 2,
+       "nexgensignal/england-flood-station-records": 3,
+       "chrisp1211/flood-forecast-scraper-max": 4,
+       "getdataforme/egrusa-category-scraper": 2
+      },
+      "outrankedOursOrOursAbsent": {},
+      "selectedInsteadOfOurs": {}
+     }
+    },
+    "rows": [
+     {
+      "id": "r05",
+      "class": "closure",
+      "rank": null,
+      "searched": false,
+      "selected": false,
+      "firstSelection": "apify/web-fetch",
+      "invocations": [],
+      "elapsedS": 55.22,
+      "finalAnswer": "I couldn't confirm whether there are current notices for your route. The official USACE Nashville District notice page failed on a TLS certificate error, and my searches only turned up older notices and nothing for Old Hickory.\n\n**What I found:**\n- **Cheatham Lock (CRM 148.7):** Two past closures, both now over:\n  - Scheduled repairs, March 10 to May 29, 2025, with interim openings. The Regional Rivers Repair Fleet occupied the upstream mooring cells during that period.\n  - A 5-day closure from 0900 on October 27 to 1700 on October 31, 2025, for upstream landside sector gear repair. This was posted by America's Great Loop Cruisers' Association.\n- **Old Hickory Lock:** No notices found.\n- **Barkley Lock (CRM 30.6), not on your route:** A closure from August 10 to September 30, 2026 appeared in search results. It is downstream of Nashville, so it only matters if your trip extends that far.\n\n**To check for current notices before you run:**\n- The USACE Notice to Navigation database (NTNI) at ndc.ops.usace.army.mil/ords/ntni, filtered to the Cumberland River and the Nashville District.\n- Cheatham Lockmaster: (615) 792-4349, or VHF Channel 13/16.\n- Old Hickory Lock, which I haven't verified a phone number for. Call the Nashville District office or check the NTNI listing.",
+      "stoppedAt": null,
+      "bypass": {
+       "behavior": "generic_web_browsing",
+       "substitute": "materially_inferior",
+       "factualErrors": false,
+       "safetyLanguage": false,
+       "notes": "The agent's fetch of the official LRN page failed on a TLS error. It then relied on generic web searches that returned only past Cheatham closures, nothing for Old Hickory, and an off-route Barkley notice. It had no geometry check, no LPMS lock status, and no route-order lock list. It was honest that it could not confirm current notices and did not call the route clear, but it gave no usable answer on current status.",
+       "judgeModel": "claude-sonnet-5-5"
+      }
+     },
+     {
+      "id": "r07",
+      "class": "lock_delay",
+      "rank": 1,
+      "searched": true,
+      "selected": true,
+      "firstSelection": "apify/rag-web-browser",
+      "invocations": [
+       {
+        "actor": "actor4",
+        "runId": "My1ipbeNRsdSLeMfO",
+        "input": {
+         "route": [
+          {
+           "lat": 38.5276,
+           "lon": -81.9145
+          },
+          {
+           "lat": 38.37,
+           "lon": -81.7
+          },
+          {
+           "lat": 38.2549,
+           "lon": -81.5673
+          },
+          {
+           "lat": 38.1937,
+           "lon": -81.369
+          }
+         ],
+         "corridorNm": 1
+        },
+        "isError": false,
+        "callError": null,
+        "runStatus": "SUCCEEDED",
+        "datasetStatus": "success",
+        "executionSuccess": true,
+        "valid": true,
+        "runTimeSecs": 34.209,
+        "toolLatencyS": 35.933,
+        "chargedEventCounts": {
+         "apify-actor-start": 1,
+         "waterway-route-check": 1
+        },
+        "billable": true
+       }
+      ],
+      "elapsedS": 61.21,
+      "finalAnswer": "Right now the queues are short. Based on the USACE Lock Performance Monitoring System snapshot, the route passes three locks:\n\n| Lock (river mile) | Vessels waiting | Vessels locking | Reported avg. delay |\n|---|---|---|---|\n| Winfield Locks & Dam (RM 31.1) | 0 | 0 | 0 min |\n| Marmet Locks & Dam (RM 67.7) | 1 | 0 | 6 min |\n| London Locks & Dam (RM 82.8) | 0 | 0 | 0 min |\n\nThe data is from 14:00 local time on October 9, 2026, and the lock status records are up to about 2.5 hours old, so conditions may have changed since. All three locks operate 24/7.\n\nThe London Lock has an active notice (NTNI 214329) about a main chamber closure, which could affect future delays there. I didn't read the full notice text. The 38.37,-81.70 point is not a lock, so it has no queue data.",
+      "stoppedAt": null,
+      "recordStatus": "success",
+      "recordCount": 1,
+      "partialClass": "complete_positive",
+      "interpretation": {
+       "correct": true,
+       "failureClass": null,
+       "errors": [],
+       "safetyLanguage": false,
+       "unverifiedAsConfirmed": false,
+       "describedRunIds": [
+        "My1ipbeNRsdSLeMfO"
+       ],
+       "partialHandling": null,
+       "notes": "The queue figures match the LPMS data: Winfield 0/0/0 min, Marmet 1 pending and 6 min delay, London 0/0/0 min. The 14:00 local timestamp and the roughly 2.5-hour age are also correct, and no safety language is used. Weak points: the answer repeats the LPMS '24/7' hours although confirmed notice 212613 says London runs 20 hours a day. It also calls the active_by_source notice 214329 simply 'active' and says it 'could affect' delays, when it says the main chamber is closed until further notice. These are minor and do not affect the queue answer.",
+       "judgeModel": "claude-sonnet-5-5"
+      }
+     },
+     {
+      "id": "r09",
+      "class": "temporal",
+      "rank": null,
+      "searched": false,
+      "selected": false,
+      "firstSelection": "apify/rag-web-browser",
+      "invocations": [],
+      "elapsedS": 32.86,
+      "finalAnswer": "**Short answer: I couldn't find any Corps navigation notice that is in effect for October 15, 2026, so I can't confirm any restrictions for that time.** Notices are usually issued days or weeks ahead, so the absence of one now doesn't mean there won't be one.\n\n**What the route covers:** Your start point (46.2511, -118.8814) is at Ice Harbor Dam, and your end point (46.5609, -118.5373) is near Lower Monumental Dam. The route runs through the Ice Harbor–Lower Monumental reach of the lower Snake River (roughly Snake River miles 9.7 to 41.6). Those are the locks that would matter for this trip.\n\n**What I found:** The only Walla Walla District notice I could retrieve was Notice 212009 (dated 09/24/2025). It covers the annual maintenance closure of Ice Harbor and Lower Monumental, among other locks, from 12:01 a.m. on February 21 to 11:59 p.m. on March 28, 2026. That window ends well before October 15, 2026, so it doesn't apply. I didn't find any notice covering October 2026.\n\n**Time check:** 14:00 UTC on October 15, 2026 is 07:00 PDT, which is the time zone the notices use.\n\n**How to check:**\n- Search the USACE Notice to Navigation Interests database (ndc.ops.usace.army.mil/ords/ntni) for the Walla Walla District (NWW) and the Ice Harbor and Lower Monumental locks, filtering for effective dates that include 10/15/2026.\n- Check the Walla Walla District navigation page for lock status.\n- Confirm current status with the Walla Walla District Operations Division at (509) 527-7364 before travel.",
+      "stoppedAt": null,
+      "bypass": {
+       "behavior": "generic_web_browsing",
+       "substitute": "materially_inferior",
+       "factualErrors": false,
+       "safetyLanguage": false,
+       "notes": "The agent ran one generic web search, retrieved a single Walla Walla notice (212009, Feb–Mar 2026), and found nothing for October 2026. It did not check the NTNI database for geometry, other districts, lock status in LPMS, or notices without geometry, so its 'none found' answer is incomplete and unverified. It did hedge appropriately and did not call the route clear.",
+       "judgeModel": "claude-sonnet-5-5"
+      }
+     },
+     {
+      "id": "r12",
+      "class": "route_check",
+      "rank": null,
+      "searched": false,
+      "selected": false,
+      "firstSelection": "apify/rag-web-browser",
+      "invocations": [],
+      "elapsedS": 73.81,
+      "finalAnswer": "I could not confirm the current lock status or restrictions for your route. The official notice table didn't load, so I have no verified current conditions to give you.\n\n**What I checked**\n- **USACE Notices to Navigation Interests (NTNI)**, the official source: https://ndc.ops.usace.army.mil/ords/r/ntni/notices/navigation-notices. The page loaded but its notice table is generated by JavaScript, so I got only the site header and disclaimer.\n- **USACE Mobile District lock closures page**: the URL I tried returned a 404, so I couldn't reach it.\n\n**Search-snippet leads (unverified, since I couldn't open the notices)**\n- A Navigation Bulletin No. 26-115 for the Black Warrior River, Alabama, covering a **Selden Lock temporary closure at River Mile 261**, dated 09/22/2026. A companion bulletin, 26-114, is also listed. Selden is in your route's general area. Check whether the closure is still in effect.\n- An NTNI listing mentions a **Holt Lock & Dam** closure, plus lock restriction and maintenance-outage entries for the Black Warrior–Tombigbee system. I couldn't see dates or details.\n- A Facebook post mentions dredging near Rock Creek with Coast Guard aids to navigation marking the channel. It is not an official notice, and I couldn't confirm its date or whether it still applies.\n- USACE says lock closures can last from 1 to 30 days, and most are planned months or years ahead.\n\n**What to do before you go**\n1. Open the NTNI page in a browser. It's JavaScript-rendered, so it should show the table. Filter for Black Warrior River, Alabama, and note every notice that falls between your three waypoints.\n2. Call the USACE Mobile District Lock operations or lockmaster offices for the locks on your segments (for example Holt and Selden) and ask for same-day status, lockage hours, and any tow-size or draft restrictions.\n3. Check the USCG Local Notice to Mariners, which NTNI does not cover, for aids-to-navigation and hazard notices.\n4. Confirm the river-mile mapping for your waypoints with a current chart. I did not verify which lock and river miles fall between your three points.\n\nIf you can open the NTNI table and paste the Black Warrior entries, I can sort them by river mile against your route.",
+      "stoppedAt": null,
+      "bypass": {
+       "behavior": "direct_official_source_lookup",
+       "substitute": "materially_inferior",
+       "factualErrors": false,
+       "safetyLanguage": false,
+       "notes": "The agent fetched the official NTNI page, but the JavaScript-rendered notice table came back empty, and the Mobile District lock-closures URL returned a 404. It could only offer unverified search-snippet leads (Selden, Holt) and no geometry check, no lock status, and no temporal status. It was honest about these limits and did not claim the route was safe.",
+       "judgeModel": "claude-sonnet-5-5"
+      }
+     },
+     {
+      "id": "r16",
+      "class": "zero_match",
+      "rank": 1,
+      "searched": true,
+      "selected": true,
+      "firstSelection": "apify/rag-web-browser",
+      "invocations": [
+       {
+        "actor": "actor4",
+        "runId": "GEbzfVBauleLUAUnk",
+        "input": {
+         "route": [
+          {
+           "lat": 47.6,
+           "lon": -88.0
+          },
+          {
+           "lat": 47.4,
+           "lon": -87.0
+          }
+         ],
+         "corridorNm": 1
+        },
+        "isError": false,
+        "callError": null,
+        "runStatus": "SUCCEEDED",
+        "datasetStatus": "partial",
+        "executionSuccess": true,
+        "valid": true,
+        "runTimeSecs": 6.048,
+        "toolLatencyS": 9.808,
+        "chargedEventCounts": {
+         "apify-actor-start": 1,
+         "waterway-route-check": 0
+        },
+        "billable": false
+       }
+      ],
+      "elapsedS": 43.28,
+      "finalAnswer": "**Result: no confirmed USACE restrictions on this route, but the check is incomplete.** I can't clear the route.\n\n**What was checked:** The route is two points, 42.4 nm long, with a 1 nm corridor. I ran the USACE Inland Waterway Transit Constraint Resolver Actor, which checks USACE Notices to Navigation Interests (NTNI) and lock data.\n\n**Findings:**\n- **Confirmed matches:** 0 notices and 0 locks. No USACE lock lies within the corridor.\n- **Coverage gap:** 39 active LRE (Detroit District) notices have no published geometry, so they could not be matched or excluded spatially. The Actor lists 25 of them. The result is marked \"partial\" and says it does not mean no constraints exist.\n- **Listed notices:** Most are St. Marys Falls Canal / Soo Locks notices, which are far east of this route, so they are unlikely to apply. The Keweenaw Waterway \"sunken vessels\" hazard notice (ID 7462) is the only listed notice tied to this part of Lake Superior. Its location is unverified, and the Keweenaw Waterway entrance appears to be roughly 20 nm west of the route's start, so it is probably outside the corridor. Several notices are 3–10 years old with no end date, so they may be stale.\n- **Shoaling notices** (St. Joseph, Holland, Muskegon, Ludington, Arcadia and others) are in Lake Michigan or other harbors and are not on this route.\n\n**To close the gap:**\n1. Submit the actual channel route with intermediate points. Two endpoints in open water don't represent the path a vessel would take.\n2. Check the official NTNI list directly at ndc.ops.usace.army.mil and the current USCG Local Notices to Mariners for Lake Superior.\n3. Confirm with the Detroit District or the Keweenaw Waterway/Portage Lake lift bridge operators if the route uses that waterway.\n\nThis is official USACE data as retrieved, not a navigation or clearance determination. Check it against current charts and the lockmaster before transit. The Actor run was not billed.",
+      "stoppedAt": null,
+      "recordStatus": "partial",
+      "recordCount": 1,
+      "partialClass": "zero_match_partial",
+      "interpretation": {
+       "correct": false,
+       "failureClass": "agent_reasoning_error",
+       "errors": [
+        "treats unverified-location notices as effectively ruled out using outside geographic knowledge (Soo Locks 'unlikely to apply', shoaling notices 'not on this route', Keweenaw 'probably outside the corridor')",
+        "suggests active_by_source notices 'may be stale' based on age, inferring expiry the source does not support"
+       ],
+       "safetyLanguage": false,
+       "unverifiedAsConfirmed": false,
+       "describedRunIds": [
+        "GEbzfVBauleLUAUnk"
+       ],
+       "partialHandling": {
+        "usesMatches": null,
+        "statesMissingCoverage": true,
+        "rejectsWhole": false,
+        "assumesComplete": false
+       },
+       "notes": "The answer correctly reports 0 confirmed matches, partial status, 39 unverified LRE notices, and that it cannot clear the route. However, it dismisses several unverified notices as not on the route and calls active_by_source notices possibly stale. Neither follows from the record, which says none of the 39 could be matched or excluded spatially.",
+       "judgeModel": "claude-sonnet-5-5"
+      }
+     }
+    ]
+   },
+   "controls": {
+    "n": 0,
+    "surfacedOurs": {
+     "actor4": 0
+    },
+    "selectedOurs": {
+     "actor4": 0
+    },
+    "firstSelections": {},
+    "rows": []
+   }
+  },
+  "directed": {
+   "actor4": {
+    "metrics": {
+     "relevant": 10,
+     "discovery": {
+      "surfaced": 10,
+      "rate": 100.0,
+      "top1": 100.0,
+      "top3": 100.0,
+      "top5": 100.0,
+      "meanRank": 1,
+      "medianRank": 1.0,
+      "searchedAtAll": 10
+     },
+     "selection": {
+      "selected": 10,
+      "givenDiscovery": 100.0,
+      "endToEnd": 100.0
+     },
+     "invocation": {
+      "calls": 10,
+      "firstAttemptValid": 100.0,
+      "eventualValid": 100.0,
+      "perCallValid": 100.0,
+      "executionSuccess": 100.0
+     },
+     "interpretation": {
+      "graded": 10,
+      "correct": 7,
+      "accuracy": 70.0,
+      "failureClasses": {
+       "agent_reasoning_error": 3
+      },
+      "unverifiedAsConfirmed": 0,
+      "safetyLanguage": 0
+     },
+     "abstention": {
+      "nonRelevantPrompts": 5,
+      "falseDiscovery": 0,
+      "falseSelection": 0,
+      "falseInvocation": 0,
+      "falseSelectionRate": 0.0
+     },
+     "latency": {
+      "actorRunTimeSecs": {
+       "n": 10,
+       "mean": 9.43,
+       "median": 6.98,
+       "min": 5.87,
+       "max": 27.1
+      },
+      "toolRoundTripS": {
+       "n": 10,
+       "mean": 13.07,
+       "median": 11.1,
+       "min": 8.51,
+       "max": 28.17
+      },
+      "episodeS": {
+       "n": 10,
+       "mean": 28.65,
+       "median": 25.02,
+       "min": 19.49,
+       "max": 52.25
+      }
+     },
+     "firstSelections": {
+      "rhincodontypus/usace-waterway-transit-constraint-resolver": 10
+     },
+     "partialAnalysis": {
+      "byClass": {
+       "complete_positive": {
+        "graded": 5,
+        "correct": 2,
+        "accuracy": 40.0
+       },
+       "positive_partial": {
+        "graded": 3,
+        "correct": 3,
+        "accuracy": 100.0
+       },
+       "zero_match_partial": {
+        "graded": 2,
+        "correct": 2,
+        "accuracy": 100.0
+       }
+      },
+      "partialHandling": {
+       "usesMatches": 3,
+       "statesMissingCoverage": 5,
+       "rejectsWhole": 0,
+       "assumesComplete": 0
+      },
+      "partialGraded": 5
+     },
+     "competitors": {
+      "appearances": {
+       "malonestar/usace-levee-flood-risk-screener": 5,
+       "malonestar/nid-dam-risk-monitor": 4,
+       "mikechiou/wetland-clean-water-permits": 3,
+       "malonestar/fuds-defense-site-screener": 3,
+       "getdataforme/egrusa-category-scraper": 3,
+       "rhincodontypus/uscg-navigation-restriction-resolver": 3,
+       "zinin/wikipedia-article-table-extractor": 3,
+       "jungle_synthesizer/ridb-recreation-gov-facilities-scraper": 2,
+       "lofomachines/free-youtube-comments-scraper": 2,
+       "vittuhy/apify-task-usage-reporter": 2,
+       "funny_ground/tiktok-sound-scraper": 2,
+       "scrapemind/realtor-ca-scraper-usage": 2,
+       "drain54/web-to-markdown": 2,
+       "parsebird/impressum-legal-notice-scraper": 2,
+       "jobsapi/rrb-recruitment-jobs-search-scraper": 2
+      },
+      "bestRank": {
+       "malonestar/usace-levee-flood-risk-screener": 2,
+       "malonestar/nid-dam-risk-monitor": 2,
+       "mikechiou/wetland-clean-water-permits": 1,
+       "malonestar/fuds-defense-site-screener": 4,
+       "getdataforme/egrusa-category-scraper": 2,
+       "rhincodontypus/uscg-navigation-restriction-resolver": 1,
+       "zinin/wikipedia-article-table-extractor": 3,
+       "jungle_synthesizer/ridb-recreation-gov-facilities-scraper": 6,
+       "lofomachines/free-youtube-comments-scraper": 7,
+       "vittuhy/apify-task-usage-reporter": 8,
+       "funny_ground/tiktok-sound-scraper": 9,
+       "scrapemind/realtor-ca-scraper-usage": 10,
+       "drain54/web-to-markdown": 1,
+       "parsebird/impressum-legal-notice-scraper": 4,
+       "jobsapi/rrb-recruitment-jobs-search-scraper": 5
+      },
+      "outrankedOursOrOursAbsent": {
+       "mikechiou/wetland-clean-water-permits": 3,
+       "malonestar/nid-dam-risk-monitor": 3,
+       "rhincodontypus/uscg-navigation-restriction-resolver": 2,
+       "zinin/wikipedia-article-table-extractor": 2,
+       "drain54/web-to-markdown": 1,
+       "studio-amba/evergabe-scraper": 1,
+       "parsebird/impressum-legal-notice-scraper": 1,
+       "jobsapi/rrb-recruitment-jobs-search-scraper": 1,
+       "getdataforme/egrusa-category-scraper": 1,
+       "zaiq/website-crawler-by-country": 1,
+       "neverempty/terms-of-service-clause-finder": 1,
+       "datagleaner/team-page-contacts": 1,
+       "ponderable_hydrometer/usgs-water-scraper": 1,
+       "pink_comic/usgs-streamflow-water-levels": 1,
+       "benthepythondev/usgs-water-data-scraper": 1
+      },
+      "selectedInsteadOfOurs": {}
+     }
+    },
+    "rows": [
+     {
+      "id": "r01",
+      "class": "route_check",
+      "rank": 1,
+      "searched": true,
+      "selected": true,
+      "firstSelection": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+      "invocations": [
+       {
+        "actor": "actor4",
+        "runId": "yaGBQ89XpeW4S56OT",
+        "input": {
+         "route": [
+          {
+           "lat": 40.4425,
+           "lon": -80.015
+          },
+          {
+           "lat": 40.5106,
+           "lon": -80.082
+          },
+          {
+           "lat": 40.6463,
+           "lon": -80.412
+          },
+          {
+           "lat": 40.5263,
+           "lon": -80.6275
+          },
+          {
+           "lat": 40.165,
+           "lon": -80.699
+          }
+         ],
+         "corridorNm": 1
+        },
+        "isError": false,
+        "callError": null,
+        "runStatus": "SUCCEEDED",
+        "datasetStatus": "success",
+        "executionSuccess": true,
+        "valid": true,
+        "runTimeSecs": 10.592,
+        "toolLatencyS": 12.719,
+        "chargedEventCounts": {
+         "apify-actor-start": 1,
+         "waterway-route-check": 1
+        },
+        "billable": true
+       }
+      ],
+      "elapsedS": 35.99,
+      "finalAnswer": "## Route check: Pittsburgh to Hannibal, Ohio River (checked 2026-10-09 20:32 UTC)\n\nThe route is about 56 nm and passes four USACE locks. Three have active or upcoming notices, and one closure is scheduled for the endpoint area.\n\n### Lock conditions (LPMS, reported 14:00 local)\n\n| Lock (River Mile) | Vessels pending / locking | Avg delay | Lockages last 24h (up/down) | Notes |\n|---|---|---|---|---|\n| Emsworth (6.2) | 0 / 0 | 15 min | 8 / 7 | Gauge 16.7 ft upper, 13.7 ft lower |\n| Dashields (13.3) | 1 / 1 | 37 min | 4 / 2 | Highest delay on the route |\n| Montgomery (31.7) | 0 / 0 | 0 min | 5 / 4 | Operating under closure notices (below) |\n| New Cumberland (54.4) | 0 / 0 | 0 min | 5 / 4 | No queue reported |\n\nAll four are open 24/7/365. Delay and queue data are \"current,\" with records 0 to 152 minutes old.\n\n### Navigation notices affecting the route\n\n1. **Montgomery L/D, Mile 31.7: auxiliary chamber closed indefinitely (Notice 209624, active).** Closed since 3 March 2025 for construction of the new riverward chamber.\n2. **Montgomery L/D, Mile 31.7: revised locking procedures for the primary 110×600 ft chamber (Notice 214391, active).** Lower-approach outdrafts have been causing difficulties for tows. Requirements apply until at least the coffer dam is built (scheduled 2029). The official text is truncated in the results, so read the full notice before transiting.\n3. **Pike Island L/D, Mile 84.2: intermittent auxiliary chamber closures (Notice 215174, upcoming).** Daily closures during the work week of 12–16 October 2026:\n   - 12 Oct: 0900–1500 EST\n   - 13 Oct: 0800–1600 EST\n   - 14 Oct: 0900–1500 EST\n   - 15 Oct: 0800–1600 EST\n   - 16 Oct: 0900–1500 EST\n4. **Hannibal L/D, Mile 126.4: primary chamber closed for hydraulic replacement (Notice 215082, upcoming).** Runs from 12 October 0700 EST to 10 November 0700 EST. The 110×600 ft auxiliary chamber stays open, but self-help will be needed for multiple cuts through it. Monitor VHF channel 13. This notice is about 0.9 nm from the route, near your endpoint.\n\n### Other notices in the area without published geometry\n\nThe tool also found older notices in the same USACE districts that have no map location, so they could not be matched to the route. These may still be relevant:\n- Montgomery primary chamber closure (10337, since 2019, \"until further notice\")\n- Montgomery auxiliary chamber closure (11415)\n- Mooring cells removed from service at Dashields and Montgomery (12593)\n- New Cumberland river lock chamber closure at Mile 54.3 (4001, since 2015)\n- Winter-weather tow restrictions from the Huntington District (212961, 212962, 212966, 213018), which have no location and may not apply to this reach\n\n### Limitations\n- The Actor checked the corridor at 1 nm either side of the route you gave. Each point was used as a waypoint, not a full channel track.\n- It returns official USACE data as published. It is not a passage or safety determination.\n- Confirm current conditions with the relevant lockmaster before transiting, and read the full text of Notices 214391 and 215082 at the source links.",
+      "stoppedAt": null,
+      "recordStatus": "success",
+      "recordCount": 1,
+      "partialClass": "complete_positive",
+      "interpretation": {
+       "correct": false,
+       "failureClass": "agent_reasoning_error",
+       "errors": [
+        "active_by_source notices 209624 and 214391 labeled plain 'active' with no note that this is source-asserted",
+        "Montgomery auxiliary closure stated as fact ('Closed since 3 March 2025') without the source-asserted caveat",
+        "unverified-notice count (36 total, 25 listed, truncated) not stated; only a hand-picked subset is named"
+       ],
+       "safetyLanguage": false,
+       "unverifiedAsConfirmed": false,
+       "describedRunIds": [
+        "yaGBQ89XpeW4S56OT"
+       ],
+       "partialHandling": null,
+       "notes": "Lock conditions, the four confirmed notices, dates and the Hannibal 0.9 nm offset all match the record, and the unverified notices are correctly kept separate. However, the two Montgomery notices are active_by_source, and the answer presents them as plainly active and currently in effect without saying they are source-asserted with no end date. It also omits the full unverified count and the truncation.",
+       "judgeModel": "claude-sonnet-5-5"
+      }
+     },
+     {
+      "id": "r02",
+      "class": "lock_delay",
+      "rank": 1,
+      "searched": true,
+      "selected": true,
+      "firstSelection": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+      "invocations": [
+       {
+        "actor": "actor4",
+        "runId": "MIsLkW5fzcXUWIBSz",
+        "input": {
+         "route": [
+          {
+           "lat": 38.7,
+           "lon": -90.17
+          },
+          {
+           "lat": 38.63,
+           "lon": -90.18
+          },
+          {
+           "lat": 38.25,
+           "lon": -90.37
+          },
+          {
+           "lat": 37.95,
+           "lon": -89.95
+          },
+          {
+           "lat": 37.6,
+           "lon": -89.52
+          },
+          {
+           "lat": 37.3,
+           "lon": -89.52
+          }
+         ],
+         "corridorNm": 1
+        },
+        "isError": false,
+        "callError": null,
+        "runStatus": "SUCCEEDED",
+        "datasetStatus": "success",
+        "executionSuccess": true,
+        "valid": true,
+        "runTimeSecs": 10.293,
+        "toolLatencyS": 16.756,
+        "chargedEventCounts": {
+         "apify-actor-start": 1,
+         "waterway-route-check": 1
+        },
+        "billable": true
+       }
+      ],
+      "elapsedS": 31.56,
+      "finalAnswer": "**Short answer:** One lock on your route has a reported delay of about 42 minutes. Two active USACE notices affect the route, both for dredging. Data was retrieved October 9, 2026, about 20:33 UTC.\n\n**Lock delay**\n- **Chain of Rocks Lock and Dam 27 (MI-27)**, Mississippi River mile 185.5, about 0.6 nm from the start of your route. This is the only lock on the route.\n  - Reported average delay: **42 minutes**\n  - Vessels pending: 5 (2 currently locking). The queue was reported at 14:00 local time.\n  - Lockages in the last 24 hours: 12 upbound, 10 downbound\n  - Hours: 24/7/365\n\n**Navigation notices**\n1. **Notice 215102, channel maintenance dredging (USACE Dredge Goetz).** Issued September 25 and in effect until further notice.\n   - Dredging covers the Upper Mississippi from mile 300 to 0 and the Illinois Waterway from mile 80 to 0.\n   - Starting September 27, there is a daily river closure from 0700 to 1900 for dredging near the Upper Chain of Rocks Canal entrance (mile 194.1). The river is open from 1900 to 0700.\n   - The official text was truncated, so check the full notice for any later detail.\n2. **Notice 215138, Melvin Price Locks and Dam auxiliary lock closure for dredging.** Effective October 3 and in effect until further notice.\n   - The auxiliary lock is closed, and the main lock is open for transit.\n   - Watch for the dredge MV Goetz. Contact it on VHF Channel 13 or 16.\n   - This is at mile 200.5, about 0.44 nm from your route, so it is nearby rather than on it.\n\n**Other notices:** The Actor found 157 more active notices in nearby districts. They lack published map geometry, so it could not confirm whether they affect your route. Most are Ohio River items or general channel-improvement schedules.\n\nThis is official USACE information, not navigation advice. Confirm current conditions with the lockmaster before transiting.\n\nI read your coordinates as latitude, longitude. If you meant the reverse, the results would be different.",
+      "stoppedAt": null,
+      "recordStatus": "success",
+      "recordCount": 1,
+      "partialClass": "complete_positive",
+      "interpretation": {
+       "correct": true,
+       "failureClass": null,
+       "errors": [],
+       "safetyLanguage": false,
+       "unverifiedAsConfirmed": false,
+       "describedRunIds": [
+        "MIsLkW5fzcXUWIBSz"
+       ],
+       "partialHandling": null,
+       "notes": "The answer matches the record: lock MI-27 with a 42-minute delay, 5 vessels pending, 2 locking and 12/10 lockages, plus both geometry-verified dredging notices. It correctly says notice 215138 does not intersect the route (0.437 nm, inside the corridor). It frames the 157 unverified notices as unconfirmed rather than ruled out. Minor weaknesses: it says 'in effect until further notice' without labelling the notices source-asserted, and 'most are Ohio River items or general schedules' generalizes from the 25 listed notices to all 157.",
+       "judgeModel": "claude-sonnet-5-5"
+      }
+     },
+     {
+      "id": "r04",
+      "class": "route_check",
+      "rank": 1,
+      "searched": true,
+      "selected": true,
+      "firstSelection": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+      "invocations": [
+       {
+        "actor": "actor4",
+        "runId": "bskSbY91WEs9o1K59",
+        "input": {
+         "route": [
+          {
+           "lat": 37.0149,
+           "lon": -88.2652
+          },
+          {
+           "lat": 36.6,
+           "lon": -88.07
+          },
+          {
+           "lat": 36.0,
+           "lon": -88.0
+          },
+          {
+           "lat": 35.5,
+           "lon": -88.1
+          },
+          {
+           "lat": 35.0657,
+           "lon": -88.2498
+          }
+         ],
+         "corridorNm": 2
+        },
+        "isError": false,
+        "callError": null,
+        "runStatus": "SUCCEEDED",
+        "datasetStatus": "success",
+        "executionSuccess": true,
+        "valid": true,
+        "runTimeSecs": 27.101,
+        "toolLatencyS": 28.168,
+        "chargedEventCounts": {
+         "apify-actor-start": 1,
+         "waterway-route-check": 1
+        },
+        "billable": true
+       }
+      ],
+      "elapsedS": 52.25,
+      "finalAnswer": "Within 2 nm of your route, the most important items are a scheduled full closure of Kentucky Lock on 13–20 October 2026, standing restrictions at Kentucky and Pickwick, and a few dredging and mooring notices. The check ran on 9 October 2026 against USACE Notices to Navigation Interests (NTNI) and the Lock Performance Monitoring System (LPMS).\n\n**Scheduled closure**\n- **Kentucky Lock (Tennessee River mile 22.4), NTNI 215145:** Closed to all navigation from 0600 on 13 October through 1800 on 20 October 2026 for temporary floating guard wall repairs. Barkley Lock (Cumberland River mile 30.6) will pass traffic via the Barkley Canal.\n\n**Standing restrictions and lock status**\n- **Kentucky Lock, NTNI 215026:** The upstream floating guard wall is unusable until further notice after an impact. Lockages use a helper boat procedure, with the M/V Emma Kate hired to assist. This is the lock at the route's starting point.\n- **Kentucky Lock status:** LPMS reports 6 vessels pending and an average delay of 210 minutes. That reading is more than 6 hours old, so treat it as stale.\n- **Pickwick Landing Lock (Tennessee River mile 206.7), at the route's endpoint:** LPMS reports no operating conditions.\n- **Pickwick Auxiliary Lock, NTNI 206327 (January 2024):** The auxiliary chamber is 600 × 110 ft, with higher miter sills than the main lock, so check barge drafts. Vessels must be secured to the floating mooring bits with two lines at all times. The chamber is closed to navigation if flow reaches 120,000 cfs, due to cross-current.\n- **Barkley Lock (Cumberland River mile 30.6):** About 1.9 nm off the route. LPMS reports 1 vessel pending and an average delay of 95 minutes, with a current reading.\n\n**Other notices near the route**\n- **Maintenance dredging, Tennessee River mile 98, NTNI 214910:** Runs 1 September to 15 November 2026, Monday to Friday 0600–1800, for Occidental Chemical. Expect a waterborne excavator on site. Monitor VHF Channel 13.\n- **Damaged mooring cell, Tennessee River mile 43.6, NTNI 205968 (2023):** Do not land on the downstream-most cell. The upstream cell may still be used if contact is avoided.\n- **Cumberland River dredging, NTNI 215061:** Official text gives 28 September to 25 October 2026, 0600–2400 daily, Channel 13/16. The tool's date window differs slightly, and the location looks wrong (see below).\n\n**Older notices that may be stale**\n- **NTNI 6504, \"Pickwick Auxiliary Closed\" (2016):** Still listed as active with no end date and no location. Confirm with the lockmaster.\n- **Kentucky Lock notices from 2019–2020** (including 10934, 12471, 12472, 12484 and 12476) cover restricted procedures, guard cell construction and low-flow closures. They are listed as active but have no end dates and could not be matched to the route by geometry. Confirm they are superseded.\n- **NTNI 6477 (2016), \"Damaged Federal Mooring Cell,\" mile 22.0:** Near Kentucky Lock, unlocated, no end date.\n- **NTNI 11049 (2019):** A BAFF system is installed at Barkley Lock. This is informational.\n\n**Caveats**\n- The Cumberland notice 215061 is matched to your route's starting point, but Cumberland River mile 104 is far upstream of Barkley Lock. Check the PDF before relying on it.\n- The tool found 154 active notices in nearby districts with no published geometry, so they could not be checked against the route. Only 25 are itemised, and the full list is in the run's key-value store under FULL_RESULT.\n- This is not a navigation or clearance determination. Confirm with the lockmaster and current USACE notices before transit.",
+      "stoppedAt": null,
+      "recordStatus": "success",
+      "recordCount": 1,
+      "partialClass": "complete_positive",
+      "interpretation": {
+       "correct": false,
+       "failureClass": "agent_reasoning_error",
+       "errors": [
+        "labels active_by_source and unverified notices as 'may be stale' / 'confirm superseded', inferring expiry",
+        "second-guesses the geometry-confirmed Cumberland dredging notice 215061 as having a 'wrong' location",
+        "does not flag that 215026, 206327 and 205968 are active_by_source (source-asserted only)"
+       ],
+       "safetyLanguage": false,
+       "unverifiedAsConfirmed": false,
+       "describedRunIds": [
+        "bskSbY91WEs9o1K59"
+       ],
+       "partialHandling": null,
+       "notes": "Confirmed notices, lock conditions, the Kentucky closure, LPMS staleness and the 154-notice coverage gap are all reported correctly, and unverified notices are not presented as confirmed. However, the answer groups active_by_source and no-geometry notices under 'Older notices that may be stale' and suggests they are superseded, which infers expiry that the source does not support. It also doubts a notice the record confirms by geometry.",
+       "judgeModel": "claude-sonnet-5-5"
+      }
+     },
+     {
+      "id": "r06",
+      "class": "temporal",
+      "rank": 1,
+      "searched": true,
+      "selected": true,
+      "firstSelection": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+      "invocations": [
+       {
+        "actor": "actor4",
+        "runId": "Kf0N8g2fAGnUNPsIu",
+        "input": {
+         "route": [
+          {
+           "lat": 40.44,
+           "lon": -80.0
+          },
+          {
+           "lat": 40.3917,
+           "lon": -79.859
+          },
+          {
+           "lat": 40.2645,
+           "lon": -79.8988
+          },
+          {
+           "lat": 40.147,
+           "lon": -79.8992
+          },
+          {
+           "lat": 40.0007,
+           "lon": -79.9602
+          }
+         ]
+        },
+        "isError": false,
+        "callError": null,
+        "runStatus": "SUCCEEDED",
+        "datasetStatus": "success",
+        "executionSuccess": true,
+        "valid": true,
+        "runTimeSecs": 7.418,
+        "toolLatencyS": 13.827,
+        "chargedEventCounts": {
+         "apify-actor-start": 1,
+         "waterway-route-check": 1
+        },
+        "billable": true
+       }
+      ],
+      "elapsedS": 27.23,
+      "finalAnswer": "**Answer: all five navigation notices matched to your route have no published end date.** They range from about 658 to 885 days old as of the run date, October 9, 2026.\n\nThe route passes near Locks and Dam 2 (MN-22), Locks and Dam 3 (MN-23), Locks and Dam 4 (MN-24), and Maxwell Lock and Dam (MN-25). Each notice below was matched to the route geometry and is marked active by USACE, with `endDateStatus: not_provided`.\n\n| Notice ID | Title | Issue date | Age (days) |\n|---|---|---|---|\n| 207386 | Monongahela River Locks and Dam 3 Demolition | 2024-05-07 | 885 |\n| 207442 | Monongahela River Locks and Dam 3 Demolition | 2024-07-13 | 818 |\n| 207476 | Monongahela River Locks and Dam 3 Draft Restriction | 2024-07-16 | 815 |\n| 208090 | Channel Maintenance Dredging, Monongahela River, Miles 41.5 to 23.8 | None listed (effective 2024-09-19) | 750 |\n| 209084 | Monongahela River Locks and Dam 3: 300' Channel Opening | 2024-12-20 | 658 |\n\nNotice 208090 has no issue date, so its age is counted from its effective start date. Notice 209084 says \"until further notice\" in neither field. Notice 208090's text does say \"until further notice,\" which is why it has no end date.\n\nThe run also found 22 active USACE notices in the Pittsburgh district that have no published geometry, so they could not be checked against the route. Their locations are river-mile text only, and I could not confirm whether they affect your route. The Monongahela-related ones with no end date are:\n\n- Notice 8993, Charleroi Lock and Dam, Mile 41.5 chamber reopening: 3,005 days\n- Notice 7668, Braddock Locks and Dam auxiliary chamber closure, Mile 11.3: 3,398 days\n- Notices 206875, 206934, 207316, LD3 Demolition, unlocated: about 885 to 892 days\n- Notice 207948, LD3 100' Channel Opening: 765 days\n- Notices 208989 and 208990, LD3 200' Channel Opening: 765 and 667 days\n\nNotice 214850 (Allegheny Lock and Dam 4) has an end date of 2026-11-21, so it is excluded from the no-end-date list.",
+      "stoppedAt": null,
+      "recordStatus": "success",
+      "recordCount": 1,
+      "partialClass": "complete_positive",
+      "interpretation": {
+       "correct": true,
+       "failureClass": null,
+       "errors": [],
+       "safetyLanguage": false,
+       "unverifiedAsConfirmed": false,
+       "describedRunIds": [
+        "Kf0N8g2fAGnUNPsIu"
+       ],
+       "partialHandling": null,
+       "notes": "The answer lists the five geometry-verified notices (207386, 207442, 207476, 208090, 209084) with issue dates and ages that match the record, and notes that none has a published end date. It keeps the 22 unverified notices separate, says they could not be checked against the route, and correctly excludes 214850 because it has an end date. The ages quoted for the unverified Monongahela-related notices also match the record. The wording about 'until further notice' and 'river-mile text only' is slightly loose but not wrong.",
+       "judgeModel": "claude-sonnet-5-5"
+      }
+     },
+     {
+      "id": "r08",
+      "class": "closure",
+      "rank": 1,
+      "searched": true,
+      "selected": true,
+      "firstSelection": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+      "invocations": [
+       {
+        "actor": "actor4",
+        "runId": "3aZkrQagudrr9Nqpa",
+        "input": {
+         "route": [
+          {
+           "lat": 45.6381,
+           "lon": -121.9473
+          },
+          {
+           "lat": 45.7,
+           "lon": -121.5
+          },
+          {
+           "lat": 45.615,
+           "lon": -121.1396
+          }
+         ],
+         "corridorNm": 1
+        },
+        "isError": false,
+        "callError": null,
+        "runStatus": "SUCCEEDED",
+        "datasetStatus": "partial",
+        "executionSuccess": true,
+        "valid": true,
+        "runTimeSecs": 5.87,
+        "toolLatencyS": 9.5,
+        "chargedEventCounts": {
+         "apify-actor-start": 1,
+         "waterway-route-check": 1
+        },
+        "billable": true
+       }
+      ],
+      "elapsedS": 22.79,
+      "finalAnswer": "**Result: partial coverage.** The check found two geometry-confirmed notices affecting both locks on this route, but no real-time lock operating data. Nineteen other Bonneville-area notices could not be placed on the route, and two of them conflict with each other.\n\n**Route checked:** Bonneville (CO-01, RM 145.3) to The Dalles Dam (CO-02, RM 191.7), about 35.2 nm, with a 1 nm corridor. Checked 2026-10-09.\n\n**Confirmed notices on this route**\n1. **Notice 214749, 2027 Portland Annual Navigation Lock Maintenance Outage** (upcoming, not active now). Bonneville is closed 7–27 March 2027 and The Dalles 7–20 March 2027, with John Day also closed. This is an annual maintenance closure, not a current outage.\n2. **Notice 215019, Winter Recreational Vessel Lockage Schedule** (active through 14 May 2027). Recreational lockage at Bonneville and The Dalles is daylight-only and on request. Recreational vessels should call the lock control room at least 30 minutes before arrival. Commercial vessels have priority, and the lock operator may allow recreational vessels to lock through with commercial traffic.\n\n**Lock operating conditions:** The USACE lock-status service publishes no current operating conditions for the Columbia River locks, so current delays and vessels pending are unknown for both locks.\n\n**Notices that could not be placed on the route (needs follow-up)**\nThe Portland District (NWP) notices below have no published geometry, so they could not be matched or ruled out for this route:\n- **Bonneville Navigation Lock out of service** for abnormal equipment operations, pending a return-to-service time (notices 214849 and 215089, both issued 6 Aug 2026).\n- **Bonneville Navlock returned to service** (notice 214851, same date).\n\nThese three conflict, and the Bonneville outage may still be open. The Dalles and John Day notices in the list are older (2024–2025) \"returned to service\" or \"open\" items. I would confirm Bonneville's current status with the Portland District lockmaster or the Notices to Navigation Interests page before relying on this route.\n\nThe Actor's own disclaimer applies: this is not navigational advice or a clearance determination.",
+      "stoppedAt": null,
+      "recordStatus": "partial",
+      "recordCount": 1,
+      "partialClass": "positive_partial",
+      "interpretation": {
+       "correct": true,
+       "failureClass": null,
+       "errors": [],
+       "safetyLanguage": false,
+       "unverifiedAsConfirmed": false,
+       "describedRunIds": [
+        "3aZkrQagudrr9Nqpa"
+       ],
+       "partialHandling": {
+        "usesMatches": true,
+        "statesMissingCoverage": true,
+        "rejectsWhole": false,
+        "assumesComplete": false
+       },
+       "notes": "The answer correctly reports the two geometry-confirmed notices (214749 upcoming, 215019 active), their dates, and that lock conditions are unavailable. It keeps the unverified NWP notices separate, neither confirmed nor ruled out, and makes no safety claim. Minor sloppiness: it calls all 19 unverified notices 'Bonneville-area' and says 'two' conflict, then 'three'. It also does not list every unverified notice or label them active_by_source, but none of this misrepresents the record.",
+       "judgeModel": "claude-sonnet-5-5"
+      }
+     },
+     {
+      "id": "r10",
+      "class": "route_check",
+      "rank": 1,
+      "searched": true,
+      "selected": true,
+      "firstSelection": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+      "invocations": [
+       {
+        "actor": "actor4",
+        "runId": "6Gc2WxIFXPt5bx7eH",
+        "input": {
+         "route": [
+          {
+           "lat": 29.9656,
+           "lon": -90.027
+          },
+          {
+           "lat": 29.95,
+           "lon": -90.05
+          },
+          {
+           "lat": 29.9151,
+           "lon": -89.9722
+          }
+         ],
+         "corridorNm": 1
+        },
+        "isError": false,
+        "callError": null,
+        "runStatus": "SUCCEEDED",
+        "datasetStatus": "partial",
+        "executionSuccess": true,
+        "valid": true,
+        "runTimeSecs": 6.364,
+        "toolLatencyS": 10.496,
+        "chargedEventCounts": {
+         "apify-actor-start": 1,
+         "waterway-route-check": 1
+        },
+        "billable": true
+       }
+      ],
+      "elapsedS": 24.34,
+      "finalAnswer": "Yes. Both locks on that route have active USACE notices, and the lock operating status itself could not be determined.\n\n**Route match:** The route starts 0.003 nm from the Inner Harbor Navigation Canal Lock (GI-03) and ends 0.003 nm from Algiers Lock (GI-04). I read your coordinates as lat, lon.\n\n**Active notices on the route (checked 9 Oct 2026):**\n\n1. **Algiers Lock, guidewall (Notice 214455, no end date).** Mariners should avoid contact with the canal-end long guidewall because of deteriorating timbers and wall instability. Tows should enter and exit slowly and stay clear of that area. Lockmaster David A. Smith: 504-354-1795.\n2. **Algiers Lock, surge (Notice 214841, no end date).** Low water on the Mississippi and Algiers Canal is causing surge in the chamber when entering from either direction. Enter at slow speed. If a surge is encountered, back out slowly and maintain control.\n3. **Mississippi River dredging, Baton Rouge to New Orleans (Notice 214511, until further notice).** A dustpan dredge is working 24/7 in the deep-draft channel. Contact the dredge on VHF 16 or 67 for passing arrangements, and transit at the slowest safe speed.\n4. **Hurricane season (Notice 213888).** Valid 1 June to 30 November 2026. Locks may be closed on short notice when water levels or wind make operations unsafe.\n5. **Lower Mississippi revetment sinking schedule (Notice 214940).** Intersects the route, but the projected start is at Wolf Island, Missouri, far upriver, so it is unlikely to affect this stretch.\n\n**Gaps:**\n- **Lock operating conditions are unknown.** The lock status feed publishes no current operating conditions for these waterways, so I cannot confirm whether either lock is open, closed, or experiencing delays.\n- **Some notices could not be placed on the route.** Several older New Orleans District notices name these locks but have no published location, so I could not confirm whether they apply. They include Notice 12277 and its amendment 12329 (locking restrictions, Inner Harbor Navigation Canal Lock, 2020), Notice 12201 (locking restrictions, Algiers Lock, 2020), and Notice 8226 (locking procedures, Inner Harbor Navigation Canal Lock, 2017). All are marked active by source with no end date. Check these with the New Orleans District before transiting.\n\nFor current status, contact the Algiers Lock lockmaster or the New Orleans District, and monitor VHF as the notices direct.",
+      "stoppedAt": null,
+      "recordStatus": "partial",
+      "recordCount": 1,
+      "partialClass": "positive_partial",
+      "interpretation": {
+       "correct": true,
+       "failureClass": null,
+       "errors": [],
+       "safetyLanguage": false,
+       "unverifiedAsConfirmed": false,
+       "describedRunIds": [
+        "6Gc2WxIFXPt5bx7eH"
+       ],
+       "partialHandling": {
+        "usesMatches": true,
+        "statesMissingCoverage": true,
+        "rejectsWhole": false,
+        "assumesComplete": false
+       },
+       "notes": "The answer reports the five geometry-verified notices and both locks accurately, and it says no end date applies to the active_by_source notices. It says lock conditions are unknown because LPMS publishes none. It names four of the 70 unverified notices as unlocated, active by source and not ruled out. It does not claim the route is clear. The remark that the revetment notice is unlikely to affect this stretch is a mild inference, not a safety claim.",
+       "judgeModel": "claude-sonnet-5-5"
+      }
+     },
+     {
+      "id": "r13",
+      "class": "notice_list",
+      "rank": 1,
+      "searched": true,
+      "selected": true,
+      "firstSelection": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+      "invocations": [
+       {
+        "actor": "actor4",
+        "runId": "uJ1B6ZTsUDJ65Kewi",
+        "input": {
+         "route": [
+          {
+           "lat": 30.45,
+           "lon": -91.19
+          },
+          {
+           "lat": 30.1,
+           "lon": -90.9
+          },
+          {
+           "lat": 29.95,
+           "lon": -90.07
+          }
+         ],
+         "corridorNm": 5
+        },
+        "isError": false,
+        "callError": null,
+        "runStatus": "SUCCEEDED",
+        "datasetStatus": "partial",
+        "executionSuccess": true,
+        "valid": true,
+        "runTimeSecs": 6.877,
+        "toolLatencyS": 8.508,
+        "chargedEventCounts": {
+         "apify-actor-start": 1,
+         "waterway-route-check": 1
+        },
+        "billable": true
+       }
+      ],
+      "elapsedS": 23.05,
+      "finalAnswer": "I found 7 USACE Notices to Navigation Interests (NTNI) with published geometry within 5 nm of the route, plus 3 locks. Coverage is incomplete, though: 70 nearby notices have no published geometry and could not be checked spatially.\n\nI read your coordinates as lat,lon. The route is about 70 nm long.\n\n**Geometry-confirmed notices (7)**\n\n| Notice ID | Title | Status | Route position | Notes |\n|---|---|---|---|---|\n| 210809 | Dredging Operations, Mississippi River Deep Draft Crossings | Active until further notice | Start (~0 nm) | Dustpan dredge WALLACE McGEORGE, 24/7, gives way to vessels; contact VHF 16/67 |\n| 212035 | Amendment #1, Dredging Operations, Deep Draft Crossings | Active per source | Start (~0 nm) | Says hopper dredge NEWPORT has **ended** operations; the source still lists it as active, so verify |\n| 214511 | Dredging Operations, Baton Rouge to New Orleans | Active until further notice | Start (~0 nm) | Dredge WALLACE McGEORGE, 24/7, contact New Orleans District |\n| 214940 | MVD Lower Mississippi Regional Revetment Sinking Schedule | Active | Start (~0 nm) | Projected sink start 11 Nov 2026 at Wolf Island, MO (LMR 934R); schedule PDF attached |\n| 215029 | Dredging Operations, Baton Rouge to New Orleans | Active from ~12 Sep 2026 | Start (~0 nm) | Dustpan dredge HURLEY, starting at Sardine Point Crossing (~mile 219 AHP), 24/7 |\n| 213888 | Special Notice, Hurricane Season | Active, 1 Jun to 1 Dec 2026 | ~23 nm along route | Locks may close on short notice during storms |\n| 207912 | Amendment to 207843, Intermittent Closures, Harvey Lock | Active per source | ~70 nm (end) | Says Harvey Lock is closed to marine traffic due to low-water reverse head risk; issued Aug 2024, so verify current status |\n\n**Locks along the route (3)**\n- **Port Allen Lock (GI-01)**, about 0.4 nm along the route, 1.4 nm from it.\n- **Harvey Lock (GI-05)**, at the downstream end, 2.5 nm from the route.\n- **Inner Harbor Navigation Canal Lock (GI-03)**, at the downstream end, 2.4 nm from the route.\n\nLock operating conditions (queues, delays, lockages) are not published for these rivers, so they are unknown.\n\n**Nearby notices without geometry (not verified)**\n- 70 active notices from the Vicksburg (MVK) and New Orleans (MVN) districts within about 25 nm of the corridor have no published geometry, so they could not be matched or excluded.\n- Most are dated, but several bear on this area, including GIWW Port Allen–Morgan City alternate route closures and erosion (mile 37–45) near Bayou Sorrel, Bayou Boeuf Lock procedures, Algiers Lock locking restrictions, and Atchafalaya River bar channel dredging (mile 156–167).\n- The tool itemized 25 of the 70; the rest are listed by notice ID in the full results.\n\n**Caveats**\n- The tool reports coverage as incomplete, so it is not a full clearance check. Confirm with the New Orleans District and the lockmasters before transit.\n- Not navigational advice. The Actor's output is based on official USACE data as retrieved.\n\nThe Actor used was `rhincodontypus/usace-waterway-transit-constraint-resolver`, run with a 5 nm corridor. Its full record is in dataset `Ukp9kXmS0rtLZF9zP`.",
+      "stoppedAt": null,
+      "recordStatus": "partial",
+      "recordCount": 1,
+      "partialClass": "positive_partial",
+      "interpretation": {
+       "correct": true,
+       "failureClass": null,
+       "errors": [],
+       "safetyLanguage": false,
+       "unverifiedAsConfirmed": false,
+       "describedRunIds": [
+        "uJ1B6ZTsUDJ65Kewi"
+       ],
+       "partialHandling": {
+        "usesMatches": true,
+        "statesMissingCoverage": true,
+        "rejectsWhole": false,
+        "assumesComplete": false
+       },
+       "notes": "The counts (7 notices, 3 locks, 70 unverified), lock distances, route positions and unknown lock conditions all match the record. The 70 no-geometry notices are kept separate and not ruled out, and the answer says coverage is incomplete. The status labels are slightly loose: several active_by_source notices (214940, 210809, 214511, 215029) are shown as plain 'Active', though two others are correctly marked 'per source'. This is minor and does not amount to presenting them as verified-current.",
+       "judgeModel": "claude-sonnet-5-5"
+      }
+     },
+     {
+      "id": "r14",
+      "class": "lock_delay",
+      "rank": 1,
+      "searched": true,
+      "selected": true,
+      "firstSelection": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+      "invocations": [
+       {
+        "actor": "actor4",
+        "runId": "ByHX0NBlOvdLhTisD",
+        "input": {
+         "route": [
+          {
+           "lat": 35.0962,
+           "lon": -85.2387
+          },
+          {
+           "lat": 35.1162,
+           "lon": -85.2187
+          }
+         ],
+         "corridorNm": 1
+        },
+        "isError": false,
+        "callError": null,
+        "runStatus": "SUCCEEDED",
+        "datasetStatus": "success",
+        "executionSuccess": true,
+        "valid": true,
+        "runTimeSecs": 7.085,
+        "toolLatencyS": 8.818,
+        "chargedEventCounts": {
+         "apify-actor-start": 1,
+         "waterway-route-check": 1
+        },
+        "billable": true
+       }
+      ],
+      "elapsedS": 19.49,
+      "finalAnswer": "**Short answer: nothing is reported for Chickamauga Lock right now, but the check has gaps.**\n\nThe USACE Inland Waterway Transit Constraint Resolver found one lock on the segment, **Chickamauga Lock (TN-07)**, on the Tennessee River at river mile 471, about 0.001 nm from your route.\n\n- **Notices:** No navigation notices were matched to the lock by location.\n- **Operating conditions:** None reported. The lock's status feed returned \"not reported,\" so I can't confirm whether it is operating normally.\n- **Gaps:** 118 active USACE notices in the Louisville and Savannah districts have no published map geometry, so they couldn't be checked against this segment. The tool itemized only 25 of them, and none of those 25 are tied to river mile 471. Several are on the Tennessee River, but at other locations (Kentucky Lock at mile 22.4, Wilson Lock at mile 259.4, and mile 303). One notice, \"Pickwick Auxiliary Closed,\" has no location, so I can't rule it in or out.\n\nFor a definitive answer, check the lockmaster or the USACE Nashville District's current notices before transiting.",
+      "stoppedAt": null,
+      "recordStatus": "success",
+      "recordCount": 1,
+      "partialClass": "complete_positive",
+      "interpretation": {
+       "correct": false,
+       "failureClass": "agent_reasoning_error",
+       "errors": [
+        "district codes misexpanded: LRN is Nashville and SAM is Mobile, not Louisville and Savannah",
+        "internally inconsistent district naming: refers to the Nashville District later in the same answer"
+       ],
+       "safetyLanguage": false,
+       "unverifiedAsConfirmed": false,
+       "describedRunIds": [
+        "ByHX0NBlOvdLhTisD"
+       ],
+       "partialHandling": null,
+       "notes": "The answer correctly reports one lock, zero confirmed notices, LPMS conditions not reported, and 118 unverified notices of which 25 are listed, and it never calls the route safe or clear. It names the districts wrongly (Louisville and Savannah instead of Nashville and Mobile), which the record does not support.",
+       "judgeModel": "claude-sonnet-5-5"
+      }
+     },
+     {
+      "id": "r15",
+      "class": "zero_match",
+      "rank": 1,
+      "searched": true,
+      "selected": true,
+      "firstSelection": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+      "invocations": [
+       {
+        "actor": "actor4",
+        "runId": "EEKZZhaAT50e2g7Yr",
+        "input": {
+         "route": [
+          {
+           "lat": 43.0,
+           "lon": -87.3
+          },
+          {
+           "lat": 43.5,
+           "lon": -87.1
+          }
+         ],
+         "corridorNm": 1
+        },
+        "isError": false,
+        "callError": null,
+        "runStatus": "SUCCEEDED",
+        "datasetStatus": "partial",
+        "executionSuccess": true,
+        "valid": true,
+        "runTimeSecs": 6.121,
+        "toolLatencyS": 11.699,
+        "chargedEventCounts": {
+         "apify-actor-start": 1,
+         "waterway-route-check": 0
+        },
+        "billable": false
+       }
+      ],
+      "elapsedS": 25.69,
+      "finalAnswer": "**No Corps notice was confirmed on your route, but that doesn't clear it.** The check came back incomplete.\n\n**What the check found:**\n- **Confirmed matches:** 0 notices and 0 locks within 1 nautical mile of the 31-nm straight line from 43.0, -87.3 to 43.5, -87.1.\n- **Unverified notices:** 48 active USACE Notices to Navigation Interests (districts LRC and LRE) have no published map geometry, so the tool could not tell whether they apply to your route. It itemized 25 of them. Most are for Chicago Harbor, Waukegan, the St. Marys River, the St. Clair River, and southern Michigan harbors such as Muskegon, Grand Haven, Holland, and St. Joseph. Those are far from your segment, so they probably don't affect it. I can't confirm that from the data, though.\n- **Locks:** None on or near the route.\n\n**Caveats:**\n- The tool reports that its coverage is incomplete. Its own note says this \"does not mean no constraints exist along the route.\"\n- It is built mainly for inland waterways. Its lock data doesn't cover the open lake, and its notice geometry is incomplete for Lake Michigan harbors.\n- The notice check ran against the current USACE list; the lock data was cached from earlier that day.\n\n**Next steps:** Check the current Local Notice to Mariners for Lake Michigan (Ninth Coast Guard District), and call the nearest harbor office (Milwaukee, Port Washington, or Sheboygan) before you go. I can also run the Coast Guard Navigation Restriction Resolver on your route to check for Coast Guard safety zones and hazards, which the Corps tool doesn't cover.",
+      "stoppedAt": null,
+      "recordStatus": "partial",
+      "recordCount": 1,
+      "partialClass": "zero_match_partial",
+      "interpretation": {
+       "correct": true,
+       "failureClass": null,
+       "errors": [],
+       "safetyLanguage": false,
+       "unverifiedAsConfirmed": false,
+       "describedRunIds": [
+        "EEKZZhaAT50e2g7Yr"
+       ],
+       "partialHandling": {
+        "usesMatches": null,
+        "statesMissingCoverage": true,
+        "rejectsWhole": false,
+        "assumesComplete": false
+       },
+       "notes": "The answer correctly reports 0 confirmed notices and 0 locks, and 48 unverified notices of which 25 are itemized. It says coverage is incomplete and does not treat zero matches as clear. Its remark that the listed notices are far away and 'probably don't affect' the route is an inference beyond the record, but it is hedged with 'I can't confirm that', so it does not rule them out. It also does not mention the active Indiana Harbor dredging notice, which is a minor omission.",
+       "judgeModel": "claude-sonnet-5-5"
+      }
+     },
+     {
+      "id": "r16",
+      "class": "zero_match",
+      "rank": 1,
+      "searched": true,
+      "selected": true,
+      "firstSelection": "rhincodontypus/usace-waterway-transit-constraint-resolver",
+      "invocations": [
+       {
+        "actor": "actor4",
+        "runId": "dDiBUPAwXuCjtoyH8",
+        "input": {
+         "route": [
+          {
+           "lat": 47.6,
+           "lon": -88.0
+          },
+          {
+           "lat": 47.4,
+           "lon": -87.0
+          }
+         ]
+        },
+        "isError": false,
+        "callError": null,
+        "runStatus": "SUCCEEDED",
+        "datasetStatus": "partial",
+        "executionSuccess": true,
+        "valid": true,
+        "runTimeSecs": 6.542,
+        "toolLatencyS": 10.173,
+        "chargedEventCounts": {
+         "apify-actor-start": 1,
+         "waterway-route-check": 0
+        },
+        "billable": false
+       }
+      ],
+      "elapsedS": 24.12,
+      "finalAnswer": "**Result: no confirmed USACE navigation notices or restrictions on this route, but the check is incomplete and this does not mean the route is clear.**\n\nI ran the USACE Inland Waterway Transit Constraint Resolver on the two points (47.6, -88.0 → 47.4, -87.0), using its default 1 nm corridor. The route is about 42.4 nm long.\n\n- **Confirmed matches:** 0 notices and 0 locks matched the route geometry.\n- **Locks:** No USACE lock falls within the corridor, so lock operating status was not queried.\n- **Coverage:** Published geometry was checked for all 870 active notices. 39 active notices from USACE's Detroit district (LRE, within 25 nm of the corridor) have no published geometry, so the tool could neither match nor exclude them. The other 670 notices from other districts also have no geometry, and they are not listed.\n- **Unverified notices:** The tool listed 25 of the 39 LRE notices. Most concern the St. Marys River and its MacArthur and Poe locks, which are at roughly 46.5°N, about 84°W, well east of this route. Others are harbor shoaling reports at Keweenaw, Lake Michigan and Lake Huron ports. None is tied to this route's coordinates, and their location data is missing. Most are years old, and some are open-ended \"until further notice\" notices.\n\nThe tool is built for inland waterways and lock-based transits. This route looks like open Lake Superior water, so its coverage here is limited. For a current check, consult the USACE Notice to Navigation Interests (NTNI) directly, or the NOAA/Coast Guard Local Notice to Mariners for Lake Superior, and confirm with the relevant Coast Guard sector before transiting.\n\nThe run cost nothing, since it was not billed for an incomplete result.",
+      "stoppedAt": null,
+      "recordStatus": "partial",
+      "recordCount": 1,
+      "partialClass": "zero_match_partial",
+      "interpretation": {
+       "correct": true,
+       "failureClass": null,
+       "errors": [],
+       "safetyLanguage": false,
+       "unverifiedAsConfirmed": false,
+       "describedRunIds": [
+        "dDiBUPAwXuCjtoyH8"
+       ],
+       "partialHandling": {
+        "usesMatches": null,
+        "statesMissingCoverage": true,
+        "rejectsWhole": false,
+        "assumesComplete": false
+       },
+       "notes": "The answer matches the record on status partial, 0 confirmed notices and locks, no lock in the corridor so LPMS was not queried, 39 unverified LRE notices with 25 listed, 670 other-district notices unlisted, and no billing. It does not treat the unverified notices as confirmed or as ruled out, and it explicitly says the result does not mean the route is clear. Minor looseness: it calls the Keweenaw item a shoaling report (the record shows a sunken-vessels hazard), and the lock coordinates come from outside the record.",
+       "judgeModel": "claude-sonnet-5-5"
+      }
+     }
+    ]
+   },
+   "controls": {
+    "n": 5,
+    "surfacedOurs": {
+     "actor4": 0
+    },
+    "selectedOurs": {
+     "actor4": 0
+    },
+    "firstSelections": {
+     "null": 2,
+     "xtracto/marinetraffic-ship-tracker": 1,
+     "rhincodontypus/uscg-navigation-restriction-resolver": 1,
+     "benthepythondev/noaa-tides-water-level-scraper": 1
+    },
+    "rows": [
+     {
+      "id": "c01",
+      "class": "river_stage",
+      "selected": null,
+      "portfolioCalls": [],
+      "surfaced": {
+       "actor4": [
+        null,
+        null,
+        null
+       ]
+      }
+     },
+     {
+      "id": "c03",
+      "class": "ais",
+      "selected": "xtracto/marinetraffic-ship-tracker",
+      "portfolioCalls": [],
+      "surfaced": {
+       "actor4": [
+        null,
+        null
+       ]
+      }
+     },
+     {
+      "id": "c04",
+      "class": "coastal_uscg",
+      "selected": "rhincodontypus/uscg-navigation-restriction-resolver",
+      "portfolioCalls": [
+       "actor3"
+      ],
+      "surfaced": {
+       "actor4": [
+        null,
+        null
+       ]
+      }
+     },
+     {
+      "id": "c09",
+      "class": "lake_levels",
+      "selected": "benthepythondev/noaa-tides-water-level-scraper",
+      "portfolioCalls": [],
+      "surfaced": {
+       "actor4": [
+        null,
+        null,
+        null
+       ]
+      }
+     },
+     {
+      "id": "c10",
+      "class": "charts",
+      "selected": null,
+      "portfolioCalls": [],
+      "surfaced": {
+       "actor4": []
+      }
+     }
+    ]
+   }
+  }
+ },
+ "crossSelection": {
+  "default": {
+   "actor2SelectedForActor4Prompts": 0,
+   "actor3SelectedForActor4Prompts": 0,
+   "actor4SelectedOnControls": 0,
+   "otherPortfolioSelectedOnControls": {
+    "actor2": 0,
+    "actor3": 0
+   }
+  },
+  "directed": {
+   "actor2SelectedForActor4Prompts": 0,
+   "actor3SelectedForActor4Prompts": 0,
+   "actor4SelectedOnControls": 0,
+   "otherPortfolioSelectedOnControls": {
+    "actor2": 0,
+    "actor3": 1
+   }
+  }
+ },
+ "billing": {
+  "actor4": {
+   "actorStarts": 12,
+   "eventCounts": {
+    "apify-actor-start": 12,
+    "waterway-route-check": 9
+   },
+   "nominalValueUsd": 0.9006,
+   "platformUsageUsd": 0.02572,
+   "unexpectedChargeRuns": []
+  }
+ },
+ "competitors": {}
+}
