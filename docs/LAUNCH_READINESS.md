@@ -94,3 +94,11 @@ Likely adequate. A generic agent would need to:
 - join LPMS.
 
 **Exception:** "delays at locks on the Ohio" can be answered with a single LPMS call.
+
+## Build 1.0.4: compact record (schema 1.2), public `latest`
+
+- The 1.0.3 record (81k–419k chars) was too large for agents: the benchmark's 60k tool-result cut fell inside `unverifiedLocationNotices` in 20 of 22 runs (`docs/benchmarks/actor4-1.0.3-truncation-evidence.json`). That run was not graded for interpretation.
+- 1.0.4 opens with `status`, `summary`, `billing`, `coverage`. It lists at most 25 compact unverified notices, without text or provenance, and gives every unverified notice ID in `unverifiedNoticeListing.noticeIdsByDistrict`. Confirmed-notice text is cut at about 1,000 characters (`officialTextTruncated`). The full record is in key-value store record `FULL_RESULT`. Matching, coverage, status and billing are unchanged.
+- Platform acceptance on 1.0.4 covered Columbia, Snake, Ohio, Cumberland, zero-match (r15), two heavy routes (r04, r02) and invalid input. Records were 0.8k–38.8k chars. The charge matched `billing.billable` in every run.
+- `latest` → 1.0.4; 1.0.3 kept as rollback under tag `rollback-v103`.
+- Reduced benchmark: PASS. See `docs/benchmarks/ACTOR4_1.0.4_REDUCED_BENCHMARK.md`. Actor #4 is in maintenance / observation mode.
