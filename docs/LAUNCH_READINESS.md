@@ -1,6 +1,6 @@
 # Actor #4 launch-readiness report: USACE Inland Waterway Transit Constraint Resolver
 
-**Decision: READY FOR PRIVATE PLATFORM TEST.** Nothing has been deployed to Apify yet; deployment needs separate authorization.
+**Decision: PRIVATE PLATFORM TEST PASSED.** Deployed privately as https://console.apify.com/actors/yCe6FapeAhjNo6XiQ (build 1.0.2). Public publishing is not authorized.
 
 ## Source feasibility
 All sources are official USACE, need no key, and every one was reached in live runs:
@@ -25,29 +25,52 @@ None. The 12 Store and MCP searches found no Actor covering NTNI, Corps locks or
 - **LPMS:** rows are joined on `(riverCode, lockNo)` with leading zeros normalized.
 - **Lock–notice links:** a notice is related to a lock when the notice geometry lies within 0.25 nm of the lock point.
 
+## Notice scope (all districts)
+- Published geometry is checked for every active NTNI notice, from every USACE district, on every run (870 in the live runs).
+- The district layer only decides which geometry-less notices are listed in `unverifiedLocationNotices`: those from districts within 25 nm of the corridor. The rest are counted in `noGeometryOutsideListingDistricts`.
+- If the district layer fails, every geometry-less notice is listed and the run is `partial`. Geometry checking is unaffected.
+- Zero confirmed matches with nearby geometry-less notices is `partial` and not charged.
+
 ## Tests
-- 25 offline tests on official response fixtures, using `respx`; no network calls in CI.
+- 29 offline tests on official response fixtures, using `respx`; no network calls in CI.
 - `ruff check` and `ruff format --check` are clean.
 
 ## Live acceptance (`docs/live-acceptance.json`, run 2026-10-09, local, in-memory cache)
-| Route | Cold s | Cached s | Status | Notices | Locks | Unverified |
-|---|---:|---:|---|---:|---:|---:|
-| Ohio, Pittsburgh–Willow Island | 5.5–10.9 | 2.6–3.1 | success | 9 | 6 | 37 |
-| Upper Mississippi, Lock 27–Cape Girardeau | 8.2–8.4 | 3.0 | success* | 2 | 1 | 157 |
-| Illinois Waterway, Peoria–LaSalle | 6.2–6.4 | 2.3–2.8 | success | 2 | 0 | 130 |
-| Lake Superior, open water | 3.6–4.0 | 2.2–2.4 | success (0 matches) | 0 | 0 | 40 |
+The first route warms the shared cache; the later routes reuse it, as they would on the platform.
 
-\* In the first run this route was `partial`: notice 12461 returned 200 with `geojson: null`, which was counted as a failed retrieval. That is fixed and covered by a test.
+| Route | First s | Repeat s | Status | Notices | Locks | Unverified | Charged |
+|---|---:|---:|---|---:|---:|---:|---|
+| Ohio, Pittsburgh–Willow Island (cold cache) | 25.6 | 2.5 | success | 9 | 6 | 36 | yes |
+| Upper Mississippi, Lock 27–Cape Girardeau | 3.1 | 2.5 | success | 2 | 1 | 157 | yes |
+| Illinois Waterway, Peoria–LaSalle | 2.9 | 2.1 | success | 2 | 0 | 129 | yes |
+| Lake Superior, open water | 2.6 | 2.0 | partial (0 confirmed) | 0 | 0 | 39 | no |
 
 ## Performance
-- **Cached:** 2–3 s, which meets the under-5 s target.
-- **Cold:** 4–11 s, which mostly meets the under-10 s target. Cold time scales with the number of notices in the route's districts that have geometry; their detail payloads run from 0.3 to 1.5 MB each.
-- **LPMS:** cached for 5 minutes. Notice geometry is cached for 24 h, and "no geometry" results for 6 h.
+- **Cold cache:** 23–35 s locally and about 91 s on the platform, because every active notice's detail is fetched (about 75 MB) and cached. Peak memory was about 190 MB locally and 342 MB on the platform.
+- **Warm cache:** 2–2.5 s for any route.
+- **Caching:** notice geometry 24 h; a "no geometry" index 6 h; LPMS 5 min; notice list 15 min.
+- **Warm-path prefilter:** each cached geometry stores its lon/lat bounds. Geometry whose bounds miss a padded window around the corridor (twice the corridor plus 1 nm) cannot intersect it and is counted as checked without being rebuilt. This is exact, not a coverage shortcut.
+
+## Private platform acceptance (build 1.0.2, 512 MB, 180 s, `LIMITED_PERMISSIONS`, Standby off)
+| Case | Run | Status | Notices | Locks | Unverified | Run s | Peak MB | Charged check |
+|---|---|---|---:|---:|---:|---:|---:|---|
+| Ohio, cold shared cache | FbRJa8LAblzEYgztv | success | 10 | 6 | 36 | 90.8 | 342 | yes |
+| Ohio, warm | zWalnJnNCbI6rD43K | success | 10 | 6 | 36 | 6.8 | 237 | yes |
+| Upper Mississippi | 6q0oxaCqRT8wzgAjw | success | 2 | 1 | 157 | 6.8 | 256 | yes |
+| Illinois Waterway | MbAlzhuAtgN9XSbhH | success | 2 | 0 | 129 | 29.1* | 286 | yes |
+| Lake Superior (0 confirmed) | AhNKwBXHrkdycNe3a | partial | 0 | 0 | 39 | 7.8 | 228 | no |
+| One-point route | ACtvu8hZiecEDOEdY | invalid_input | – | – | – | 3.3 | 65 | no |
+
+\* 14 s of this was the container image pull; route resolution took 5.3 s.
+
+- Every run charged exactly one start event. `waterway-route-check` was charged exactly when the record said `billable`.
+- Compute per run: $0.0002–0.0057 (cold Ohio is the maximum).
+- **Memory:** at 256 MB every cold run was killed for running out of memory (exit 137, peak 244 MB), including after limiting in-flight notice payloads to 8. The default is therefore 512 MB, with a 180 s timeout because a cold run takes about 91 s. 512 MB is still one start event.
 
 ## Compute and PPE
 - **Pricing:** start event $0.00005, plus `waterway-route-check` $0.10. Usage passthrough is off.
-- **Compute cost:** to be measured on the platform at 256 MB. A run takes about 3–11 s with light CPU; Actor #3's comparable runs cost $0.0003–0.0014.
-- **Billing rule:** charged on `success`, including zero matches. Charged on `partial` only when the NTNI list and the Locks layer were both checked and something matched.
+- **Compute cost:** $0.0002–0.0057 per run at 512 MB (see platform acceptance).
+- **Billing rule:** charged on `success`, including zero matches when no nearby notice lacks geometry. Charged on `partial` only when the NTNI list and the Locks layer were both checked and a notice or lock was confirmed on the route.
 
 ## Source freshness
 Every source records `checkedAt` and `fromCache`. LPMS conditions carry a `freshness` label (`current`, `possibly_stale` or `stale`) and an age range. LPMS states no timezone, so the age assumes UTC-4..UTC-8. When `atTime` is more than an hour from the retrieval time, conditions are labelled as of retrieval.
@@ -57,7 +80,7 @@ The prompt set from the brief is ready to freeze: 10 relevant directed prompts, 
 
 ## Limitations
 - Matching is geometry-only. River-mile text is never matched (v2 candidate: the Waterway Network `AMILE`/`BMILE` links plus the river-mile markers).
-- Active notices from districts more than 25 nm beyond the corridor are not spatially checked. They are counted in coverage.
+- Geometry-less notices from districts more than 25 nm beyond the corridor are counted, not listed.
 - Upcoming notices are covered only where they appear in the GeoJSON feed.
 - `active_by_source` is USACE's assertion, not independent verification.
 - LPMS values are as reported, not predictions.

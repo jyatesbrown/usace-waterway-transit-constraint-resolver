@@ -5,7 +5,7 @@ You supply an inland-waterway route. The Actor checks it against official U.S. A
 - **Navigation notices (NTNI)** whose published geometry intersects the route corridor, with official text verbatim, temporal status and route position.
 - **USACE locks** within the corridor, in route order, with the official river and lock codes, river mile and chambers.
 - **Lock operating conditions** reported by LPMS: vessels pending, vessels locking, the reported 4-hour average delay, lockages in the last 24 h, stall stoppages and gauges. Each comes with a freshness label.
-- **`unverifiedLocationNotices`**: notices from nearby districts that publish no geometry. They are retained with their original river-mile wording and the parsed miles, but are **not** route matches.
+- **`unverifiedLocationNotices`**: active notices from USACE districts within 25 nm of the corridor that publish no geometry. They are retained with their original river-mile wording and the parsed miles, but are **not** route matches.
 - **Coverage** for every source, so incomplete checks are explicit.
 
 ## What it does not do
@@ -22,7 +22,7 @@ You supply an inland-waterway route. The Actor checks it against official U.S. A
 | NTNI active notices | `ndc.ops.usace.army.mil/ords/ntni/json_data/notices/{DDMMYYYY}` | Active notice set, official text, dates |
 | NTNI notice detail | `.../ntni/leaflet_json/notice/{id}` (404 = no geometry published) | Notice geometry, begin/end timestamps |
 | NTNI GeoJSON feed | `.../ntni/json_data/notices_geoJson/{DDMMYYYY}` | Upcoming notices with geometry |
-| USACE Civil Works districts | ArcGIS `usace_cw_districts` | Which districts' notices to check spatially |
+| USACE Civil Works districts | ArcGIS `usace_cw_districts` | Which geometry-less notices to list as nearby |
 | USACE Locks | ArcGIS `Locks/FeatureServer/0` | Lock locations and identifiers |
 | LPMS | `ndc.ops.usace.army.mil/ords/lpms/json/lock_status_report` | Current lock operating conditions |
 
@@ -35,12 +35,12 @@ You supply an inland-waterway route. The Actor checks it against official U.S. A
   - `unknown` covers an inconsistent date pair or a query time on a date-only boundary.
   - Expired notices are excluded and counted.
 - **Spatial check:**
-  - Notice geometry is fetched for active notices from districts within 25 nm of the corridor.
-  - Notices from other districts are counted as not spatially checked.
+  - Published geometry is checked for every active notice, from every USACE district.
+  - Geometry-less notices from districts within 25 nm of the corridor are listed in `unverifiedLocationNotices`; others are counted only.
   - A notice whose geometry can't be retrieved makes coverage `partial`.
 - **Status:**
   - `success`: every source was checked.
-  - `partial`: a source, or some notice geometry, was not checked.
+  - `partial`: a source, or some notice geometry, was not checked; or nothing was confirmed on the route while nearby notices have no published geometry.
   - `source_unavailable`: no core source answered.
   - `invalid_input`: the route was rejected.
 - **Lock freshness:** LPMS states no timezone. `current` means the report is at most 6 h old assuming UTC-4..UTC-8; otherwise it is `possibly_stale` or `stale`.
@@ -49,9 +49,9 @@ You supply an inland-waterway route. The Actor checks it against official U.S. A
 
 - `apify-actor-start`: $0.00005.
 - `waterway-route-check`: $0.10, charged when:
-  - the run succeeded (including zero matches), or
+  - the run succeeded (including zero matches with no nearby geometry-less notices), or
   - the result is partial, both core sources (the NTNI list and the Locks layer) were checked, and something matched.
-- Never charged for invalid input, unavailable sources, or partial zero-match results.
+- Never charged for invalid input, unavailable sources, or partial zero-match results (including zero confirmed matches with nearby geometry-less notices).
 
 ## Input
 

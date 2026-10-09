@@ -1,4 +1,5 @@
 import json
+import time
 from datetime import UTC, datetime
 
 import httpx
@@ -7,6 +8,7 @@ from pydantic import ValidationError
 
 from src.models.input import ActorInput
 from src.resolver.run import ZERO_MATCH_TEXT, run_query
+from src.sources.cache import KeyValueCache
 from tests.conftest import DISTRICTS, LPMS, NTNI
 
 NOW = datetime(2026, 10, 9, 15, 0, tzinfo=UTC)
@@ -82,7 +84,9 @@ async def test_text_only_notices_are_unverified_not_matched(usace):
     assert u.spatially_verified is False
     assert u.matched_by is None
     assert all(n.notice_id != u.notice_id for n in r.notices)
-    assert r.coverage.ntni_geometry.no_geometry_published == len(r.unverified_location_notices)
+    g = r.coverage.ntni_geometry
+    assert g.no_geometry_published == len(r.unverified_location_notices) + g.no_geometry_outside_listing_districts
+    assert g.no_geometry_outside_listing_districts >= 1
 
 
 async def test_notice_near_but_outside_corridor_not_matched(usace):
@@ -90,9 +94,56 @@ async def test_notice_near_but_outside_corridor_not_matched(usace):
     r = await run(route=far)
     assert r.notices == []
     assert r.locks == []
+    assert r.unverified_location_notices
+    assert r.status == "partial"
+    assert not r.billing.billable
+    assert ZERO_MATCH_TEXT not in r.coverage.coverage_note
+
+
+async def test_zero_match_without_nearby_unverified_notices_is_success(usace):
+    usace.get(url__startswith=DISTRICTS).mock(
+        return_value=httpx.Response(200, json={"features": [{"attributes": {"SYMBOL": "NWK"}}]})
+    )
+    far = [{"lat": 39.9, "lon": -81.6}, {"lat": 39.5, "lon": -81.9}]
+    r = await run(route=far)
+    assert r.unverified_location_notices == []
     assert r.status == "success"
     assert r.billing.billable
     assert ZERO_MATCH_TEXT in r.coverage.coverage_note
+
+
+async def test_geometry_checked_for_notices_from_every_district(usace):
+    usace.get(url__startswith=DISTRICTS).mock(
+        return_value=httpx.Response(200, json={"features": [{"attributes": {"SYMBOL": "MVS"}}]})
+    )
+    r = await run()
+    assert any(n.notice_id == 215082 for n in r.notices)
+    assert r.coverage.ntni_geometry.scope == "all_usace_districts"
+    assert r.coverage.ntni_geometry.active_notices_considered == 7
+    assert [u.notice_id for u in r.unverified_location_notices] == [1877]
+
+
+async def test_no_geometry_index_avoids_refetching(usace):
+    class Mem(KeyValueCache):
+        def __init__(self):
+            self.d = {}
+
+        async def get(self, key, ttl_seconds):
+            return self.d.get(key)
+
+        async def put(self, key, value):
+            self.d[key] = (value, time.time())
+
+    cache = Mem()
+    inp = ActorInput.model_validate({"route": OHIO, "atTime": "2026-10-13T15:00:00Z"})
+    async with httpx.AsyncClient() as client:
+        first = (await run_query(inp, client=client, cache=cache, now=NOW)).result
+        calls = usace.calls.call_count
+        second = (await run_query(inp, client=client, cache=cache, now=NOW)).result
+    detail_calls = [c for c in usace.calls[calls:] if "/leaflet_json/notice/" in str(c.request.url)]
+    assert detail_calls == []
+    assert [n.notice_id for n in second.notices] == [n.notice_id for n in first.notices]
+    assert second.status == first.status
 
 
 async def test_duplicate_notice_records_collapse(usace):
@@ -133,7 +184,9 @@ async def test_geometry_fetch_failure_makes_coverage_partial(usace):
 async def test_district_failure_makes_geometry_unavailable(usace):
     usace.get(url__startswith=DISTRICTS).mock(return_value=httpx.Response(200, json={"error": {"code": 400}}))
     r = await run()
-    assert r.coverage.ntni_geometry.status == "unavailable"
+    assert r.coverage.ntni_geometry.status == "complete"
+    assert r.coverage.ntni_geometry.unverified_listing_districts is None
+    assert any(u.notice_id == 1877 for u in r.unverified_location_notices)
     assert r.status == "partial"
 
 
@@ -175,3 +228,20 @@ async def test_detail_without_geojson_is_unverified_not_failure(usace):
     assert 215139 not in r.coverage.ntni_geometry.geometry_not_retrieved
     assert any(u.notice_id == 215139 for u in r.unverified_location_notices)
     assert r.coverage.ntni_geometry.status == "complete"
+
+
+def test_bbox_prefilter_is_conservative():
+    from src.geo.geometry import route_area
+    from src.resolver.run import _bbox_disjoint, _coords_bbox, _route_bbox
+
+    area = route_area([(-80.0, 40.4), (-80.6, 40.6)], 1.0)
+    window = _route_bbox(area, 1.0)
+    near = _coords_bbox([{"geometry": {"type": "Point", "coordinates": [-80.3, 40.52]}}])
+    far = _coords_bbox([{"geometry": {"type": "LineString", "coordinates": [[-90.0, 38.0], [-90.1, 38.2]]}}])
+    straddle = _coords_bbox(
+        [{"geometry": {"type": "Polygon", "coordinates": [[[-85, 35], [-75, 35], [-75, 45], [-85, 45], [-85, 35]]]}}]
+    )
+    assert not _bbox_disjoint(near, window)
+    assert _bbox_disjoint(far, window)
+    assert not _bbox_disjoint(straddle, window)
+    assert not _bbox_disjoint(None, window)
