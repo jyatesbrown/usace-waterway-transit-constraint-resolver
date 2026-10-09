@@ -1,0 +1,206 @@
+{
+ "note": "Actor #4 build 1.0.3 benchmark (old verbose format). The harness passed the agent only the first 60,000 characters of each tool result. Interpretation was NOT graded from this run, by decision; kept as evidence the 1.0.3 record format was too verbose for agent consumption.",
+ "runs": 22,
+ "cutForAgent": 20,
+ "maxRecordChars": 404137,
+ "rows": [
+  {
+   "arm": "directed",
+   "episode": "r01",
+   "runId": "GT3VhjRn7oLPDDxZ3",
+   "recordChars": 133585,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  },
+  {
+   "arm": "directed",
+   "episode": "r02",
+   "runId": "yl6z5QiKSZzaXBnGz",
+   "recordChars": 378407,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  },
+  {
+   "arm": "directed",
+   "episode": "r03",
+   "runId": "PfeXY914toHChKwcx",
+   "recordChars": 222913,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  },
+  {
+   "arm": "directed",
+   "episode": "r04",
+   "runId": "28CZXAZrzFL8h5RQy",
+   "recordChars": 404137,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  },
+  {
+   "arm": "directed",
+   "episode": "r05",
+   "runId": "lci25ELZDc7ufWMvL",
+   "recordChars": 106920,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  },
+  {
+   "arm": "directed",
+   "episode": "r06",
+   "runId": "PVg2JOaEmNiYEsrC3",
+   "recordChars": 113710,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  },
+  {
+   "arm": "directed",
+   "episode": "r07",
+   "runId": "q3w0bvaJpNGo1S2Hu",
+   "recordChars": 77799,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  },
+  {
+   "arm": "directed",
+   "episode": "r08",
+   "runId": "WJ4lM1lgttTdH4BYI",
+   "recordChars": 31466,
+   "agentSawChars": 31466,
+   "cutForAgent": false,
+   "cutInside": null
+  },
+  {
+   "arm": "directed",
+   "episode": "r09",
+   "runId": "hWTN87im8NUgXHngv",
+   "recordChars": 36725,
+   "agentSawChars": 36725,
+   "cutForAgent": false,
+   "cutInside": null
+  },
+  {
+   "arm": "directed",
+   "episode": "r10",
+   "runId": "pzBWhWocCWnKEGGsj",
+   "recordChars": 164847,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  },
+  {
+   "arm": "directed",
+   "episode": "r11",
+   "runId": "3hyjqosRcSxd3rJ0s",
+   "recordChars": 286511,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  },
+  {
+   "arm": "directed",
+   "episode": "r12",
+   "runId": "48KxENRx2oiJUQtqp",
+   "recordChars": 272747,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  },
+  {
+   "arm": "directed",
+   "episode": "r13",
+   "runId": "PxMfY2UsES2S0rthO",
+   "recordChars": 170410,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  },
+  {
+   "arm": "directed",
+   "episode": "r14",
+   "runId": "PM3T4hDamgh5NhSkd",
+   "recordChars": 347597,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  },
+  {
+   "arm": "directed",
+   "episode": "r15",
+   "runId": "gupCTP9vWh5ZfZZVI",
+   "recordChars": 94458,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  },
+  {
+   "arm": "directed",
+   "episode": "r16",
+   "runId": "G8uNUjDOKU39uQC3e",
+   "recordChars": 72158,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  },
+  {
+   "arm": "directed",
+   "episode": "r17",
+   "runId": "WaE127eJ7iPktaDWg",
+   "recordChars": 133586,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  },
+  {
+   "arm": "directed",
+   "episode": "r18",
+   "runId": "z9kM2Na91fLNFuA72",
+   "recordChars": 378407,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  },
+  {
+   "arm": "directed",
+   "episode": "r19",
+   "runId": "TZXuDSfL1sBuEHGJu",
+   "recordChars": 77799,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  },
+  {
+   "arm": "default",
+   "episode": "r02",
+   "runId": "8nFspaFBDA2k0p7RL",
+   "recordChars": 378407,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  },
+  {
+   "arm": "default",
+   "episode": "r03",
+   "runId": "0XWt1npX8ciErk8s6",
+   "recordChars": 222913,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  },
+  {
+   "arm": "default",
+   "episode": "r04",
+   "runId": "IUshvZoHwigLESbAu",
+   "recordChars": 404135,
+   "agentSawChars": 60000,
+   "cutForAgent": true,
+   "cutInside": "unverifiedLocationNotices"
+  }
+ ]
+}
