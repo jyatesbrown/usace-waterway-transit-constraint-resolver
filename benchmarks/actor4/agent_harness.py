@@ -105,7 +105,15 @@ class MCP:
         return r.json()
 
     def rpc(self, method: str, params: dict) -> dict:
-        msg = self._parse(self.client.post(MCP_URL, headers=self.headers, json=self._req(method, params)))
+        # The MCP endpoint occasionally returns an empty/non-JSON body; retry transport failures only.
+        for attempt in range(3):
+            try:
+                msg = self._parse(self.client.post(MCP_URL, headers=self.headers, json=self._req(method, params)))
+                break
+            except (json.JSONDecodeError, httpx.TransportError) as exc:
+                if attempt == 2:
+                    return {"isError": True, "content": [{"type": "text", "text": f"MCP transport error: {exc}"}]}
+                time.sleep(5 * (attempt + 1))
         if "error" in msg:
             return {"isError": True, "content": [{"type": "text", "text": json.dumps(msg["error"])}]}
         return msg["result"]
